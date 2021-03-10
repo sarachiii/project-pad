@@ -83,6 +83,19 @@ app.post("/upload", function (req, res) {
         return res.status(httpOkCode).json("OK");
     });
 });
+
+app.get("/books/all", (req, res) => {
+
+    db.handleQuery(connectionPool, {
+            query: "SELECT * FROM boek"
+        }, (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        }, (err) => res.status(badRequestCode).json({reason: err})
+    );
+
+});
+
 //------- END ROUTES -------
 
 module.exports = app;
