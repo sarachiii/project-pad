@@ -11,7 +11,46 @@ const cryptoHelper = require("./utils/cryptoHelper");
 const corsConfig = require("./utils/corsConfigHelper");
 const app = express();
 const fileUpload = require("express-fileupload");
+var https = require('https');
 
+class fetchData {
+
+
+    sendRequest(key) {
+        const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
+        // const obaSecret = "4289fec4e962a33118340c888699438d";
+        const url = `https://zoeken.oba.nl/api/v1/search/?q=${key}&authorization=${obaPublicKey}&refine=true&output=json`;
+        var promise = new Promise((resolve, reject) => {
+            https.get(url, res => {
+                res.setEncoding('utf8');
+                let body = '';
+                res.on('data', chunk => body += chunk);
+                res.on('end', () => resolve(body));
+            }).on('error', reject)
+        })
+        return promise;
+    }
+    getBooks(key) {
+
+        return this.sendRequest(key).then(data => {
+            JSON.parse(data.substring(1)).results.forEach(element => {
+                return element;
+            });;
+        })
+    }
+
+
+}
+let search = new fetchData();
+
+app.get('/search', (req, res) => {
+    try {
+        var key = req.query.q
+        return search.sendRequest(key);
+    } catch (e) {
+        console.log('⚙️', e)
+    }
+});
 //logger lib  - 'short' is basic logging info
 app.use(morgan("short"));
 
@@ -109,42 +148,6 @@ app.get("/books/all", (req, res) => {
 
 module.exports = app;
 
-const https = require("https");
-const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
+// const https = require("https");
+// const { url } = require("inspector");
 const obaSecret = "4289fec4e962a33118340c888699438d";
-
-//example request: localhost:3000/search?q=mooi
-app.get("/search", (req, res) => {
-    const url = `https://zoeken.oba.nl/api/v1/search/?q=${req.query.q}&authorization=${obaPublicKey}&refine=true&output=json`;
-    const request = https.get(
-        url, {
-            timeout: 10000,
-            headers: {
-                AquaBrowser: obaSecret,
-                "Content-Type": "application/json; charset=utf-8;",
-            },
-        },
-        (obaResponse) => {
-            let bodyChunks = [];
-            obaResponse
-                .on("data", (chunk) => {
-                    // process streamed parts here...
-                    bodyChunks.push(chunk);
-                })
-                .on("end", () => {
-                    const json = Buffer.concat(bodyChunks).toString();
-                    //INFO: Sometimes no valid json comes back from OBA api
-                    //because output=json is in beta :(
-
-                    //send to the one who request this route(eg. front-end), it's already json so dont use .json(..)
-                    res.status(httpOkCode).send(json);
-                });
-        }
-    );
-
-    request.on("error", (err) => {
-        res.status(badRequestCode).json({ reason: err });
-    });
-
-    request.end();
-});
