@@ -131,10 +131,11 @@ app.post("/upload", function(req, res) {
     });
 });
 
+//Request all books
 app.get("/books/all", (req, res) => {
     db.handleQuery(
         connectionPool, {
-            query: "SELECT * FROM boek",
+            query: "SELECT * FROM book",
         },
         (data) => {
             //just give all data back as json
@@ -143,6 +144,31 @@ app.get("/books/all", (req, res) => {
         (err) => res.status(badRequestCode).json({ reason: err })
     );
 });
+
+//Insert books into database
+app.post("/books/insert", (req, res) => {
+
+    const id = "ObaCattalogus245235";
+    const title = "De kameleon";
+    const auteur = "Mark Smith";
+    const year = 2020;
+    const genre = "Avontuur";
+    const image = "image url";
+    const recap = "recap kameleon";
+
+    db.handleQuery(
+        connectionPool, {
+            query: "INSERT INTO book (idBook, Title, Auteur, Release_year, Genre, Image, Recap) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            values: [id, title, auteur, year, genre, image, recap]
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+});
+
 
 //------- END ROUTES -------
 
