@@ -1,29 +1,137 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary static-top">
-    <div class="container">
-        <img src="assets/img/oba-logo.png" class="">
-        <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" data-controller="welcome">Welcome
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link bg-black hover:bg-transparent" data-controller="upload" href="#">Upload</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-controller="login" href="#">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-controller="logout" href="#">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-controller="dashboard" href="dashboard.html">Dashboard</a>
-                </li>
-            </ul>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<div style="position: fixed; " class="h-screen w-screen flex">
+    <!-- container -->
+
+    <aside
+            class="flex flex-col items-center bg-white text-gray-700 shadow h-full">
+        <!-- Side Nav Bar-->
+
+        <div class="h-16 flex items-center w-full">
+            <!-- Logo Section -->
+            <a class="h-6 w-6 mx-auto" href="http://svelte.dev/">
+                <img
+                        class="h-6 w-6 mx-auto"
+                        src="../src/assets/img/oba-logo.png"
+                        alt="svelte logo" />
+            </a>
         </div>
-    </div>
-</nav>
+
+        <ul>
+            <!-- Items Section -->
+            <li class="hover:bg-gray-100">
+                <a
+                        data-controller="dashboard" href="dashboard.html"
+                        href="#"
+                        class="h-16 px-6 flex flex justify-center items-center w-full
+					focus:text-orange-500">
+                    <span class="material-icons">
+home
+</span>
+
+                </a>
+            </li>
+
+            <li class="hover:bg-gray-100">
+                <a
+                        data-controller="upload"
+                        href="#"
+                        class="h-16 px-6 flex flex justify-center items-center w-full
+					focus:text-orange-500">
+                    <span class="material-icons">
+import_contacts
+</span>
+
+                </a>
+            </li>
+
+            <li class="hover:bg-gray-100">
+                <a
+                        href="."
+                        class="h-16 px-6 flex flex justify-center items-center w-full
+					focus:text-orange-500">
+
+                    <span class="material-icons">
+play_lesson
+</span>
+
+                </a>
+            </li>
+
+            <li class="hover:bg-gray-100">
+                <a
+                        href="."
+                        class="h-16 px-6 flex flex justify-center items-center w-full
+					focus:text-orange-500">
+                    <span class="material-icons">
+movie
+</span>
+
+                </a>
+            </li>
+
+            <li class="hover:bg-gray-100">
+                <a
+                        href="."
+                        class="h-16 px-6 flex flex justify-center items-center w-full
+					focus:text-orange-500">
+                    <svg
+                            class="h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1
+							0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0
+							0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2
+							2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0
+							0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1
+							0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0
+							0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65
+							0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0
+							1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0
+							1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2
+							0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0
+							1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0
+							2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0
+							0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65
+							1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </a>
+            </li>
+
+            <li class="hover:bg-gray-100">
+                <a
+                        data-controller="logout"
+                        href="."
+                        class="h-16 px-6 flex flex justify-center items-center w-full
+					focus:text-orange-500">
+                    <span style="color: red" class="material-icons">
+logout
+</span>
+                </a>
+            </li>
+
+        </ul>
+
+        <div class="mt-auto h-16 flex items-center w-full">
+            <!-- Action Section -->
+            <button
+                    class="h-16 w-10 mx-auto flex flex justify-center items-center
+				w-full focus:text-orange-500 hover:bg-red-200 focus:outline-none">
+                <span class="material-icons">
+logout
+</span>
+
+            </button>
+        </div>
+
+    </aside>
+</div>
