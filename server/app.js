@@ -13,8 +13,7 @@ const app = express();
 const fileUpload = require("express-fileupload");
 var https = require('https');
 
-class fetchData {
-
+class FetchData {
 
     sendRequest(key) {
         const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
@@ -41,7 +40,7 @@ class fetchData {
 
 
 }
-let search = new fetchData();
+let search = new FetchData();
 
 app.get('/search', (req, res) => {
     try {
@@ -51,6 +50,7 @@ app.get('/search', (req, res) => {
         console.log('⚙️', e)
     }
 });
+
 //logger lib  - 'short' is basic logging info
 app.use(morgan("short"));
 
