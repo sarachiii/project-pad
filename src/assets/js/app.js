@@ -13,6 +13,7 @@ const CONTROLLER_LOGOUT = "logout";
 const CONTROLLER_WELCOME = "welcome";
 const CONTROLLER_UPLOAD = "upload";
 const CONTROLLER_DASHBOARD = "dashboard";
+const CONTROLLER_BUSYLOCATION = "location";
 
 const sessionManager = new SessionManager();
 const networkManager = new NetworkManager();
@@ -68,6 +69,10 @@ class App {
 
             case CONTROLLER_DASHBOARD:
                 new DashboardController();
+                break;
+
+            case CONTROLLER_BUSYLOCATION:
+                new chartBusyLocationController();
                 break;
 
             default:

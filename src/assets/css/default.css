@@ -68,6 +68,16 @@ footer {
     width: 400px;
 }
 
+#chartdiv {
+    border-radius: 10px;
+    box-shadow: 0px 0px 50px -4px rgba(0,0,0,0.44);
+    padding: 15px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 #inlogbtn {
     width: 100%;
 }

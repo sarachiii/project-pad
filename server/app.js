@@ -16,7 +16,7 @@ var https = require('https');
 class FetchData {
 
     sendRequest(key) {
-        const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
+        const obaPublicKey = "1e19898c87464e239192c8bfe422f2";
         // const obaSecret = "4289fec4e962a33118340c888699438d";
         const url = `https://zoeken.oba.nl/api/v1/search/?q=${key}&authorization=${obaPublicKey}&refine=true&output=json`;
         var promise = new Promise((resolve, reject) => {
