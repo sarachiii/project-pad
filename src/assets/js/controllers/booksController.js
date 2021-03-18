@@ -18,38 +18,44 @@ class BooksController {
         //Load the login-content into memory
         this.booksView = $(data);
 
-        this.booksView.find("#content");
-
         //Empty the content-div and add the resulting view to the page
-        $(".content").empty().append(this.loginView);
+        $(".content").empty().append(this.booksView);
+
+        this.booksView.find("#searchButton").on("click", (event) => this.onSearchBook(event));
     }
 
     /**
      * Async function that does a login request via repository
      * @param event
      */
-    async getAllBooks(event) {
-
-        try{
-            //await keyword 'stops' code until data is returned - can only be used in async function
-            const BOOKS = await this.booksRepository.getAll();
-
-            app.loadController(BOOKS);
-
-        } catch(e) {
-            //if unauthorized error show error to user
-            if(e.code === 401) {
-                this.loginView
-                    .find(".error")
-                    .html(e.reason);
-            } else {
-                console.log(e);
-            }
-        }
-    }
+    // async getAllBooks(event) {
+    //
+    //     try{
+    //         //await keyword 'stops' code until data is returned - can only be used in async function
+    //         const BOOKS = await this.booksRepository.getAll();
+    //
+    //         app.loadController(BOOKS);
+    //
+    //     } catch(e) {
+    //         //if unauthorized error show error to user
+    //         if(e.code === 401) {
+    //             this.loginView
+    //                 .find(".error")
+    //                 .html(e.reason);
+    //         } else {
+    //             console.log(e);
+    //         }
+    //     }
+    // }
 
     //Called when the login.html failed to load
     error() {
         $(".content").html("Failed to load content!");
+    }
+
+    onSearchBook(event) {
+        event.preventDefault();
+        const searchterm = this.booksView.find("#inputSearch").val();
+        console.log(searchterm);
     }
 }

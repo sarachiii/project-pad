@@ -1,12 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="mx-auto w-8/12">
+    <div class="d-flex flex-column align-items-end">
+        <form id="searchForm" class="form-inline">
+            <input id="inputSearch" class="form-control m-2 shadow-md rounded-md" type="search"
+                   placeholder="zoek op titel..."
+                   aria-label="zoek">
+            <button id="searchButton" class="bg-black text-white shadow-md rounded-md w-32 h-10"
+                    type="button">
+                zoek
+            </button>
+        </form>
+    </div>
+    <table class="table table-hover bg-red-600 text-white rounded-lg ">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Titel</th>
+            <th scope="col">Auteur</th>
+            <th scope="col">Genre</th>
+        </tr>
+        <tr>
+            <th class="id d-none"></th>
+            <td class="title d-none"></td>
+            <td class="auteur d-none"></td>
+            <td class="genre d-none"></td>
+        </tr>
+        </thead>
+        <tbody id="books"></tbody>
+    </table>
+</div>
 
-<div id="content"></div>
-
-</body>
-</html>
