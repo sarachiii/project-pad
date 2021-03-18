@@ -68,11 +68,13 @@ class App {
                 break;
 
             case CONTROLLER_DASHBOARD:
-                new DashboardController();
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new DashboardController(), () => new LoginController());
                 break;
 
             case CONTROLLER_BUSYLOCATION:
-                new chartBusyLocationController();
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new chartBusyLocationController(), () => new LoginController());
                 break;
 
             default:
