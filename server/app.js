@@ -16,9 +16,11 @@ var https = require('https');
 class FetchData {
 
     sendRequest(key) {
-        const obaPublicKey = "1e19898c87464e239192c8bfe422f2";
+       // const obaPublicKey = "1e19898c87464e239192c8bfe422f2"; This is not the correct key: see DLO
+        const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
         // const obaSecret = "4289fec4e962a33118340c888699438d";
         const url = `https://zoeken.oba.nl/api/v1/search/?q=${key}&authorization=${obaPublicKey}&refine=true&output=json`;
+        console.log(url);
         var promise = new Promise((resolve, reject) => {
             https.get(url, res => {
                 res.setEncoding('utf8');
@@ -44,11 +46,49 @@ let search = new FetchData();
 
 app.get('/search', (req, res) => {
     try {
-        var key = req.query.q
+        var key = req.query.q;
+        console.log(key);
         return search.sendRequest(key);
     } catch (e) {
         console.log('⚙️', e)
     }
+});
+
+app.get("/books/searchNew", (req, res) => {
+    // Note: The query string is '?q=<searchString>'
+    const url = urlPrefix + `?q=${req.query.q}&authorization=${obaPublicKey}&refine=true&output=json`;
+    const request = https.get(url, {
+        timeout: 10000,
+        headers: {
+            "AquaBrowser": obaSecret,
+            "User" : "Team-3",
+            "Content-Type": "application/json; charset=utf-8;"
+        },
+    }, (obaResponse) => {
+        let bodyChunks = [];
+        obaResponse.on('data', (chunk) => {
+            // process streamed parts here...
+            bodyChunks.push(chunk);
+        }).on("end", () => {
+            const json = Buffer.concat(bodyChunks).toString();
+            //INFO: Sometimes no valid json comes back from OBA api
+            //because output=json is in beta :(
+
+            //send to the one who request this route(eg. front-end), it's already json so dont use .json(..)
+
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+            res.status(httpOkCode).send(json);
+        })
+    });
+
+    request.on("error", err => {
+        res.status(badRequestCode).json({reason: err})
+    });
+
+    request.end();
 });
 
 //logger lib  - 'short' is basic logging info
@@ -169,11 +209,12 @@ app.post("/books/insert", (req, res) => {
     );
 });
 
-
 //------- END ROUTES -------
 
 module.exports = app;
 
 // const https = require("https");
 // const { url } = require("inspector");
+const urlPrefix = "https://zoeken.oba.nl/api/v1/search/";
+const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
 const obaSecret = "4289fec4e962a33118340c888699438d";

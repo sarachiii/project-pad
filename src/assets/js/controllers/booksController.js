@@ -56,6 +56,8 @@ class BooksController {
     onSearchBook(event) {
         event.preventDefault();
         const searchterm = this.booksView.find("#inputSearch").val();
-        console.log(searchterm);
+        let promise = this.booksRepository.searchNew(searchterm);
+
+        promise.then(value => console.log(value)).catch(reason => console.log(reason))
     }
 }
