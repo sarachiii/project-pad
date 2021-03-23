@@ -18,14 +18,27 @@
             <th scope="col">Auteur</th>
             <th scope="col">Genre</th>
         </tr>
-        <tr>
-            <th class="id d-none"></th>
-            <td class="title d-none"></td>
-            <td class="auteur d-none"></td>
-            <td class="genre d-none"></td>
-        </tr>
         </thead>
         <tbody id="books"></tbody>
+        <td>
+            <button id="first" class="bg-black text-white shadow-md rounded-md w-32 h-10"
+                    onclick="app.countriesController.getFirst()">First
+            </button>
+            <button id="previous" class="bg-black text-white shadow-md rounded-md w-32 h-10"
+                    onclick="app.countriesController.getPrevious()">
+                Previous
+            </button>
+            <button id="next" class="bg-black text-white shadow-md rounded-md w-32 h-10"
+                    onclick="app.countriesController.getNext()">Next
+            </button>
+            <button id="last" class="bg-black text-white shadow-md rounded-md w-32 h-10"
+                    onclick="app.countriesController.getLast()">Last
+            </button>
+            <button id="showAll" class="bg-black text-white shadow-md rounded-md w-32 h-10"
+                    onclick="app.countriesController.getForAnchor()">Show
+                all
+            </button>
+        </td>
     </table>
 </div>
 

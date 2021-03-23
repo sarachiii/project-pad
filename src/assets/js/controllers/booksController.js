@@ -53,11 +53,41 @@ class BooksController {
         $(".content").html("Failed to load content!");
     }
 
-    onSearchBook(event) {
+    async onSearchBook(event) {
         event.preventDefault();
         const searchterm = this.booksView.find("#inputSearch").val();
-        let promise = this.booksRepository.searchNew(searchterm);
 
-        promise.then(value => console.log(value)).catch(reason => console.log(reason))
+        try {
+            let promise = await this.booksRepository.searchNew(searchterm);
+            let results = promise["results"];
+            console.log(promise);
+            console.log(results);
+
+            let booksTable = $("#books");
+            booksTable.empty();
+            for (let i = 0; i < results.length; i++) {
+                // de nodige html code ophalen uit een extern html bestand
+                $.get("views/booksTable.html", function (tabel) {
+                    booksTable.append(tabel)
+                    booksTable.find('.id.d-none').text(results[i]['id']);
+                    booksTable.find('.id').removeClass("d-none");
+                    booksTable.find('.title.d-none').text(results[i]['titles']);
+                    booksTable.find('.title').removeClass("d-none");
+                    booksTable.find('.auteur.d-none').text(results[i]['authors']);
+                    booksTable.find('.auteur').removeClass("d-none");
+                    booksTable.find('.genre.d-none').text(results[i]['genres']);
+                    booksTable.find('.genre').removeClass("d-none");
+                });
+            }
+        } catch (e) {
+            //if unauthorized error show error to user
+            if (e.code === 401) {
+                this.booksView
+                    .find(".error")
+                    .html(e.reason);
+            } else {
+                console.log(e);
+            }
+        }
     }
 }
