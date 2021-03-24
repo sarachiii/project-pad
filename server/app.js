@@ -209,6 +209,22 @@ app.post("/books/insert", (req, res) => {
     );
 });
 
+app.get("/location", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT * FROM busyLocation"
+        },
+        (data) => {
+
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+
+})
+
 //------- END ROUTES -------
 
 module.exports = app;
