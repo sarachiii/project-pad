@@ -69,14 +69,19 @@ class BooksController {
                 // de nodige html code ophalen uit een extern html bestand
                 $.get("views/booksTable.html", function (tabel) {
                     booksTable.append(tabel)
-                    booksTable.find('.id.d-none').text(results[i]['id']);
-                    booksTable.find('.id').removeClass("d-none");
-                    booksTable.find('.title.d-none').text(results[i]['titles']);
-                    booksTable.find('.title').removeClass("d-none");
-                    booksTable.find('.auteur.d-none').text(results[i]['authors']);
-                    booksTable.find('.auteur').removeClass("d-none");
-                    booksTable.find('.genre.d-none').text(results[i]['genres']);
-                    booksTable.find('.genre').removeClass("d-none");
+
+                    let book = results[i]['coverimages'];
+                    let firstLink = book[0];
+
+                    //$(`.coverImage`).removeAttr('src');
+                    $(`.coverImage`).attr('src', firstLink);
+                    $(`.image`).removeClass("d-none");
+                    $('.title.d-none').text(results[i]['titles']);
+                    $('.title').removeClass("d-none");
+                    $('.auteur.d-none').text(results[i]['authors']);
+                    $('.auteur').removeClass("d-none");
+                    $('.genre.d-none').text(results[i]['genres']);
+                    $('.genre').removeClass("d-none");
                 });
             }
         } catch (e) {

@@ -50,7 +50,7 @@ app.get('/search', (req, res) => {
         console.log(key);
         return search.sendRequest(key);
     } catch (e) {
-        console.log('⚙️', e)
+        console.log(e)
     }
 });
 
