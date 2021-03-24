@@ -4,7 +4,7 @@ class chartBusyLocationRepository {
         this.route = "/location"
     }
 
-    async getAll() {
+    async get() {
         return await networkManager
             .doRequest(`${this.route}`, null, "GET");
     }

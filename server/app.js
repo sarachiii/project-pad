@@ -216,7 +216,6 @@ app.get("/location", (req, res) => {
         },
         (data) => {
 
-
             //just give all data back as json
             res.status(httpOkCode).json(data);
         },

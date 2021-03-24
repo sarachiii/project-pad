@@ -24,5 +24,7 @@ class DashboardController {
         $(".content").html("Failed to load the sidebar!");
     }
 
+
+
 }
 
