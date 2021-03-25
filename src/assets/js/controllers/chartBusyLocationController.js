@@ -64,6 +64,7 @@ class chartBusyLocationController {
                 }]
             },
             options: {
+                maintainAspectRatio: false,
                 scales: {
                     xAxes: [{
                         ticks: {
