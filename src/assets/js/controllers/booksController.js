@@ -68,26 +68,49 @@ class BooksController {
             for (let i = 0; i < results.length; i++) {
                 // de nodige html code ophalen uit een extern html bestand
                 $.get("views/booksTable.html", function (tabel) {
+
                     booksTable.append(tabel)
 
+                    /* BOOK COVER IMAGE */
+
+                    //Retrieve image URL from OBA API
                     let book = results[i]['coverimages'];
                     let firstLink = book[0];
-                    console.log(book);
-                    console.log(firstLink);
 
-                    // $(document).ready(function(){
-                    //     $(`<img src='${firstLink}'>`).appendTo(".image");
-                    // });
+                    //Create the image
+                    var img = new Image();
+                    img.src = firstLink;
 
-                    //$(`.coverImage`).removeAttr('src');
-                    $(`#coverImage`).attr("id", "coverImage" + i);
-                    $(`#coverImage` + i).attr('src', firstLink);
+                    let height;
+                    let width;
+
+                    //When the image is loaded, read the size properties
+                    img.onload = function() {
+                        height = img.height;
+                        width = img.width;
+
+                        $(`#coverImage`).attr("id", "coverImage" + i); //increase ID by i to make it unique every loop
+
+                        if(height == 1 || width == 1){
+                            $(`#coverImage` + i).attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
+                                "//http://data.bibliotheek.nl/ggc/ppn/820177083&token=c1322402");
+                        } else {
+                            $(`#coverImage` + i).attr('src', firstLink);
+                        }
+                    };
+
                     $(`.image`).removeClass("d-none");
                     $('.title.d-none').text(results[i]['titles']);
                     $('.title').removeClass("d-none");
                     $('.auteur.d-none').text(results[i]['authors']);
                     $('.auteur').removeClass("d-none");
-                    $('.genre.d-none').text(results[i]['genres']);
+
+                    let genre = results[i]['genres'];
+
+                    if(genre == null){
+                        $('.genre.d-none').text("-");
+                    }
+                    $('.genre.d-none').text(genre);
                     $('.genre').removeClass("d-none");
                     $(".infoButton .d-none").on('click', function (e) {
                         // prevent default submit van button
