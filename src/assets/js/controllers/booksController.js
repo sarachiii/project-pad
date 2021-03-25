@@ -72,9 +72,16 @@ class BooksController {
 
                     let book = results[i]['coverimages'];
                     let firstLink = book[0];
+                    console.log(book);
+                    console.log(firstLink);
+
+                    // $(document).ready(function(){
+                    //     $(`<img src='${firstLink}'>`).appendTo(".image");
+                    // });
 
                     //$(`.coverImage`).removeAttr('src');
-                    $(`.coverImage`).attr('src', firstLink);
+                    $(`#coverImage`).attr("id", "coverImage" + i);
+                    $(`#coverImage` + i).attr('src', firstLink);
                     $(`.image`).removeClass("d-none");
                     $('.title.d-none').text(results[i]['titles']);
                     $('.title').removeClass("d-none");
@@ -82,6 +89,24 @@ class BooksController {
                     $('.auteur').removeClass("d-none");
                     $('.genre.d-none').text(results[i]['genres']);
                     $('.genre').removeClass("d-none");
+                    $(".infoButton .d-none").on('click', function (e) {
+                        // prevent default submit van button
+                        e.preventDefault();
+                    });
+                    booksTable.find('.infoButton').removeClass("d-none");
+                    $("#books").on('click', '.infoButton', function () {
+                        let book = results[i]['coverimages'];
+                        let firstLink = book[0];
+                        const bookInfo = $("#bookInfo");
+                        bookInfo.find(".img-thumbnail").attr("src", firstLink);
+                        bookInfo.find(".information .authors span").text(results[i]['authors']);
+                        bookInfo.find(".information .description span").text(results[i]['description']);
+                        bookInfo.find(".information .genre span").text(results[i]['genres']);
+                        bookInfo.find(".information .languages span").text(results[i]['languages']);
+                        bookInfo.find(".information .isbn span").text(results[i]['isbn']);
+                        bookInfo.find(".information .publisher span").text(results[i]['publisher']);
+                        bookInfo.find(".information .year span").text(results[i]['year']);
+                    });
                 });
             }
         } catch (e) {
