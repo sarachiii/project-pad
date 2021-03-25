@@ -31,6 +31,7 @@ class chartBusyLocationController {
         let locations = [];
         let amount = [];
         let totalAmount = [];
+        let colors = [];
 
         for (let i = 0; i < promise.length; i++) {
             locations[i] = promise[i].Location
@@ -48,7 +49,16 @@ class chartBusyLocationController {
         let maxValue = 100;
 
         for (let i = 0; i < locations.length; i++) {
-            percentage[i] = (amount[i] / totalAmount[i]) * maxValue
+            percentage[i] = Math.round((amount[i] / totalAmount[i]) * maxValue)
+
+            if(percentage[i] <= 33) {
+                colors[i] = 'rgba(0, 255, 0)'
+            } else if (percentage[i] <= 66) {
+                colors[i] = 'rgba(255, 150, 0)'
+            } else if (percentage[i] <= 100) {
+                colors[i] = 'rgba(255, 0, 0)'
+            }
+
         }
 
         let myChart = document.getElementById('myChart').getContext('2d');
@@ -60,10 +70,13 @@ class chartBusyLocationController {
                 datasets: [{
                     label: 'Drukte',
                     data: percentage,
-                    backgroundColor: 'rgba(255, 0, 0)'
+                    backgroundColor: colors
                 }]
             },
             options: {
+                legend: {
+                    display: false
+                },
                 maintainAspectRatio: false,
                 scales: {
                     xAxes: [{
