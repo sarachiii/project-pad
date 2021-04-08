@@ -89,37 +89,37 @@ class BooksController {
                         height = img.height;
                         width = img.width;
 
-                        $(`#coverImage`).attr("id", "coverImage" + i); //increase ID by i to make it unique every loop
+                        rij.find(`#coverImage`).attr("id", "coverImage" + i); //increase ID by i to make it unique every loop
 
                         if(height == 1 || width == 1){
-                            $(`#coverImage` + i).attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
+                            rij.find(`#coverImage` + i).attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
                                 "//http://data.bibliotheek.nl/ggc/ppn/820177083&token=c1322402");
                         } else {
-                            $(`#coverImage` + i).attr('src', firstLink);
+                            rij.find(`#coverImage` + i).attr('src', firstLink);
                         }
                     };
 
-                    $(`.image`).removeClass("d-none");
-                    $('.title.d-none').text(results[i]['titles']);
-                    $('.title').removeClass("d-none");
-                    $('.auteur.d-none').text(results[i]['authors']);
-                    $('.auteur').removeClass("d-none");
+                    rij.find(`.image`).removeClass("d-none");
+                    rij.find('.title.d-none').text(results[i]['titles']);
+                    rij.find('.title').removeClass("d-none");
+                    rij.find('.auteur.d-none').text(results[i]['authors']);
+                    rij.find('.auteur').removeClass("d-none");
 
                     let genre = results[i]['genres'];
 
                     if(genre == null){
                         $('.genre.d-none').text("-");
                     }
-                    $('.genre.d-none').text(genre);
-                    $('.genre').removeClass("d-none");
+                    rij.find('.genre.d-none').text(genre);
+                    rij.find('.genre').removeClass("d-none");
                     $(".infoButton .d-none").on('click', function (e) {
                         // prevent default submit van button
                         e.preventDefault();
                     });
                     rij.find(`.infoButton`).attr(`data-id`, i);
                     rij.find('.infoButton').removeClass("d-none");
-                    $("#books").on('click', '.infoButton', function () {
-                        console.log(i);
+                    $("#books").on('click', '.infoButton[data-id="' + i + '"]' , function () {
+                        console.log(results[i]);
                         let book = results[i]['coverimages'];
                         let firstLink = book[0];
                         const bookInfo = $("#bookInfo");
