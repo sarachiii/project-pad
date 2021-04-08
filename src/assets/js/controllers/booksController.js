@@ -22,7 +22,6 @@ class BooksController {
         $(".content").empty().append(this.booksView);
 
         this.booksView.find("#searchButton").on("click", (event) => this.onSearchBook(event));
-
     }
 
     /**
@@ -63,16 +62,14 @@ class BooksController {
             let results = promise["results"];
             console.log(promise);
             console.log(results);
-            this.booksView.find("#previous").on("click", (event) => this.previousPage(event, promise));
-            this.booksView.find("#next").on("click", (event) => this.nextPage(event, promise));
 
             let booksTable = $("#books");
             booksTable.empty();
             for (let i = 0; i < results.length; i++) {
                 // de nodige html code ophalen uit een extern html bestand
                 $.get("views/booksTable.html", function (tabel) {
-
-                    booksTable.append(tabel)
+                    const rij = $(tabel);
+                    //booksTable.append(tabel)
 
                     /* BOOK COVER IMAGE */
 
@@ -88,13 +85,13 @@ class BooksController {
                     let width;
 
                     //When the image is loaded, read the size properties
-                    img.onload = function () {
+                    img.onload = function() {
                         height = img.height;
                         width = img.width;
 
                         $(`#coverImage`).attr("id", "coverImage" + i); //increase ID by i to make it unique every loop
 
-                        if (height == 1 || width == 1) {
+                        if(height == 1 || width == 1){
                             $(`#coverImage` + i).attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
                                 "//http://data.bibliotheek.nl/ggc/ppn/820177083&token=c1322402");
                         } else {
@@ -110,7 +107,7 @@ class BooksController {
 
                     let genre = results[i]['genres'];
 
-                    if (genre == null) {
+                    if(genre == null){
                         $('.genre.d-none').text("-");
                     }
                     $('.genre.d-none').text(genre);
@@ -119,15 +116,13 @@ class BooksController {
                         // prevent default submit van button
                         e.preventDefault();
                     });
-                    booksTable.find('#bookInfo').removeClass("d-none");
-                    booksTable.find(`#bookInfo` + i);
-                    // let identifier = `#buttonId` + i;
-                    console.log(booksTable.find(`#bookInfo` + i));
-                    $("#books").on('click', `#buttonId`, function () {
+                    rij.find(`.infoButton`).attr(`data-id`, i);
+                    rij.find('.infoButton').removeClass("d-none");
+                    $("#books").on('click', '.infoButton', function () {
+                        console.log(i);
                         let book = results[i]['coverimages'];
                         let firstLink = book[0];
-                        const bookInfo = $("#books").find(`#bookInfo` + i);
-                        console.log(bookInfo);
+                        const bookInfo = $("#bookInfo");
                         bookInfo.find(".img-thumbnail").attr("src", firstLink);
                         bookInfo.find(".information .authors span").text(results[i]['authors']);
                         bookInfo.find(".information .description span").text(results[i]['description']);
@@ -137,6 +132,7 @@ class BooksController {
                         bookInfo.find(".information .publisher span").text(results[i]['publisher']);
                         bookInfo.find(".information .year span").text(results[i]['year']);
                     });
+                    booksTable.append(rij);
                 });
             }
         } catch (e) {
@@ -148,29 +144,6 @@ class BooksController {
             } else {
                 console.log(e);
             }
-        }
-    }
-
-    nextPage(event, promise) {
-        event.preventDefault();
-        let meta = promise["meta"];
-        console.log(meta);
-        let aantalloop = meta["result-count"] / 20;
-        console.log(aantalloop);
-        if(meta["current-page"] < aantalloop ) {
-           // meta["current-page"]++
-            console.log(++promise["meta"]["current-page"]);
-        }
-        console.log(promise["results"]);
-    }
-
-    previousPage(event, promise) {
-        event.preventDefault();
-        let meta = promise["meta"];
-        console.log(meta);
-        if(meta["current-page"] > 1 ) {
-          //  meta["current-page"]--
-            console.log(--meta["current-page"]);
         }
     }
 }
