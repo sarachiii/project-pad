@@ -1,52 +1,59 @@
+<div class="d-flex flex-column m-2">
+    <form id="searchForm" class="form-inline row mx-auto gap-2 w-8/12">
+        <input id="inputSearch" class="form-control shadow-md rounded-md col" type="search"
+               placeholder="Voer hier uw zoekterm(en) in..."
+               aria-label="zoek">
+        <button id="searchButton"
+                class="bg-black text-white shadow-md rounded-md h-10 col-sm-3 col-md-3 col-lg-3 col-xl-2"
+                type="button">
+            zoek
+        </button>
+        <!--            <button id="previous" class="bg-black text-white shadow-md rounded-md w-32 h-10" type="button">Previous-->
+        <!--            </button>-->
+        <!--            <button id="next" class="bg-black text-white shadow-md rounded-md w-32 h-10" type="button">Next-->
+        <!--            </button>-->
+    </form>
+</div>
 <div class="mx-auto w-8/12">
-    <div class="d-flex flex-column align-items-end">
-        <form id="searchForm" class="form-inline">
-            <input id="inputSearch" class="form-control m-2 shadow-md rounded-md" type="search"
-                   placeholder="zoek op titel..."
-                   aria-label="zoek">
-            <button id="searchButton" class="bg-black text-white shadow-md rounded-md w-32 h-10"
-                    type="button">
-                zoek
-            </button>
-            <button id="previous" class="bg-black text-white shadow-md rounded-md w-32 h-10" type="button">Previous
-            </button>
-            <button id="next" class="bg-black text-white shadow-md rounded-md w-32 h-10" type="button">Next
-            </button>
-        </form>
-    </div>
     <table class="table table-hover bg-red-600 text-white rounded-lg ">
         <thead>
-        <tr>
+        <tr class="d-none" id="tableBar">
             <th scope="col">Kaft</th>
             <th scope="col">Titel</th>
-            <th scope="col">Auteur</th>
+            <!--            <th scope="col">Auteur</th>-->
             <th scope="col">Genre</th>
             <th scope="col"></th>
         </tr>
         </thead>
         <tbody id="books"></tbody>
-<!--        <td>-->
-<!--            <button id="first" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-<!--                    onclick="app.countriesController.getFirst()">First-->
-<!--            </button>-->
-<!--            <button id="previous" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-<!--                    onclick="app.countriesController.getPrevious()">-->
-<!--                Previous-->
-<!--            </button>-->
-<!--            <button id="next" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-<!--                    onclick="app.countriesController.getNext()">Next-->
-<!--            </button>-->
-<!--            <button id="last" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-<!--                    onclick="app.countriesController.getLast()">Last-->
-<!--            </button>-->
-<!--            <button id="showAll" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-<!--                    onclick="app.countriesController.getForAnchor()">Show-->
-<!--                all-->
-<!--            </button>-->
-<!--        </td>-->
-    </table>
 
-    <!-- Modal matchModal-->
+        <!--        <td>-->
+        <!--            <button id="first" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
+        <!--                    onclick="app.countriesController.getFirst()">First-->
+        <!--            </button>-->
+        <!--            <button id="previous" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
+        <!--                    onclick="app.countriesController.getPrevious()">-->
+        <!--                Previous-->
+        <!--            </button>-->
+        <!--            <button id="next" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
+        <!--                    onclick="app.countriesController.getNext()">Next-->
+        <!--            </button>-->
+        <!--            <button id="last" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
+        <!--                    onclick="app.countriesController.getLast()">Last-->
+        <!--            </button>-->
+        <!--            <button id="showAll" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
+        <!--                    onclick="app.countriesController.getForAnchor()">Show-->
+        <!--                all-->
+        <!--            </button>-->
+        <!--        </td>-->
+    </table>
+    <img class="shadow-md rounded-md" id="catalogImage"
+         src="https://www.oba.nl/dam/Collectie/1120_banner_collectie.jpg.rendition.1280.2048.jpeg">
+    <h5 class="text-center m-2" id="searchText">In de uitgebreide collectie van de OBA is voor iedereen wel iets te
+        vinden,
+        <br>van boek tot dvd, in de vestigingen én online!</h5>
+
+    <!-- Pop-up -->
     <div class="modal fade" id="bookInfo" tabindex="-1" role="dialog" aria-labelledby="bookInformation"
          aria-hidden="true">
         <div class="modal-dialog modal-lg " role="document">
@@ -59,23 +66,24 @@
                 <div class="modal-body">
                     <div class="">
                         <div class="row">
-                            <div class="col-xl-4 col-md-4 col-sm">
-                                <img src="" alt="coverimages" class="img-thumbnail">
-                                <div class="information col-xl-12 mt-5">
-                                    <p class="authors">Auteur: <span></span></p>
-                                    <p class="description">Omschrijving: <span></span></p>
-                                    <p class="genre">Genre: <span></span></p>
-                                    <p class="languages">Taal/Talen: <span></span></p>
-                                    <p class="isbn">ISBN: <span></span></p>
-                                    <p class="publisher">Uitgever: <span></span></p>
-                                    <p class="year">Jaar van uitgave: <span></span></p>
-                                </div>
-                            </div>
+                            <img class="img-fluid col col-sm-1 col-md-3 col-lg-2 col-xl-2 " src="" alt="coverimages">
+                          <div class="col col-sm-11 col-md-9 col-lg-10 col-xl-8">
+                            <h5 class="title"><span></span></h5>
+                            <p class="summaries"><span></span></p>
+                          </div>
+                        </div>
+                        <div class="information mt-3">
+                            <h5>Details</h5>
+                            <p class="authors">Auteur: <span></span></p>
+                            <p class="description">Kenmerken: <span></span></p>
+                            <p class="genre">Genre: <span></span></p>
+                            <p class="languages">Taal/Talen: <span></span></p>
+                            <p class="isbn">ISBN: <span></span></p>
+                            <p class="publisher">Uitgever: <span></span></p>
+                            <p class="siso">SISO: <span></span></p>
+
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Sluiten</button>
                 </div>
             </div>
         </div>

@@ -56,12 +56,15 @@ class BooksController {
     async onSearchBook(event) {
         event.preventDefault();
         const searchterm = this.booksView.find("#inputSearch").val();
-
         try {
             let promise = await this.booksRepository.searchNew(searchterm);
             let results = promise["results"];
             console.log(promise);
             console.log(results);
+
+            this.booksView.find("#tableBar").removeClass("d-none");
+            this.booksView.find("#searchText").addClass("d-none");
+            this.booksView.find("#catalogImage").addClass("d-none");
 
             let booksTable = $("#books");
             booksTable.empty();
@@ -102,13 +105,14 @@ class BooksController {
                     rij.find(`.image`).removeClass("d-none");
                     rij.find('.title.d-none').text(results[i]['titles']);
                     rij.find('.title').removeClass("d-none");
-                    rij.find('.auteur.d-none').text(results[i]['authors']);
-                    rij.find('.auteur').removeClass("d-none");
+                    // rij.find('.auteur.d-none').text(results[i]['authors']);
+                    // rij.find('.auteur').removeClass("d-none");
 
                     let genre = results[i]['genres'];
 
                     if(genre == null){
                         $('.genre.d-none').text("-");
+
                     }
                     rij.find('.genre.d-none').text(genre);
                     rij.find('.genre').removeClass("d-none");
@@ -118,19 +122,32 @@ class BooksController {
                     });
                     rij.find(`.infoButton`).attr(`data-id`, i);
                     rij.find('.infoButton').removeClass("d-none");
+
                     $("#books").on('click', '.infoButton[data-id="' + i + '"]' , function () {
                         console.log(results[i]);
                         let book = results[i]['coverimages'];
                         let firstLink = book[0];
+
+                        let description = results[i]['description'];
+                        let lastDescription = description[1];
                         const bookInfo = $("#bookInfo");
-                        bookInfo.find(".img-thumbnail").attr("src", firstLink);
+
+                        if(height == 1 || width == 1){
+                            bookInfo.find(".img-fluid").attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
+                                "//http://data.bibliotheek.nl/ggc/ppn/820177083&token=c1322402");
+                        } else {
+                            bookInfo.find(".img-fluid").attr('src', firstLink);
+                        }
+                        bookInfo.find(".title span").text(results[i]['titles']);
+                        bookInfo.find(".summaries span").text(results[i]['summaries']);
                         bookInfo.find(".information .authors span").text(results[i]['authors']);
-                        bookInfo.find(".information .description span").text(results[i]['description']);
+                        bookInfo.find(".information .description span").text(lastDescription);
                         bookInfo.find(".information .genre span").text(results[i]['genres']);
                         bookInfo.find(".information .languages span").text(results[i]['languages']);
                         bookInfo.find(".information .isbn span").text(results[i]['isbn']);
                         bookInfo.find(".information .publisher span").text(results[i]['publisher']);
-                        bookInfo.find(".information .year span").text(results[i]['year']);
+                        bookInfo.find(".information .siso span").text(results[i]['siso']);
+
                     });
                     booksTable.append(rij);
                 });
