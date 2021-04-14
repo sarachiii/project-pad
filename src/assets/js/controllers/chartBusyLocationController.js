@@ -54,10 +54,11 @@ class chartBusyLocationController {
         //calculates percentage and assigns it a color
         for (let i = 0; i < locations.length; i++) {
 
-            if (amount >= totalAmount){
+            if (amount[i] >= totalAmount[i]){
                 percentage[i] = MAXVALUE;
             } else {
                 percentage[i] = Math.round((amount[i] / totalAmount[i]) * MAXVALUE)
+            }
 
                 if(percentage[i] <= 33) {
                     colors[i] = 'rgba(0, 255, 0)'
@@ -66,7 +67,7 @@ class chartBusyLocationController {
                 } else if (percentage[i] <= 100) {
                     colors[i] = 'rgba(255, 0, 0)'
                 }
-            }
+
         }
 
         //Builds chart in canvas element
