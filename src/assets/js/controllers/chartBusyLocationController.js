@@ -33,34 +33,43 @@ class chartBusyLocationController {
         let totalAmount = [];
         let colors = [];
 
+        //Puts locations in array
         for (let i = 0; i < promise.length; i++) {
             locations[i] = promise[i].Location
         }
 
+        //Puts amount of people in array
         for (let i = 0; i < promise.length; i++) {
             amount[i] = promise[i].Amount
         }
 
+        //Puts total amount of people in array
         for (let i = 0; i < promise.length; i++) {
             totalAmount[i] = promise[i].TotalAmount
         }
 
         let percentage = [];
-        let maxValue = 100;
+        const MAXVALUE = 100;
 
+        //calculates percentage and assigns it a color
         for (let i = 0; i < locations.length; i++) {
-            percentage[i] = Math.round((amount[i] / totalAmount[i]) * maxValue)
 
-            if(percentage[i] <= 33) {
-                colors[i] = 'rgba(0, 255, 0)'
-            } else if (percentage[i] <= 66) {
-                colors[i] = 'rgba(255, 150, 0)'
-            } else if (percentage[i] <= 100) {
-                colors[i] = 'rgba(255, 0, 0)'
+            if (amount >= totalAmount){
+                percentage[i] = MAXVALUE;
+            } else {
+                percentage[i] = Math.round((amount[i] / totalAmount[i]) * MAXVALUE)
+
+                if(percentage[i] <= 33) {
+                    colors[i] = 'rgba(0, 255, 0)'
+                } else if (percentage[i] <= 66) {
+                    colors[i] = 'rgba(255, 150, 0)'
+                } else if (percentage[i] <= 100) {
+                    colors[i] = 'rgba(255, 0, 0)'
+                }
             }
-
         }
 
+        //Builds chart in canvas element
         let myChart = document.getElementById('myChart').getContext('2d');
 
         let massPopChart = new Chart(myChart, {
@@ -82,7 +91,7 @@ class chartBusyLocationController {
                     xAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            max: maxValue
+                            max: MAXVALUE
                         }
                     }]
                 }
