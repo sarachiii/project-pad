@@ -63,6 +63,10 @@ class BooksController {
         const searchterm = this.booksView.find("#inputSearch").val();
         try {
             let promise = await this.booksRepository.searchNew(searchterm);
+
+            console.log("Attrributes in response: " + Object.keys(promise));
+            console.log("Metadata (if any): " + promise["metadata"]);
+
             let results = promise["results"];
             console.log(promise);
             console.log(results);
@@ -90,7 +94,7 @@ class BooksController {
                      * @param event
                      */
                     let firstLink = book[0];
-
+console.log("===>" + firstLink)
                     //Retrieve title with author from OBA API
                     let title = results[i]['titles'];
                     let firstTitle = title[0];
