@@ -48,7 +48,7 @@ describe("Create Books Mark Smith", () => {
         cy.get("#searchButton").click();
 
         //Wait for the @search-stub to be called by the click-event.
-        /*cy.wait("@search")
+        cy.wait("@search")
             .then(request => {
                 console.log(request.url);
                 expect(request.url).eq("http://localhost:3000/books/searchNew?q=Reeve")
@@ -69,7 +69,7 @@ describe("Create Books Mark Smith", () => {
                 expect(request.response.body["results"][1].titles[1]).eq("An introduction to Quantum mechanics");
                 expect(request.response.body["results"][1].genres.length).eq(1);
                 expect(request.response.body["results"][1].genres[0]).eq("Science");
-            });*/
+            });
 
         //The @search is called, check the contents of the incoming r   equest.
 
