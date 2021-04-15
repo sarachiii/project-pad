@@ -8,10 +8,6 @@
                 type="button">
             zoek
         </button>
-        <!--            <button id="previous" class="bg-black text-white shadow-md rounded-md w-32 h-10" type="button">Previous-->
-        <!--            </button>-->
-        <!--            <button id="next" class="bg-black text-white shadow-md rounded-md w-32 h-10" type="button">Next-->
-        <!--            </button>-->
     </form>
 </div>
 <div class="mx-auto w-8/12">
@@ -20,32 +16,12 @@
         <tr class="d-none" id="tableBar">
             <th scope="col">Kaft</th>
             <th scope="col">Titel</th>
-            <!--            <th scope="col">Auteur</th>-->
+            <th scope="col">Auteur</th>
             <th scope="col">Genre</th>
             <th scope="col"></th>
         </tr>
         </thead>
         <tbody id="books"></tbody>
-
-        <!--        <td>-->
-        <!--            <button id="first" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-        <!--                    onclick="app.countriesController.getFirst()">First-->
-        <!--            </button>-->
-        <!--            <button id="previous" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-        <!--                    onclick="app.countriesController.getPrevious()">-->
-        <!--                Previous-->
-        <!--            </button>-->
-        <!--            <button id="next" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-        <!--                    onclick="app.countriesController.getNext()">Next-->
-        <!--            </button>-->
-        <!--            <button id="last" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-        <!--                    onclick="app.countriesController.getLast()">Last-->
-        <!--            </button>-->
-        <!--            <button id="showAll" class="bg-black text-white shadow-md rounded-md w-32 h-10"-->
-        <!--                    onclick="app.countriesController.getForAnchor()">Show-->
-        <!--                all-->
-        <!--            </button>-->
-        <!--        </td>-->
     </table>
     <img class="shadow-md rounded-md" id="catalogImage"
          src="https://www.oba.nl/dam/Collectie/1120_banner_collectie.jpg.rendition.1280.2048.jpeg">
@@ -53,7 +29,6 @@
         vinden,
         <br>van boek tot dvd, in de vestigingen én online!</h5>
     <div class="error mb-3 text-danger"></div>
-
 
     <!-- Pop-up -->
     <div class="modal fade" id="bookInfo" tabindex="-1" role="dialog" aria-labelledby="bookInformation"
@@ -83,7 +58,12 @@
                             <p class="isbn">ISBN: <span></span></p>
                             <p class="publisher">Uitgever: <span></span></p>
                             <p class="siso">SISO: <span></span></p>
-
+                        </div>
+                        <div class="test">
+                            <button id="addBook" class="bg-green-500 hover:bg-green-400 m-2 text-white font-semibold
+                        py-2 px-4 border border-gray-400 rounded shadow addBook">
+                            Leen boek uit
+                        </button>
                         </div>
                     </div>
                 </div>

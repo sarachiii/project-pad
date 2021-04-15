@@ -43,4 +43,10 @@ class BooksRepository {
     async update(id, values = {}) {
 
     }
+
+    async addBook(id, title, author, genre, image, recap) {
+        return await networkManager
+            .doRequest(`${this.route}/addBook`, {"idBook" : id, "Title" : title, "Author" : author,
+                "Genre" : genre, "Image" : image, "Recap" : recap}, "POST");
+    }
 }
