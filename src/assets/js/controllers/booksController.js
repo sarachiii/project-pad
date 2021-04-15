@@ -94,7 +94,7 @@ class BooksController {
                      * @param event
                      */
                     let firstLink = book[0];
-console.log("===>" + firstLink)
+
                     //Retrieve title with author from OBA API
                     let title = results[i]['titles'];
                     let firstTitle = title[0];
@@ -183,9 +183,9 @@ console.log("===>" + firstLink)
                     //     this.onBorrowBook(event, results[i]['id'], firstTitle, results[i]['authors'], genre,
                     //         firstLink, results[i]['summaries']);
 
-                    this.booksView.find("#addBook").on("click", (event) =>
-                        this.onBorrowBook(event, results[i]['id'], firstTitle,
-                        results[i]['authors'], genre, firstLink, results[i]['summaries']));
+               //    Disabled by M. Smith this.booksView.find("#addBook").on("click", (event) =>
+               //         this.onBorrowBook(event, results[i]['id'], firstTitle,
+               //         results[i]['authors'], genre, firstLink, results[i]['summaries']));
                 });
             }
         } catch (e) {
