@@ -2,7 +2,7 @@
   "database": {
     "host": "",
     "timeout": 30000,
-    "username": "",
+    "username": "pad_oba_3",
     "password": "",
     "database": "",
     "connectionLimit": 10

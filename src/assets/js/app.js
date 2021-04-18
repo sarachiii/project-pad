@@ -15,6 +15,7 @@ const CONTROLLER_UPLOAD = "upload";
 const CONTROLLER_DASHBOARD = "dashboard";
 const CONTROLLER_BUSYLOCATION = "location";
 const CONTROLLER_SEARCHBOOKS = "books";
+const CONTROLLER_FEATURED = "featured";
 
 
 const sessionManager = new SessionManager();
@@ -82,6 +83,11 @@ class App {
             case CONTROLLER_SEARCHBOOKS:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new BooksController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_FEATURED:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new featuredController(), () => new LoginController());
                 break;
 
             default:

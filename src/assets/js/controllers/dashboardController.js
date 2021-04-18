@@ -5,6 +5,8 @@
  */
 class DashboardController {
     constructor() {
+        this.dashboardRepository = new dashboardRepository();
+
         $.get("views/dashboard.html")
             .done((data) => this.setup(data))
             .fail(() => this.error());
@@ -23,8 +25,5 @@ class DashboardController {
     error() {
         $(".content").html("Failed to load the sidebar!");
     }
-
-
-
 }
 

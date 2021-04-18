@@ -224,6 +224,23 @@ app.get("/location", (req, res) => {
 
 })
 
+//Request featured books and Querry featured, get books
+
+app.get("/featured", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT Image FROM featured"
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+
+})
+
 //------- END ROUTES -------
 
 module.exports = app;
@@ -233,3 +250,7 @@ module.exports = app;
 const urlPrefix = "https://zoeken.oba.nl/api/v1/search/";
 const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
 const obaSecret = "4289fec4e962a33118340c888699438d";
+
+PADCloud.API.queryDatabase(
+    
+)
