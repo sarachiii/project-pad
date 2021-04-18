@@ -71,7 +71,7 @@ describe("Create Books Mark Smith", () => {
                 expect(request.response.body["results"][1].genres[0]).eq("Science");
             });
 
-        //The @search is called, check the contents of the incoming r   equest.
+        //The @search is called, check the contents of the incoming request.
 
     });
 
