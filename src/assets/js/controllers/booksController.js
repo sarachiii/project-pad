@@ -53,15 +53,25 @@ class BooksController {
         $(".content").html("Failed to load content!");
     }
 
+
+    /**
+     * Async function that does a search request via repository
+     * @param event
+     */
     async onSearchBook(event) {
         event.preventDefault();
         const searchterm = this.booksView.find("#inputSearch").val();
         try {
             let promise = await this.booksRepository.searchNew(searchterm);
+
+            console.log("Attrributes in response: " + Object.keys(promise));
+            console.log("Metadata (if any): " + promise["metadata"]);
+
             let results = promise["results"];
             console.log(promise);
             console.log(results);
 
+            //Change some elements to visible or invisible
             this.booksView.find("#tableBar").removeClass("d-none");
             this.booksView.find("#searchText").addClass("d-none");
             this.booksView.find("#catalogImage").addClass("d-none");
@@ -78,7 +88,16 @@ class BooksController {
 
                     //Retrieve image URL from OBA API
                     let book = results[i]['coverimages'];
+
+                    /**
+                     * Async function that does a search request via repository
+                     * @param event
+                     */
                     let firstLink = book[0];
+
+                    //Retrieve title with author from OBA API
+                    let title = results[i]['titles'];
+                    let firstTitle = title[0];
 
                     //Create the image
                     var img = new Image();
@@ -88,13 +107,13 @@ class BooksController {
                     let width;
 
                     //When the image is loaded, read the size properties
-                    img.onload = function() {
+                    img.onload = function () {
                         height = img.height;
                         width = img.width;
 
                         rij.find(`#coverImage`).attr("id", "coverImage" + i); //increase ID by i to make it unique every loop
 
-                        if(height == 1 || width == 1){
+                        if (height == 1 || width == 1) {
                             rij.find(`#coverImage` + i).attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
                                 "//http://data.bibliotheek.nl/ggc/ppn/820177083&token=c1322402");
                         } else {
@@ -102,43 +121,44 @@ class BooksController {
                         }
                     };
 
-                    rij.find(`.image`).removeClass("d-none");
-                    rij.find('.title.d-none').text(results[i]['titles']);
+                    rij.find('.image').removeClass("d-none");
+                    rij.find('.title.d-none').text(firstTitle);
                     rij.find('.title').removeClass("d-none");
-                    // rij.find('.auteur.d-none').text(results[i]['authors']);
-                    // rij.find('.auteur').removeClass("d-none");
+                    rij.find('.auteur.d-none').text(results[i]['authors']);
+                    rij.find('.auteur').removeClass("d-none");
 
                     let genre = results[i]['genres'];
-
-                    if(genre == null){
-                        $('.genre.d-none').text("-");
-
+                    if (genre == null) {
+                        rij.find('.genre.d-none').text("-");
+                    } else {
+                        rij.find('.genre.d-none').text(genre);
                     }
-                    rij.find('.genre.d-none').text(genre);
                     rij.find('.genre').removeClass("d-none");
+
                     $(".infoButton .d-none").on('click', function (e) {
                         // prevent default submit van button
                         e.preventDefault();
                     });
-                    rij.find(`.infoButton`).attr(`data-id`, i);
+                    rij.find('.infoButton').attr(`data-id`, i);
                     rij.find('.infoButton').removeClass("d-none");
+                    // rij.find(".addBook").on("click", (event) => this.onBorrowBook(event, results[i]['id'], firstTitle,
+                    //     results[i]['authors'], genre, firstLink, results[i]['summaries']));
 
-                    $("#books").on('click', '.infoButton[data-id="' + i + '"]' , function () {
+                    /* Pop-up info screen*/
+                    $("#books").on('click', '.infoButton[data-id="' + i + '"]', function () {
                         console.log(results[i]);
-                        let book = results[i]['coverimages'];
-                        let firstLink = book[0];
-
                         let description = results[i]['description'];
                         let lastDescription = description[1];
+
                         const bookInfo = $("#bookInfo");
 
-                        if(height == 1 || width == 1){
+                        if (height == 1 || width == 1) {
                             bookInfo.find(".img-fluid").attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
                                 "//http://data.bibliotheek.nl/ggc/ppn/820177083&token=c1322402");
                         } else {
                             bookInfo.find(".img-fluid").attr('src', firstLink);
                         }
-                        bookInfo.find(".title span").text(results[i]['titles']);
+                        bookInfo.find(".title span").text(firstTitle);
                         bookInfo.find(".summaries span").text(results[i]['summaries']);
                         bookInfo.find(".information .authors span").text(results[i]['authors']);
                         bookInfo.find(".information .description span").text(lastDescription);
@@ -147,9 +167,25 @@ class BooksController {
                         bookInfo.find(".information .isbn span").text(results[i]['isbn']);
                         bookInfo.find(".information .publisher span").text(results[i]['publisher']);
                         bookInfo.find(".information .siso span").text(results[i]['siso']);
+                        // bookInfo.find(".addBook").on("click", (event) => this.onBorrowBook(event, results[i]['id'], firstTitle,
+                        //     results[i]['authors'], genre, firstLink, results[i]['summaries']));
 
                     });
                     booksTable.append(rij);
+
+                    //     this.booksView.find(".modal .modal-dialog .modal-content .modal-body .test .addBook").on("click",
+                    //         (event) =>
+                    //             this.onBorrowBook(event, results[i]['id'], firstTitle),results[i]['authors'], genre,
+                    //         firstLink, results[
+                    //
+                    //     $("#addBook").on("click",
+                    //         (event) =>
+                    //     this.onBorrowBook(event, results[i]['id'], firstTitle, results[i]['authors'], genre,
+                    //         firstLink, results[i]['summaries']);
+
+               //    Disabled by M. Smith this.booksView.find("#addBook").on("click", (event) =>
+               //         this.onBorrowBook(event, results[i]['id'], firstTitle,
+               //         results[i]['authors'], genre, firstLink, results[i]['summaries']));
                 });
             }
         } catch (e) {
@@ -163,4 +199,14 @@ class BooksController {
             }
         }
     }
+
+    onBorrowBook(event, id, title, author, genre, image, recap) {
+        event.preventDefault();
+        console.log(id, title, author, genre, image, recap);
+        console.log("test test test");
+
+        //adds book to database (id, title, author, genre, image, recap)
+        this.booksRepository.addBook(id, title, author, genre, image, recap);
+    }
+
 }

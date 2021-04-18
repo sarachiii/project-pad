@@ -13,47 +13,6 @@ const app = express();
 const fileUpload = require("express-fileupload");
 var https = require('https');
 
-class FetchData {
-
-    sendRequest(key) {
-       // const obaPublicKey = "1e19898c87464e239192c8bfe422f2"; This is not the correct key: see DLO
-        const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
-        // const obaSecret = "4289fec4e962a33118340c888699438d";
-        const url = `https://zoeken.oba.nl/api/v1/search/?q=${key}&authorization=${obaPublicKey}&refine=true&output=json`;
-        console.log(url);
-        var promise = new Promise((resolve, reject) => {
-            https.get(url, res => {
-                res.setEncoding('utf8');
-                let body = '';
-                res.on('data', chunk => body += chunk);
-                res.on('end', () => resolve(body));
-            }).on('error', reject)
-        })
-        return promise;
-    }
-    getBooks(key) {
-
-        return this.sendRequest(key).then(data => {
-            JSON.parse(data.substring(1)).results.forEach(element => {
-                return element;
-            });;
-        })
-    }
-
-
-}
-let search = new FetchData();
-
-app.get('/search', (req, res) => {
-    try {
-        var key = req.query.q;
-        console.log(key);
-        return search.sendRequest(key);
-    } catch (e) {
-        console.log(e)
-    }
-});
-
 app.get("/books/searchNew", (req, res) => {
     // Note: The query string is '?q=<searchString>'
     const url = urlPrefix + `?q=${req.query.q}&authorization=${obaPublicKey}&refine=true&output=json`;
@@ -186,20 +145,19 @@ app.get("/books/all", (req, res) => {
 });
 
 //Insert books into database
-app.post("/books/insert", (req, res) => {
+app.post("/books/addBook", (req, res) => {
 
-    const id = "ObaCattalogus245235";
-    const title = "De kameleon";
-    const auteur = "Mark Smith";
-    const year = 2020;
-    const genre = "Avontuur";
-    const image = "image url";
-    const recap = "recap kameleon";
+    const id = req.body.id;
+    const title = req.body.title;
+    const author = req.body.author;
+    const genre = req.body.genre;
+    const image = req.body.image;
+    const recap = req.body.recap;
 
     db.handleQuery(
         connectionPool, {
-            query: "INSERT INTO book (idBook, Title, Auteur, Release_year, Genre, Image, Recap) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            values: [id, title, auteur, year, genre, image, recap]
+            query: "INSERT INTO `book` (`idBook`, `Title`, `Author`, `Genre`, `Image`, `Recap`) VALUES (?, ?, ?, ?, ?, ?)",
+            values: [id, title, author, genre, image, recap],
         },
         (data) => {
             //just give all data back as json

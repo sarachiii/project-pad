@@ -13,7 +13,7 @@ class NetworkManager {
      * @returns {Promise<unknown>}
      */
     doRequest(route, data = {}, method = "POST") {
-        const json = JSON.stringify(data);
+        const json = data == null ? "" : JSON.stringify(data);
 
         const url = baseUrl + route;
 
