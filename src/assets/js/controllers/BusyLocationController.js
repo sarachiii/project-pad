@@ -95,7 +95,7 @@ class BusyLocationController {
                     xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'drukte in %'
+                            labelString: 'huidige drukte in %'
                         },
                         ticks: {
                             callback: function(value) {
