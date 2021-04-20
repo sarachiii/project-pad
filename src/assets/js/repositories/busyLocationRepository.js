@@ -1,4 +1,4 @@
-class busyLocationRepository {
+class BusyLocationRepository {
 
     constructor() {
         this.route = "/location"
