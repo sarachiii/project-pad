@@ -72,7 +72,7 @@ class App {
 
             case CONTROLLER_BUSYLOCATION:
                 this.setCurrentController(name);
-                this.isLoggedIn(() => new busyLocationController(), () => new LoginController());
+                this.isLoggedIn(() => new BusyLocationController(), () => new LoginController());
                 break;
 
             case CONTROLLER_SEARCHBOOKS:

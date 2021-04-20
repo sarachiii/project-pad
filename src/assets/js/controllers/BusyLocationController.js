@@ -1,6 +1,6 @@
-class busyLocationController {
+class BusyLocationController {
     constructor() {
-        this.busyLocationRepository = new busyLocationRepository();
+        this.busyLocationRepository = new BusyLocationRepository();
 
         $.get("views/busyLocations.html")
             .done((data) => this.setup(data))
