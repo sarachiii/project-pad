@@ -85,9 +85,5 @@ describe("location", () => {
             //Check if there is a canvas to display the chart on
             cy.get('#chartdiv')
         });
-
-
     })
-
-
 })
