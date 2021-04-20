@@ -182,7 +182,7 @@ app.get("/location", (req, res) => {
 
 })
 
-//Request featured books and Querry featured, get books
+//Request featured books and Query featured, get books
 
 app.get("/featured", (req, res) => {
     db.handleQuery(
@@ -203,7 +203,6 @@ app.get("/featured", (req, res) => {
 
 module.exports = app;
 
-// const https = require("https");
 // const { url } = require("inspector");
 const urlPrefix = "https://zoeken.oba.nl/api/v1/search/";
 const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
