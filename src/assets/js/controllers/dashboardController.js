@@ -5,7 +5,7 @@
  */
 class DashboardController {
     constructor() {
-        this.dashboardRepository = new dashboardRepository();
+        this.dashboardRepository = new DashboardRepository();
 
         $.get("views/dashboard.html")
             .done((data) => this.setup(data))
@@ -28,11 +28,6 @@ class DashboardController {
         $(".content").html("Failed to load the sidebar!");
     }
 
-
-    //Adding 1st featured picture to the dashbord
-  //  let photoLink = "https://www.paagman.nl/autoimg/56505382/900x900/resize/w/weerwolfbende-dolfje-weerwolfje.jpg"
-
-
     //$("#book1").attr("src", photoLink.src);
 
     //document.getElementById("book1").setAttribute("src", photoLink)
@@ -46,7 +41,78 @@ class DashboardController {
 
             console.log(DASHBOARD);
 
+
+
             app.loadController(DASHBOARD);
+
+            //Load 1st book
+
+            $("#book1").attr("src", DASHBOARD[0].Image);
+
+            console.log(DASHBOARD[0])
+
+            //Load 2nd book
+
+            $("#book2").attr("src", DASHBOARD[1].Image);
+
+            console.log(DASHBOARD[1])
+
+            //Load 3th book
+
+            $("#book3").attr("src", DASHBOARD[2].Image);
+
+            console.log(DASHBOARD[2])
+
+            //Load 4th book
+
+            $("#book4").attr("src", DASHBOARD[3].Image);
+
+            console.log(DASHBOARD[3])
+
+            //Load 5th book
+
+            $("#book5").attr("src", DASHBOARD[4].Image);
+
+            console.log(DASHBOARD[4])
+
+            //Load 6th book
+
+            $("#book6").attr("src", DASHBOARD[5].Image);
+
+            console.log(DASHBOARD[5])
+
+            //Load 7th book
+
+            $("#book7").attr("src", DASHBOARD[6].Image);
+
+            console.log(DASHBOARD[6])
+
+            //Load 8th book
+
+            $("#book8").attr("src", DASHBOARD[7].Image);
+
+            console.log(DASHBOARD[7])
+
+            //Load 9th book
+
+            $("#book9").attr("src", DASHBOARD[8].Image);
+
+            console.log(DASHBOARD[8])
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //document.getElementById("book1").setAttribute("src", DASHBOARD[0])
+
 
         } catch (e) {
             //if unauthorized error show error to user
@@ -57,6 +123,7 @@ class DashboardController {
             } else {
                 console.log(e);
             }
+
         }
     }
 }

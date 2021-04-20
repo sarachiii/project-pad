@@ -5,7 +5,7 @@
  *
  * @author Pim Meijer
  */
-class dashboardRepository {
+class DashboardRepository {
 
     constructor() {
         this.route = "/featured"
