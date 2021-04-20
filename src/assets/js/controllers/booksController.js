@@ -21,6 +21,18 @@ class BooksController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.booksView);
 
+        //Prevent the page from refreshing after pressing enter
+        $("#searchForm").submit(function() {
+            return false;
+        });
+
+        //When enter is pressed, the search function is performed
+        $("#inputSearch").keyup(function (event){
+            if(event.code === "Enter"){
+                $("#searchButton").click();
+            }
+        });
+
         this.booksView.find("#searchButton").on("click", (event) => this.onSearchBook(event));
     }
 
@@ -40,12 +52,7 @@ class BooksController {
         try {
             let promise = await this.booksRepository.searchNew(searchterm);
 
-            console.log("Attrributes in response: " + Object.keys(promise));
-            console.log("Metadata (if any): " + promise["metadata"]);
-
             let results = promise["results"];
-            console.log(promise);
-            console.log(results);
 
             //Change some elements to visible or invisible
             this.booksView.find("#tableBar").removeClass("d-none");
@@ -55,8 +62,7 @@ class BooksController {
             let booksTable = $("#books");
             booksTable.empty();
             for (let i = 0; i < results.length; i++) {
-                // de nodige html code ophalen uit een extern html bestand
-                //Get code from html file
+                //Get code from external html file
                 $.get("views/booksTable.html", function (tabel) {
                     const rij = $(tabel);
 
@@ -145,19 +151,10 @@ class BooksController {
                     });
                     booksTable.append(rij);
 
-                    //     this.booksView.find(".modal .modal-dialog .modal-content .modal-body .test .addBook").on("click",
-                    //         (event) =>
-                    //             this.onBorrowBook(event, results[i]['id'], firstTitle),results[i]['authors'], genre,
-                    //         firstLink, results[
-                    //
-                    //     $("#addBook").on("click",
-                    //         (event) =>
-                    //     this.onBorrowBook(event, results[i]['id'], firstTitle, results[i]['authors'], genre,
-                    //         firstLink, results[i]['summaries']);
-
-               //    Disabled by M. Smith this.booksView.find("#addBook").on("click", (event) =>
-               //         this.onBorrowBook(event, results[i]['id'], firstTitle,
-               //         results[i]['authors'], genre, firstLink, results[i]['summaries']));
+                    document.getElementById("addBook").addEventListener("click", function () {
+                            document.getElementById("addBook").innerHTML = "Boek geleend!"
+                            $("#addBook").prop("disabled", true);
+                    });
                 });
             }
         } catch (e) {
@@ -174,11 +171,6 @@ class BooksController {
 
     onBorrowBook(event, id, title, author, genre, image, recap) {
         event.preventDefault();
-        console.log(id, title, author, genre, image, recap);
-        console.log("test test test");
-
-        //adds book to database (id, title, author, genre, image, recap)
         this.booksRepository.addBook(id, title, author, genre, image, recap);
     }
-
 }
