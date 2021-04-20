@@ -24,35 +24,10 @@ class BooksController {
         this.booksView.find("#searchButton").on("click", (event) => this.onSearchBook(event));
     }
 
-    /**
-     * Async function that does a login request via repository
-     * @param event
-     */
-    // async getAllBooks(event) {
-    //
-    //     try{
-    //         //await keyword 'stops' code until data is returned - can only be used in async function
-    //         const BOOKS = await this.booksRepository.getAll();
-    //
-    //         app.loadController(BOOKS);
-    //
-    //     } catch(e) {
-    //         //if unauthorized error show error to user
-    //         if(e.code === 401) {
-    //             this.loginView
-    //                 .find(".error")
-    //                 .html(e.reason);
-    //         } else {
-    //             console.log(e);
-    //         }
-    //     }
-    // }
-
     //Called when the login.html failed to load
     error() {
         $(".content").html("Failed to load content!");
     }
-
 
     /**
      * Async function that does a search request via repository
@@ -61,6 +36,7 @@ class BooksController {
     async onSearchBook(event) {
         event.preventDefault();
         const searchterm = this.booksView.find("#inputSearch").val();
+
         try {
             let promise = await this.booksRepository.searchNew(searchterm);
 
@@ -80,19 +56,15 @@ class BooksController {
             booksTable.empty();
             for (let i = 0; i < results.length; i++) {
                 // de nodige html code ophalen uit een extern html bestand
+                //Get code from html file
                 $.get("views/booksTable.html", function (tabel) {
                     const rij = $(tabel);
-                    //booksTable.append(tabel)
 
                     /* BOOK COVER IMAGE */
 
                     //Retrieve image URL from OBA API
                     let book = results[i]['coverimages'];
 
-                    /**
-                     * Async function that does a search request via repository
-                     * @param event
-                     */
                     let firstLink = book[0];
 
                     //Retrieve title with author from OBA API
