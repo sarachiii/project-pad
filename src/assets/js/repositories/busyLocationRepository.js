@@ -1,10 +1,10 @@
-class chartBusyLocationRepository {
+class busyLocationRepository {
 
     constructor() {
         this.route = "/location"
     }
 
-    async get() {
+    async getLocations() {
         return await networkManager
             .doRequest(`${this.route}`, null, "GET");
     }

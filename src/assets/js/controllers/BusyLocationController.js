@@ -1,6 +1,6 @@
-class chartBusyLocationController {
+class busyLocationController {
     constructor() {
-        this.chartBusyLocationRepository = new chartBusyLocationRepository();
+        this.busyLocationRepository = new busyLocationRepository();
 
         $.get("views/busyLocations.html")
             .done((data) => this.setup(data))
@@ -15,7 +15,7 @@ class chartBusyLocationController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.busyLocations);
 
-        this.test()
+        this.buildChart()
     }
 
     //Called when the dashboard.html failed to load
@@ -23,8 +23,11 @@ class chartBusyLocationController {
         $(".content").html("Failed to load the chart!");
     }
 
-    async test() {
-        let promise = await this.chartBusyLocationRepository.get();
+    /**
+     * async function that builds the chart using chart.js
+     */
+    async buildChart() {
+        let promise = await this.busyLocationRepository.getLocations();
 
 
 
@@ -90,7 +93,14 @@ class chartBusyLocationController {
                 maintainAspectRatio: false,
                 scales: {
                     xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'drukte in %'
+                        },
                         ticks: {
+                            callback: function(value) {
+                                return value + "%"
+                            },
                             beginAtZero: true,
                             max: MAXVALUE
                         }
