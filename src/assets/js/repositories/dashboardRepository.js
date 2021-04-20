@@ -20,16 +20,4 @@ class dashboardRepository {
         return await networkManager
             .doRequest(`${this.route}`, null, "GET");
     }
-
 }
-
-
-
-    /**
-     * async function to get a piece of room example data by its id via networkmanager
-     * [id: roomId] - "id" is also called id in database! Make sure this is always the same
-     * @param roomId
-     * @returns {Promise<room>}
-     */
-
-

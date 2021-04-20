@@ -12,6 +12,9 @@ const corsConfig = require("./utils/corsConfigHelper");
 const app = express();
 const fileUpload = require("express-fileupload");
 var https = require('https');
+const urlPrefix = "https://zoeken.oba.nl/api/v1/search/";
+const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
+const obaSecret = "4289fec4e962a33118340c888699438d";
 
 app.get("/books/searchNew", (req, res) => {
     // Note: The query string is '?q=<searchString>'
@@ -30,8 +33,6 @@ app.get("/books/searchNew", (req, res) => {
             bodyChunks.push(chunk);
         }).on("end", () => {
             const json = Buffer.concat(bodyChunks).toString();
-            //INFO: Sometimes no valid json comes back from OBA api
-            //because output=json is in beta :(
 
             //send to the one who request this route(eg. front-end), it's already json so dont use .json(..)
 
@@ -97,39 +98,6 @@ app.post("/user/login", (req, res) => {
     );
 });
 
-//dummy data example - rooms
-app.post("/room_example", (req, res) => {
-    db.handleQuery(
-        connectionPool, {
-            query: "SELECT id, surface FROM room_example WHERE id = ?",
-            values: [req.body.id],
-        },
-        (data) => {
-            //just give all data back as json
-            res.status(httpOkCode).json(data);
-        },
-        (err) => res.status(badRequestCode).json({ reason: err })
-    );
-});
-
-app.post("/upload", function(req, res) {
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return res
-            .status(badRequestCode)
-            .json({ reason: "No files were uploaded." });
-    }
-
-    let sampleFile = req.files.sampleFile;
-
-    sampleFile.mv(wwwrootPath + "/uploads/test.jpg", function(err) {
-        if (err) {
-            return res.status(badRequestCode).json({ reason: err });
-        }
-
-        return res.status(httpOkCode).json("OK");
-    });
-});
-
 //Request all books
 app.get("/books/all", (req, res) => {
     db.handleQuery(
@@ -179,10 +147,9 @@ app.get("/location", (req, res) => {
         },
         (err) => res.status(badRequestCode).json({reason: err})
     );
+});
 
-})
-
-//Request featured books and Querry featured, get books
+//Request featured books and Query featured, get books
 
 app.get("/featured", (req, res) => {
     db.handleQuery(
@@ -196,19 +163,7 @@ app.get("/featured", (req, res) => {
         },
         (err) => res.status(badRequestCode).json({reason: err})
     );
-
 })
 
 //------- END ROUTES -------
-
 module.exports = app;
-
-// const https = require("https");
-// const { url } = require("inspector");
-const urlPrefix = "https://zoeken.oba.nl/api/v1/search/";
-const obaPublicKey = "1e19898c87464e239192c8bfe422f280";
-const obaSecret = "4289fec4e962a33118340c888699438d";
-
-// PADCloud.API.queryDatabase(
-//
-// )

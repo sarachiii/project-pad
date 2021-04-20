@@ -21,38 +21,25 @@ class BooksController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.booksView);
 
+        //Prevent the page from refreshing after pressing enter
+        $("#searchForm").submit(function() {
+            return false;
+        });
+
+        //When enter is pressed, the search function is performed
+        $("#inputSearch").keyup(function (event){
+            if(event.code === "Enter"){
+                $("#searchButton").click();
+            }
+        });
+
         this.booksView.find("#searchButton").on("click", (event) => this.onSearchBook(event));
     }
-
-    /**
-     * Async function that does a login request via repository
-     * @param event
-     */
-    // async getAllBooks(event) {
-    //
-    //     try{
-    //         //await keyword 'stops' code until data is returned - can only be used in async function
-    //         const BOOKS = await this.booksRepository.getAll();
-    //
-    //         app.loadController(BOOKS);
-    //
-    //     } catch(e) {
-    //         //if unauthorized error show error to user
-    //         if(e.code === 401) {
-    //             this.loginView
-    //                 .find(".error")
-    //                 .html(e.reason);
-    //         } else {
-    //             console.log(e);
-    //         }
-    //     }
-    // }
 
     //Called when the login.html failed to load
     error() {
         $(".content").html("Failed to load content!");
     }
-
 
     /**
      * Async function that does a search request via repository
@@ -61,15 +48,11 @@ class BooksController {
     async onSearchBook(event) {
         event.preventDefault();
         const searchterm = this.booksView.find("#inputSearch").val();
+
         try {
             let promise = await this.booksRepository.searchNew(searchterm);
 
-            console.log("Attrributes in response: " + Object.keys(promise));
-            console.log("Metadata (if any): " + promise["metadata"]);
-
             let results = promise["results"];
-            console.log(promise);
-            console.log(results);
 
             //Change some elements to visible or invisible
             this.booksView.find("#tableBar").removeClass("d-none");
@@ -79,20 +62,15 @@ class BooksController {
             let booksTable = $("#books");
             booksTable.empty();
             for (let i = 0; i < results.length; i++) {
-                // de nodige html code ophalen uit een extern html bestand
+                //Get code from external html file
                 $.get("views/booksTable.html", function (tabel) {
                     const rij = $(tabel);
-                    //booksTable.append(tabel)
 
                     /* BOOK COVER IMAGE */
 
                     //Retrieve image URL from OBA API
                     let book = results[i]['coverimages'];
 
-                    /**
-                     * Async function that does a search request via repository
-                     * @param event
-                     */
                     let firstLink = book[0];
 
                     //Retrieve title with author from OBA API
@@ -173,19 +151,10 @@ class BooksController {
                     });
                     booksTable.append(rij);
 
-                    //     this.booksView.find(".modal .modal-dialog .modal-content .modal-body .test .addBook").on("click",
-                    //         (event) =>
-                    //             this.onBorrowBook(event, results[i]['id'], firstTitle),results[i]['authors'], genre,
-                    //         firstLink, results[
-                    //
-                    //     $("#addBook").on("click",
-                    //         (event) =>
-                    //     this.onBorrowBook(event, results[i]['id'], firstTitle, results[i]['authors'], genre,
-                    //         firstLink, results[i]['summaries']);
-
-               //    Disabled by M. Smith this.booksView.find("#addBook").on("click", (event) =>
-               //         this.onBorrowBook(event, results[i]['id'], firstTitle,
-               //         results[i]['authors'], genre, firstLink, results[i]['summaries']));
+                    document.getElementById("addBook").addEventListener("click", function () {
+                            document.getElementById("addBook").innerHTML = "Boek geleend!"
+                            $("#addBook").prop("disabled", true);
+                    });
                 });
             }
         } catch (e) {
@@ -202,11 +171,6 @@ class BooksController {
 
     onBorrowBook(event, id, title, author, genre, image, recap) {
         event.preventDefault();
-        console.log(id, title, author, genre, image, recap);
-        console.log("test test test");
-
-        //adds book to database (id, title, author, genre, image, recap)
         this.booksRepository.addBook(id, title, author, genre, image, recap);
     }
-
 }

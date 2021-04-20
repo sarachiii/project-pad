@@ -11,7 +11,6 @@ const CONTROLLER_SIDEBAR = "sidebar";
 const CONTROLLER_LOGIN = "login";
 const CONTROLLER_LOGOUT = "logout";
 const CONTROLLER_WELCOME = "welcome";
-const CONTROLLER_UPLOAD = "upload";
 const CONTROLLER_DASHBOARD = "dashboard";
 const CONTROLLER_BUSYLOCATION = "location";
 const CONTROLLER_SEARCHBOOKS = "books";
@@ -61,10 +60,6 @@ class App {
                 this.isLoggedIn(() => new WelcomeController, () => new LoginController());
                 break;
 
-            case CONTROLLER_UPLOAD:
-                new UploadController();
-                break;
-
             case CONTROLLER_LOGOUT:
                 this.setCurrentController(name);
                 this.handleLogout();
@@ -77,7 +72,7 @@ class App {
 
             case CONTROLLER_BUSYLOCATION:
                 this.setCurrentController(name);
-                this.isLoggedIn(() => new chartBusyLocationController(), () => new LoginController());
+                this.isLoggedIn(() => new busyLocationController(), () => new LoginController());
                 break;
 
             case CONTROLLER_SEARCHBOOKS:
