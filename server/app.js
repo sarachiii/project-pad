@@ -165,6 +165,69 @@ app.get("/featured", (req, res) => {
     );
 })
 
+app.post("/visitors", (req, res) => {
+
+    let date;
+    let year;
+    let month;
+    let week;
+    let day;
+    let weekday;
+    let location;
+    let visitors;
+
+    let getXMLFile = function (path, callback) {
+        let request = new XMLHttpRequest();
+        request.open("GET", path)
+        request.setRequestHeader("Content-type", "text/xml");
+        request.onreadystatechange = function() {
+            if(request.readyState === 4 && request.status === 200) {
+                callback(request.responseXML);
+            }
+        }
+        request.send();
+    }
+
+    getXMLFile("../XMLData/OBA-data-bezoekers-2013-2020_xml_v1.xml", function (xml) {
+
+        for (let i = 0; i < xml.getElementsByTagName("vestiging").length; i++) {
+
+            if(xml.getElementsByTagName("year")[i] == 2013 || xml.getElementsByTagName("year")[i] == 2014) {
+
+            } else {
+
+                date = xml.getElementsByTagName("datum")[i].innerHTML;
+                year = xml.getElementsByTagName("jaar")[i].innerHTML;
+                month = xml.getElementsByTagName("maand")[i].innerHTML;
+                week = xml.getElementsByTagName("week")[i].innerHTML;
+                day = xml.getElementsByTagName("dag")[i].innerHTML;
+                weekday = xml.getElementsByTagName("weekdag")[i].innerHTML;
+                location = xml.getElementsByTagName("vestiging")[i].innerHTML;
+                visitors = xml.getElementsByTagName("bezoekers")[i].innerHTML;
+
+                db.handleQuery(
+                    connectionPool, {
+                        query: "INSERT INTO `visitordata` (`date`, `year`, `month`, `week`, `day`, `weekday`, `location`, `visitors`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                        values: [date, year, month, week, day, weekday, location, visitors],
+                    },
+                    (data) => {
+                        //just give all data back as json
+                        res.status(httpOkCode).json(data);
+                    },
+                    (err) => res.status(badRequestCode).json({reason: err})
+                );
+
+            }
+
+
+        }
+
+
+    })
+
+
+});
+
 //------- END ROUTES -------
 module.exports = app;
 
