@@ -23,7 +23,7 @@ app.get("/books/searchNew", (req, res) => {
         timeout: 10000,
         headers: {
             "AquaBrowser": obaSecret,
-            "User" : "Team-3",
+            "User": "Team-3",
             "Content-Type": "application/json; charset=utf-8;"
         },
     }, (obaResponse) => {
@@ -58,7 +58,7 @@ app.use(morgan("short"));
 const connectionPool = db.init();
 
 //parsing request bodies from json to javascript objects
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 //CORS config - Cross Origin Requests
@@ -86,15 +86,15 @@ app.post("/user/login", (req, res) => {
         (data) => {
             if (data.length === 1) {
                 //return just the username for now, never send password back!
-                res.status(httpOkCode).json({ username: data[0].username });
+                res.status(httpOkCode).json({username: data[0].username});
             } else {
                 //wrong username
                 res
                     .status(authorizationErrCode)
-                    .json({ reason: "Wrong username or password" });
+                    .json({reason: "Wrong username or password"});
             }
         },
-        (err) => res.status(badRequestCode).json({ reason: err })
+        (err) => res.status(badRequestCode).json({reason: err})
     );
 });
 
@@ -108,7 +108,7 @@ app.get("/books/all", (req, res) => {
             //just give all data back as json
             res.status(httpOkCode).json(data);
         },
-        (err) => res.status(badRequestCode).json({ reason: err })
+        (err) => res.status(badRequestCode).json({reason: err})
     );
 });
 
@@ -167,6 +167,8 @@ app.get("/featured", (req, res) => {
 
 app.post("/visitors", (req, res) => {
 
+    let filePath;
+
     let date;
     let year;
     let month;
@@ -176,57 +178,56 @@ app.post("/visitors", (req, res) => {
     let location;
     let visitors;
 
-    let getXMLFile = function (path, callback) {
-        let request = new XMLHttpRequest();
-        request.open("GET", path)
-        request.setRequestHeader("Content-type", "text/xml");
-        request.onreadystatechange = function() {
-            if(request.readyState === 4 && request.status === 200) {
-                callback(request.responseXML);
-            }
-        }
-        request.send();
-    }
+    const xml2js = require('xml2js');
+    const fs = require('fs');
+    const parser = new xml2js.Parser({attrkey: "ATTR"});
+    let xml_string = fs.readFileSync(filePath, "utf8");
 
-    getXMLFile("../XMLData/OBA-data-bezoekers-2013-2020_xml_v1.xml", function (xml) {
+    parser.parseString(xml_string, function (error, result) {
+        if (error === null) {
 
-        for (let i = 0; i < xml.getElementsByTagName("vestiging").length; i++) {
+            for (let i = 0; i < result["oba-data-bezoekers"].record.length; i++) {
 
-            if(xml.getElementsByTagName("year")[i] == 2013 || xml.getElementsByTagName("year")[i] == 2014) {
+                if (result["oba-data-bezoekers"].record[i].jaar[0] == 2013 || result["oba-data-bezoekers"].record[i].jaar[0] == 2014) {
 
-            } else {
+                } else {
 
-                date = xml.getElementsByTagName("datum")[i].innerHTML;
-                year = xml.getElementsByTagName("jaar")[i].innerHTML;
-                month = xml.getElementsByTagName("maand")[i].innerHTML;
-                week = xml.getElementsByTagName("week")[i].innerHTML;
-                day = xml.getElementsByTagName("dag")[i].innerHTML;
-                weekday = xml.getElementsByTagName("weekdag")[i].innerHTML;
-                location = xml.getElementsByTagName("vestiging")[i].innerHTML;
-                visitors = xml.getElementsByTagName("bezoekers")[i].innerHTML;
+                    date = result["oba-data-bezoekers"].record[i].datum[0];
+                    year = result["oba-data-bezoekers"].record[i].jaar[0];
+                    month = result["oba-data-bezoekers"].record[i].maand[0];
+                    week = result["oba-data-bezoekers"].record[i].week[0];
+                    day = result["oba-data-bezoekers"].record[i].dag[0];
+                    weekday = result["oba-data-bezoekers"].record[i].weekdag[0];
+                    location = result["oba-data-bezoekers"].record[i].vestiging[0];
+                    visitors = result["oba-data-bezoekers"].record[i].bezoekers[0];
 
-                db.handleQuery(
-                    connectionPool, {
-                        query: "INSERT INTO `visitordata` (`date`, `year`, `month`, `week`, `day`, `weekday`, `location`, `visitors`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                        values: [date, year, month, week, day, weekday, location, visitors],
-                    },
-                    (data) => {
-                        //just give all data back as json
-                        res.status(httpOkCode).json(data);
-                    },
-                    (err) => res.status(badRequestCode).json({reason: err})
-                );
 
+
+                    db.handleQuery(
+                        connectionPool, {
+                            query: "INSERT INTO `visitordata` (`date`, `year`, `month`, `week`, `day`, `weekday`, `location`, `visitors`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                            values: [date, year, month, week, day, weekday, location, visitors],
+                        },
+                        (data) => {
+                            console.log((i + 1) + " of the " + result["oba-data-bezoekers"].record.length + " inserted")
+                        },
+                        (err) => res.status(badRequestCode).json({reason: err})
+                    );
+                }
             }
 
+            console.log("All dates inserted")
+            res.status(httpOkCode);
 
+        } else {
+            console.log(error);
+            res.status(badRequestCode)
         }
+    });
 
 
-    })
-
-
-});
+})
+;
 
 //------- END ROUTES -------
 module.exports = app;
