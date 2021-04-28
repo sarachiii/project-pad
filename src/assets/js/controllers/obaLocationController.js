@@ -23,8 +23,8 @@ class ObaLocationController {
         event.preventDefault();
         $(".districts").empty();
 
-            let districts = await this.obaLocationRepository.getDistricts();
-            console.log(districts);
+        let districts = await this.obaLocationRepository.getDistricts();
+        console.log(districts);
 
         const title = $(".textdiv.d-none").first().clone().removeClass("d-none");
         title.find(".goBackToDistricts").addClass("d-none");
@@ -35,7 +35,7 @@ class ObaLocationController {
 
             divClone.find(".district").text(districts[i]["name"]);
             divClone.find('.district').attr(`data-id`, i);
-            divClone.find(".viewLocations").text(">");
+            divClone.find(".viewLocations").text(">>");
             divClone.find('.viewLocations').attr(`data-id`, i);
 
             $(".districts").append(divClone);
@@ -79,11 +79,14 @@ class ObaLocationController {
             locationCard.on('click', function () {
                 console.log(locations[i]["location_name"]);
             });
-
             $(".districts").append(locationCard);
         }
-        $(".districts").on('click', '.goBackToDistricts', (event) =>
-            this.showAllDistricts(event));
+        $(".districts").on('click', '.goBackToDistricts', (event) => {
+            $.get("views/locationsNavigationBar.html")
+                .done((data) => this.setup(data))
+                .fail(() => this.error());
+            }
+        );
 
     }
 
