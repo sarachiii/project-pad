@@ -23,7 +23,7 @@ app.get("/books/searchNew", (req, res) => {
         timeout: 10000,
         headers: {
             "AquaBrowser": obaSecret,
-            "User" : "Team-3",
+            "User": "Team-3",
             "Content-Type": "application/json; charset=utf-8;"
         },
     }, (obaResponse) => {
@@ -58,7 +58,7 @@ app.use(morgan("short"));
 const connectionPool = db.init();
 
 //parsing request bodies from json to javascript objects
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 //CORS config - Cross Origin Requests
@@ -86,15 +86,15 @@ app.post("/user/login", (req, res) => {
         (data) => {
             if (data.length === 1) {
                 //return just the username for now, never send password back!
-                res.status(httpOkCode).json({ username: data[0].username });
+                res.status(httpOkCode).json({username: data[0].username});
             } else {
                 //wrong username
                 res
                     .status(authorizationErrCode)
-                    .json({ reason: "Wrong username or password" });
+                    .json({reason: "Wrong username or password"});
             }
         },
-        (err) => res.status(badRequestCode).json({ reason: err })
+        (err) => res.status(badRequestCode).json({reason: err})
     );
 });
 
@@ -108,7 +108,7 @@ app.get("/books/all", (req, res) => {
             //just give all data back as json
             res.status(httpOkCode).json(data);
         },
-        (err) => res.status(badRequestCode).json({ reason: err })
+        (err) => res.status(badRequestCode).json({reason: err})
     );
 });
 
@@ -165,6 +165,42 @@ app.get("/featured", (req, res) => {
     );
 })
 
+//Get all districts
+app.get("/location/districts", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT * FROM `district`"
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all locations that belongs to one district
+app.get("/location/all", (req, res) => {
+
+    let districtName = `${req.query.q}`;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `location`.* FROM `location` WHERE `location`.`district_name` = ?",
+            values: [districtName],
+
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+
 app.post("/visitors", (req, res) => {
 
     let date;
@@ -180,8 +216,8 @@ app.post("/visitors", (req, res) => {
         let request = new XMLHttpRequest();
         request.open("GET", path)
         request.setRequestHeader("Content-type", "text/xml");
-        request.onreadystatechange = function() {
-            if(request.readyState === 4 && request.status === 200) {
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
                 callback(request.responseXML);
             }
         }
@@ -192,7 +228,7 @@ app.post("/visitors", (req, res) => {
 
         for (let i = 0; i < xml.getElementsByTagName("vestiging").length; i++) {
 
-            if(xml.getElementsByTagName("year")[i] == 2013 || xml.getElementsByTagName("year")[i] == 2014) {
+            if (xml.getElementsByTagName("year")[i] == 2013 || xml.getElementsByTagName("year")[i] == 2014) {
 
             } else {
 
