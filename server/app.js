@@ -149,8 +149,21 @@ app.get("/location", (req, res) => {
     );
 });
 
-//Request featured books and Query featured, get books
+app.get("/visitoryear", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT * FROM visitoryear"
+        },
+        (data) => {
 
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+});
+
+//Request featured books and Query featured, get books
 app.get("/featured", (req, res) => {
     db.handleQuery(
         connectionPool, {
@@ -165,7 +178,7 @@ app.get("/featured", (req, res) => {
     );
 })
 
-app.post("/visitors", (req, res) => {
+app.get("/visitors", (req, res) => {
 
     let date;
     let year;
@@ -176,19 +189,17 @@ app.post("/visitors", (req, res) => {
     let location;
     let visitors;
 
-    let getXMLFile = function (path, callback) {
-        let request = new XMLHttpRequest();
-        request.open("GET", path)
-        request.setRequestHeader("Content-type", "text/xml");
-        request.onreadystatechange = function() {
-            if(request.readyState === 4 && request.status === 200) {
-                callback(request.responseXML);
-            }
-        }
-        request.send();
+    let getXMLFile = function (path) {
+        let reader = new window.FileReader();
+        reader.readAsText(path);
+        return reader.result;
     }
 
-    getXMLFile("../XMLData/OBA-data-bezoekers-2013-2020_xml_v1.xml", function (xml) {
+    let xml = getXMLFile("./XMLData/OBA-data-bezoekers-2013-2020_xml_v1.xml");
+    console.log(xml);
+    processXML();
+
+    let processXML = function (xml) {
 
         for (let i = 0; i < xml.getElementsByTagName("vestiging").length; i++) {
 
@@ -216,16 +227,9 @@ app.post("/visitors", (req, res) => {
                     },
                     (err) => res.status(badRequestCode).json({reason: err})
                 );
-
             }
-
-
         }
-
-
-    })
-
-
+    }
 });
 
 //------- END ROUTES -------

@@ -28,9 +28,6 @@ class BusyLocationController {
      */
     async buildChart() {
         let promise = await this.busyLocationRepository.getLocations();
-
-
-
         let locations = [];
         let amount = [];
         let totalAmount = [];

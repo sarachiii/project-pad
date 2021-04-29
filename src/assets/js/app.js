@@ -14,6 +14,7 @@ const CONTROLLER_WELCOME = "welcome";
 const CONTROLLER_DASHBOARD = "dashboard";
 const CONTROLLER_BUSYLOCATION = "location";
 const CONTROLLER_SEARCHBOOKS = "books";
+const CONTROLLER_VISITORYEAR = "visitoryear";
 
 const sessionManager = new SessionManager();
 const networkManager = new NetworkManager();
@@ -70,6 +71,11 @@ class App {
             case CONTROLLER_BUSYLOCATION:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new BusyLocationController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_VISITORYEAR:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new VisitorYearController(), () => new LoginController());
                 break;
 
             case CONTROLLER_SEARCHBOOKS:
