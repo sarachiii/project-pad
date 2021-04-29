@@ -200,7 +200,7 @@ app.get("/location/all", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `location`.* FROM `location` WHERE `location`.`district_name` = ?",
+            query: "SELECT `location`.* FROM `location` WHERE `location`.`id` = ?",
             values: [districtName],
 
         },

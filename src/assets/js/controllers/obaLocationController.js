@@ -2,12 +2,12 @@ class ObaLocationController {
     constructor() {
         this.obaLocationRepository = new ObaLocationRepository();
 
-        $.get("views/locationsNavigationBar.html")
+        $.get("views/obaLocation.html")
             .done((data) => this.setup(data))
             .fail(() => this.error());
     }
 
-    //Called when the locationsNavigationBar.html has been loaded
+    //Called when the obaLocation.html has been loaded
     setup(data) {
         //Load content into memory
         this.obaLocationView = $(data);
@@ -15,21 +15,15 @@ class ObaLocationController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.obaLocationView);
 
-        this.showAllDistricts(event);
+        this.showAllDistricts();
     }
 
 
-    async showAllDistricts(event) {
-        event.preventDefault();
+    async showAllDistricts() {
         $(".districts").empty();
 
         let districts = await this.obaLocationRepository.getDistricts();
         console.log(districts);
-
-        const title = $(".textdiv.d-none").first().clone().removeClass("d-none");
-        title.find(".goBackToDistricts").addClass("d-none");
-        title.appendTo(".districts");
-
         for (let i = 0; i < districts.length; i++) {
             const divClone = $(".districtName.d-none").first().clone().removeClass("d-none");
 
@@ -40,29 +34,27 @@ class ObaLocationController {
 
             $(".districts").append(divClone);
 
-
             $(".districts").on('click', '.district[data-id="' + i + '"]', function () {
                 console.log(districts[i]["name"]);
             });
 
             $(".districts").on('click', '.viewLocations[data-id="' + i + '"]', (event) =>
-                this.viewLocations(event, districts[i]["name"]));
+                this.viewLocations(event, districts[i]));
         }
     }
-
 
     async viewLocations(event, district) {
         event.preventDefault();
         $(".districts").empty();
 
-        let locations = await this.obaLocationRepository.getAllLocations(district);
+        let locations = await this.obaLocationRepository.getAllLocations(district["id"]);
         console.log(locations);
 
-        const chosenDistrict = $(".textdiv.d-none").first().clone().removeClass("d-none");
-        chosenDistrict.find(".goBackToDistricts").removeClass("d-none");
-        chosenDistrict.find(".visitorstext").removeClass("ml-3").text(district);
+        $(".obalocationsDiv").find(".visitorstext").addClass("d-none")
+        const chosenDistrict = $(".textdiv.d-none").removeClass("d-none");
+        chosenDistrict.find(".goBackToDistricts");
+        chosenDistrict.find(".districtText").removeClass("ml-3").text(district["name"]);
 
-        chosenDistrict.appendTo(".districts");
 
         for (let i = 0; i < locations.length; i++) {
             const locationCard = $(".locationCard.d-none").first().clone().removeClass("d-none");
@@ -74,6 +66,7 @@ class ObaLocationController {
                 locationCard.find(".dataAvailable").text("Gegevens beschikbaar");
             } else {
                 locationCard.find(".dataAvailable").addClass("text-red-500").text("Gegevens niet beschikbaar");
+                locationCard.prop("disabled", true);
             }
 
             locationCard.on('click', function () {
@@ -81,10 +74,10 @@ class ObaLocationController {
             });
             $(".districts").append(locationCard);
         }
-        $(".districts").on('click', '.goBackToDistricts', (event) => {
-            $.get("views/locationsNavigationBar.html")
-                .done((data) => this.setup(data))
-                .fail(() => this.error());
+        $(".obalocationsDiv").on('click', '.goBackToDistricts', () => {
+                $.get("views/obaLocation.html")
+                    .done((data) => this.setup(data))
+                    .fail(() => this.error());
             }
         );
 
