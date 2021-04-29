@@ -14,6 +14,8 @@ const CONTROLLER_WELCOME = "welcome";
 const CONTROLLER_DASHBOARD = "dashboard";
 const CONTROLLER_BUSYLOCATION = "location";
 const CONTROLLER_SEARCHBOOKS = "books";
+const CONTROLLER_OBALOCATION = "obaLocation";
+
 const CONTROLLER_VISITORYEAR = "visitoryear";
 
 const sessionManager = new SessionManager();
@@ -81,6 +83,11 @@ class App {
             case CONTROLLER_SEARCHBOOKS:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new BooksController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_OBALOCATION:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new ObaLocationController(), () => new LoginController());
                 break;
 
             default:
