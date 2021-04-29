@@ -91,9 +91,20 @@ footer {
     overflow: auto;
     text-align:justify;
 }
+h1{
+    text-align: center;
+    font-size: 46px;
+}
+p{
+    text-align: center;
+}
+#chartYear{
+    width: 100%;
+}
 
-.width-305 {
+.obalocationsDiv {
     width: 305px;
     height: 90%;
 
 }
+

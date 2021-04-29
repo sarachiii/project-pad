@@ -30,50 +30,52 @@ class VisitorYearController {
         let promise = await this.visitorYearRepository.getYearData();
         let locations = [];
         let years = [];
-        let amount = [];
+        let visitors = [];
 
         //Puts locations in array
         for (let i = 0; i < promise.length; i++) {
             locations[i] = promise[i].location
             years[i] = promise[i].year
-            amount[i] = promise[i].visitors
+            visitors[i] = promise[i].amount
         }
 
-
         //Builds chart in canvas element
-        let chart = document.getElementById('chartYear').getContext('2d');
+        const CHART = document.getElementById('chartYear').getContext('2d');
+        console.log(CHART);
 
-        let myChart = new Chart(chart, {
+        let myLineChart = new Chart(CHART, {
             type: 'line',
-            data: {
-                labels: locations,
-                datasets: [{
-                    label: 'Drukte per jaar',
-                    data: amount,
-                }]
-            },
             options: {
-                plugins: {
-                    title: {
-                        text: 'Chart.js Time Scale',
-                        display: true
+                elements: {
+                    line: {
+                        tension: 0
                     }
                 },
                 scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'year'
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
                         }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'value'
-                        }
-                    }
+                    }]
                 },
             },
+            data: {
+                labels: [years[0], years[1], years[2], years[3], years[4]],
+                datasets: []
+            }
         });
+
+        //add the data dynamically to the graph
+        for (let i = 0; i < locations.length; i += 5) {
+            myLineChart.data.datasets.push({
+                label: locations[i],
+                backgroundColor: 'transparent',
+                borderColor: 'green',
+                borderWidth: 2,
+                fill: false,
+                data: [visitors[i], visitors[i + 1], visitors[i + 2], visitors[i + 3], visitors[i + 4]]
+            });
+        }
+        myLineChart.update();
     }
 }
