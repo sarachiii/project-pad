@@ -91,3 +91,13 @@ footer {
     overflow: auto;
     text-align:justify;
 }
+h1{
+    text-align: center;
+    font-size: 46px;
+}
+p{
+    text-align: center;
+}
+#chartYear{
+    width: 100%;
+}

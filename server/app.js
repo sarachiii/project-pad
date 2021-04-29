@@ -152,7 +152,10 @@ app.get("/location", (req, res) => {
 app.get("/visitoryear", (req, res) => {
     db.handleQuery(
         connectionPool, {
-            query: "SELECT * FROM visitoryear"
+            query: "SELECT SUM(`visitors`) as 'amount', `location`, `year` FROM `visitordata` " +
+                "WHERE `year` < 2020 " +
+                "GROUP BY `location`, `year`"
+                // "HAVING SUM(`visitors`) > 0"
         },
         (data) => {
 
