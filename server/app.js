@@ -165,6 +165,42 @@ app.get("/featured", (req, res) => {
     );
 })
 
+//Get all districts
+app.get("/location/districts", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT * FROM `district`"
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all locations that belongs to one district
+app.get("/location/all", (req, res) => {
+
+    let districtName = `${req.query.q}`;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `location`.* FROM `location` WHERE `location`.`district_name` = ?",
+            values: [districtName],
+
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+
 app.post("/visitors", (req, res) => {
 
     let filePath;
