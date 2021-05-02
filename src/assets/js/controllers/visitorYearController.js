@@ -15,6 +15,11 @@ class VisitorYearController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.visitorYear);
 
+
+        //Change colour of navbar item
+        $(".nav-item").removeClass("active");
+        $(".visitorYearItem").addClass("active");
+
         this.buildYearChart()
     }
 

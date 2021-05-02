@@ -18,6 +18,10 @@ class UploadXMLController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.welcomeView);
 
+        //Change colour of navbar item
+        $(".nav-item").removeClass("active");
+        $(".uploadItem").addClass("active");
+
         //File upload
         this.welcomeView.find("#upload").on("click", function() {
             //Set the proper action url

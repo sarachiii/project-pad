@@ -20,6 +20,10 @@ class WelcomeController {
         //Set the name in the view from the session
         this.welcomeView.find(".name").html(sessionManager.get("username"));
 
+        //Change colour of navbar item
+        $(".nav-item").removeClass("active");
+        $(".welcomeItem").addClass("active");
+
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.welcomeView);
 

@@ -17,10 +17,14 @@ class DashboardController {
         //Load the dashboard-content into memory
         this.dashboardView = $(data);
 
+        //Change colour of navbar item
+        $(".nav-item").removeClass("active");
+        $(".dashboardItem").addClass("active");
+
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.dashboardView);
-        this.loadBook();
 
+        this.loadBook();
     }
 
     //Called when the dashboard.html failed to load

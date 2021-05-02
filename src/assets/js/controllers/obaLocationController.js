@@ -12,6 +12,10 @@ class ObaLocationController {
         //Load content into memory
         this.obaLocationView = $(data);
 
+        //Change colour of navbar item
+        $(".nav-item").removeClass("active");
+        $(".obaLocationItem").addClass("active");
+
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.obaLocationView);
 

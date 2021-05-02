@@ -13,13 +13,17 @@ class BooksController {
             .fail(() => this.error());
     }
 
-    //Called when the login.html has been loaded
+    //Called when the books.html has been loaded
     setup(data) {
-        //Load the login-content into memory
+        //Load the books-content into memory
         this.booksView = $(data);
 
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.booksView);
+
+        //Change colour of navbar item
+        $(".nav-item").removeClass("active");
+        $(".booksItem").addClass("active");
 
         //Prevent the page from refreshing after pressing enter
         $("#searchForm").submit(function() {
@@ -33,10 +37,11 @@ class BooksController {
             }
         });
 
-        this.booksView.find("#searchButton").on("click", (event) => this.onSearchBook(event));
+        this.booksView.find("#searchButton").on("click",
+            (event) => this.onSearchBook(event));
     }
 
-    //Called when the login.html failed to load
+    //Called when the books.html failed to load
     error() {
         $(".content").html("Failed to load content!");
     }
