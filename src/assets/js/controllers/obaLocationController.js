@@ -24,6 +24,7 @@ class ObaLocationController {
 
         let districts = await this.obaLocationRepository.getDistricts();
         console.log(districts);
+
         for (let i = 0; i < districts.length; i++) {
             const divClone = $(".districtName.d-none").first().clone().removeClass("d-none");
 
@@ -61,7 +62,7 @@ class ObaLocationController {
 
             locationCard.find(".locationImage").attr("src", locations[i]["image"]);
             locationCard.find(".locationName").text(locations[i]["location_name"]);
-            locationCard.find(".locationAddress").text(locations[i]["adres"]);
+            locationCard.find(".locationAddress").text(locations[i]["address"]);
             if (locations[i]["visitor_data"] === "data available") {
                 locationCard.find(".dataAvailable").text("Gegevens beschikbaar");
             } else {
@@ -70,7 +71,7 @@ class ObaLocationController {
             }
 
             locationCard.on('click', function () {
-                console.log(locations[i]["location_name"]);
+                console.log(locations[i]);
             });
             $(".districts").append(locationCard);
         }

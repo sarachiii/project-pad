@@ -95,13 +95,13 @@ describe("Create Books", () => {
                 expect(request.response.body["results"][1].genres[0]).eq("Detectiveroman");
             });
 
-        //Find the table bar, check if it invisible.
+        //Find the table bar, check if it visible.
         cy.get('#tableBar').should('be.visible');
 
-        //Find the OBA search information text, check if it visible.
+        //Find the OBA search information text, check if it invisible.
         cy.get('#searchText').should('not.be.visible');
 
-        //Find the OBA search banner image, check if it visible.
+        //Find the OBA search banner image, check if it invisible.
         cy.get('#catalogImage').should('not.be.visible');
 
         //Wait to see the search results before going to next test
