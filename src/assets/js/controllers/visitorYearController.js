@@ -71,21 +71,12 @@ class VisitorYearController {
             },
             data: {
                 labels: [years[0], years[1], years[2], years[3], years[4]],
-                datasets: [
-                    {
-                        label: locations[0],
-                        backgroundColor: 'transparent',
-                        borderColor: 'purple',
-                        borderWidth: 2,
-                        fill: false,
-                        data: [visitors[0], visitors[1], visitors[2], visitors[3], visitors[4]],
-                    },
-                ],
+                datasets: [],
             }
         });
 
         //Add the data dynamically to the graph, the lines will be hidden in the graph
-        for (let i = 5; i < locations.length; i += 5) {
+        for (let i = 0; i < locations.length; i += 5) {
             myLineChart.data.datasets.push({
                 label: locations[i],
                 backgroundColor: 'transparent',
