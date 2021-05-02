@@ -14,9 +14,10 @@ const CONTROLLER_WELCOME = "welcome";
 const CONTROLLER_DASHBOARD = "dashboard";
 const CONTROLLER_BUSYLOCATION = "location";
 const CONTROLLER_SEARCHBOOKS = "books";
+const CONTROLLER_UPLOADXML = "uploadXML";
 const CONTROLLER_OBALOCATION = "obaLocation";
-
 const CONTROLLER_VISITORYEAR = "visitoryear";
+
 
 const sessionManager = new SessionManager();
 const networkManager = new NetworkManager();
@@ -88,6 +89,11 @@ class App {
             case CONTROLLER_OBALOCATION:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new ObaLocationController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_UPLOADXML:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new UploadXMLController(), () => new LoginController());
                 break;
 
             default:

@@ -203,7 +203,7 @@ app.get("/location/all", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `location`.* FROM `location` WHERE `location`.`district_name` = ?",
+            query: "SELECT `location`.* FROM `location` WHERE `location`.`id` = ?",
             values: [districtName],
 
         },
@@ -217,67 +217,83 @@ app.get("/location/all", (req, res) => {
 })
 
 
-app.post("/visitors", (req, res) => {
-
-    let filePath;
-
-    let date;
-    let year;
-    let month;
-    let week;
-    let day;
-    let weekday;
-    let location;
-    let visitors;
-
-    const xml2js = require('xml2js');
-    const fs = require('fs');
-    const parser = new xml2js.Parser({attrkey: "ATTR"});
-    let xml_string = fs.readFileSync(filePath, "utf8");
-
-    for (let i = 0; i < xml.getElementsByTagName("vestiging").length; i++) {
-        parser.parseString(xml_string, function (error, result) {
-            if (error === null) {
-
-                for (let i = 0; i < result["oba-data-bezoekers"].record.length; i++) {
-
-                    if (result["oba-data-bezoekers"].record[i].jaar[0] == 2013 || result["oba-data-bezoekers"].record[i].jaar[0] == 2014) {
-
-                    } else {
-
-                        date = result["oba-data-bezoekers"].record[i].datum[0];
-                        year = result["oba-data-bezoekers"].record[i].jaar[0];
-                        month = result["oba-data-bezoekers"].record[i].maand[0];
-                        week = result["oba-data-bezoekers"].record[i].week[0];
-                        day = result["oba-data-bezoekers"].record[i].dag[0];
-                        weekday = result["oba-data-bezoekers"].record[i].weekdag[0];
-                        location = result["oba-data-bezoekers"].record[i].vestiging[0];
-                        visitors = result["oba-data-bezoekers"].record[i].bezoekers[0];
-
-
-                        db.handleQuery(
-                            connectionPool, {
-                                query: "INSERT INTO `visitordata` (`date`, `year`, `month`, `week`, `day`, `weekday`, `location`, `visitors`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                                values: [date, year, month, week, day, weekday, location, visitors],
-                            },
-                            (data) => {
-                                console.log((i + 1) + " of the " + result["oba-data-bezoekers"].record.length + " inserted")
-                            },
-                            (err) => res.status(badRequestCode).json({reason: err})
-                        );
-                    }
-                }
-
-                console.log("All dates inserted")
-                res.status(httpOkCode);
-
-            } else {
-                console.log(error);
-                res.status(badRequestCode)
-            }
-        });
+app.post("/upload", function (req, res) {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(badRequestCode).json({ reason: "No files were uploaded." });
     }
+
+    let sampleFile = req.files.sampleFile;
+
+    let filePath = appPath + "server/XMLData/XMLBezoekers.xml"
+
+
+    sampleFile.mv(filePath , function (err) {
+        if (err) {
+            return res.status(badRequestCode).json({ reason: err });
+        }
+
+
+
+        let date;
+        let year;
+        let month;
+        let week;
+        let day;
+        let weekday;
+        let location;
+        let visitors;
+
+        const xml2js = require('xml2js');
+        const fs = require('fs');
+        const parser = new xml2js.Parser({attrkey: "ATTR"});
+        let xml_string = fs.readFileSync(filePath, "utf8");
+
+
+            parser.parseString(xml_string, function (error, result) {
+                if (error === null) {
+
+                    for (let i = 0; i < result["oba-data-bezoekers"].record.length; i++) {
+
+                        if (result["oba-data-bezoekers"].record[i].jaar[0] == 2013 || result["oba-data-bezoekers"].record[i].jaar[0] == 2014) {
+
+                        } else {
+
+                            date = result["oba-data-bezoekers"].record[i].datum[0];
+                            year = result["oba-data-bezoekers"].record[i].jaar[0];
+                            month = result["oba-data-bezoekers"].record[i].maand[0];
+                            week = result["oba-data-bezoekers"].record[i].week[0];
+                            day = result["oba-data-bezoekers"].record[i].dag[0];
+                            weekday = result["oba-data-bezoekers"].record[i].weekdag[0];
+                            location = result["oba-data-bezoekers"].record[i].vestiging[0];
+                            visitors = result["oba-data-bezoekers"].record[i].bezoekers[0];
+
+
+                            db.handleQuery(
+                                connectionPool, {
+                                    query: "INSERT INTO `visitordata` (`date`, `year`, `month`, `week`, `day`, `weekday`, `location`, `visitors`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                                    values: [date, year, month, week, day, weekday, location, visitors],
+                                },
+                                (data) => {
+                                    console.log((i + 1) + " of the " + result["oba-data-bezoekers"].record.length + " inserted")
+                                },
+                                (err) => res.status(badRequestCode).json({reason: err})
+                            );
+                        }
+                    }
+
+                    console.log("All dates inserted")
+                    res.status(httpOkCode);
+
+                } else {
+                    console.log(error);
+                    res.status(badRequestCode)
+                }
+            });
+
+
+    });
 });
+
 
 //------- END ROUTES -------
 module.exports = app;
