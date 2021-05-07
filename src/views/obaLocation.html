@@ -1,69 +1,82 @@
 <div class="grid grid-cols-2">
-<div class="obalocationsDiv shadow-md rounded-md fixed">
-    <h4 class="visitorstext text-gray-600 bg-white rounded-md ml-3 mb-2 mt-2">Bezoekers per stadsdeel</h4>
 
-    <div class="textdiv row d-none rounded-md w-68 mb-10 mb-2 mt-2 ml-2 gap-8">
-        <button class="goBackToDistricts bg-gray-600 text-white shadow-md rounded-md h-8 w-14">Terug</button>
-        <h4 class="districtText text-gray-600 bg-white rounded-md">stadsdeelnaam</h4>
-    </div>
+    <div class="districtsAndLocations shadow-md rounded-md fixed">
 
-    <div class="districts scrollbar">
-    </div>
+        <h4 class="visitorstext text-gray-600 bg-white rounded-md ml-3 mb-2 mt-2">Bezoekers per stadsdeel</h4>
 
-    <div class="districtName d-none text-gray-600 ml-3 pb-11 pt-2">
-        <div class="grid grid-cols-2">
-            <button class="district text-left"></button>
-            <button class="viewLocations w-10"></button>
+        <div class="locationsOfADistrict row d-none rounded-md w-68 mb-10 mb-2 mt-2 ml-2 gap-8">
+            <button class="goBackToDistricts bg-gray-600 text-white shadow-md rounded-md h-8 w-14">Terug</button>
+            <h4 class="districtText text-gray-600 bg-white rounded-md">stadsdeelnaam</h4>
         </div>
-    </div>
-    <button class="locationCard d-none max-w-md max-w-lg w-full shadow-md rounded-md mb-2">
-        <img class="locationImage object-cover h-32 flex-none rounded-t w-full overflow-hidden"
-             src=" " alt="OBA location image">
-        <div class="ml-2">
-            <p class="locationName text-gray-600 font-bold text-xl text-left"></p>
-            <p class="locationAddress text-grey-darker text-base text-left"></p>
-            <p class="dataAvailable text-grey-darker text-base text-left"></p>
 
-        </div>
+        <div class="districts scrollbar"></div>
+    </div>
+
+    <!-- Shows the chosen location name -->
+    <h2 id="locationName" align="right"></h2>
+
+    <!-- Shows chart and buttons to choose a date, chart is shown after a date is chosen -->
+    <div class="chartAndButtonsDiv"></div>
+</div>
+
+
+
+<!-- Items below are used for cloning, they are not shown on screen unless cloned -->
+
+<!-- District name and button to view the locations -->
+<div class="districtName d-none text-gray-600 ml-3 pb-11 pt-2">
+    <div class="grid grid-cols-2">
+        <button class="district text-left"></button>
+        <button class="viewLocations w-10"></button>
+    </div>
+</div>
+
+
+<!-- Location card, shows the location picture, name, address and if the data is available -->
+<button class="locationCard d-none max-w-md max-w-lg w-full shadow-md rounded-md mb-2">
+    <img class="locationImage object-cover h-32 flex-none rounded-t w-full overflow-hidden"
+         src=" " alt="OBA location image">
+    <div class="ml-2">
+        <p class="locationName text-gray-600 font-bold text-xl text-left"></p>
+        <p class="locationAddress text-grey-darker text-base text-left"></p>
+        <p class="dataAvailable text-grey-darker text-base text-left"></p>
+
+    </div>
+</button>
+
+
+<!-- Select a date dropdown -->
+<div class="dateDropdown dropdown d-none mt-2 mb-2 w-24">
+    <button class="btn btn-secondary dropdown-toggle" type="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Selecteer periode
     </button>
+
+    <a class="dateDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
+    </a>
+    <button class="dateDropdown-item dropdown-item d-none"></button>
 </div>
 
-<div class="chartAndButtonsDiv" align="right"></div>
-<div class="chart d-none h-20 w-50"></div>
 
-
-    <!-- Select a date -->
-    <div class="dateDropdown dropdown d-none mt-2 mb-2 w-24">
-        <button class="btn btn-secondary dropdown-toggle" type="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Selecteer periode
-        </button>
-
-        <a class="dateDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
-        </a>
-        <button class="dateDropdown-item dropdown-item d-none"></button>
-    </div>
-
-    <!-- Select a year -->
-    <div id="yearDropdown" class="yearDropdown dropdown d-none">
-        <button class="btn btn-secondary dropdown-toggle" type="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Selecteer jaar
-        </button>
-        <a class="yearDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
-        </a>
-        <button class="yearDropdown-item dropdown-item d-none"></button>
-    </div>
-
-<div class="container h-10 w-25 d-none">
-    <div>
-        <canvas id="weekChart"></canvas>
-    </div>
-
-    <div>
-        <canvas class="allMonthsOfAYearChart d-none" id="allMonthsOfAYearChart"></canvas>
-    </div>
+<!-- Select a year dropdown -->
+<div id="yearDropdown" class="yearDropdown dropdown d-none">
+    <button class="btn btn-secondary dropdown-toggle" type="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Jaar
+    </button>
+    <a class="yearDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
+    </a>
+    <button class="yearDropdown-item dropdown-item d-none"></button>
 </div>
+
+
+<!-- Chart -->
+<div>
+    <canvas class="choseDateChart d-none"></canvas>
 </div>
+
+
+<!-- A Chart gets appended to this place to set the height and width of the chart -->
+<div class="chart d-none h-20 w-50 "></div>
 
 

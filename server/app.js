@@ -233,9 +233,14 @@ app.get("/location/getAllDate", (req, res) => {
 
 //Get all years of the visitors data
 app.get("/location/getAllYears", (req, res) => {
+
+    const location = req.query.location;
+
     db.handleQuery(
         connectionPool, {
-            query: "SELECT DISTINCT `year` FROM `visitordata` ORDER BY `year` ASC",
+            query: "SELECT DISTINCT `year` FROM `visitordata` WHERE `location` =  ? ORDER BY `year` ASC",
+            values: [location],
+
         },
         (data) => {
             //just give all data back as json
@@ -287,7 +292,7 @@ app.get("/location/chosenYear", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `month`, `location`, `year`, SUM(`visitors`) FROM `visitordata` WHERE `visitordata`.`location` = ? " +
+            query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'amount' FROM `visitordata` WHERE `visitordata`.`location` = ? " +
                 "AND `visitordata`.`year` = ? GROUP BY `month`",
             values: [location, year],
         },

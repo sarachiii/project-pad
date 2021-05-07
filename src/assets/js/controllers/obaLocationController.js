@@ -19,23 +19,22 @@ class ObaLocationController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.obaLocationView);
         this.showAllDistricts();
-        this.showWeekChart();
+        //  this.showWeekChart();
     }
 
 
     async showAllDistricts() {
         let districts = await this.obaLocationRepository.getDistricts();
-        console.log(districts);
 
         for (let i = 0; i < districts.length; i++) {
-            const divClone = $(".districtName.d-none").first().clone().removeClass("d-none");
+            const districtNameAndViewLocations = $(".districtName.d-none").first().clone().removeClass("d-none");
 
-            divClone.find(".district").text(districts[i]["name"]);
-            divClone.find('.district').attr(`data-id`, i);
-            divClone.find(".viewLocations").text(">>");
-            divClone.find('.viewLocations').attr(`data-id`, i);
+            districtNameAndViewLocations.find(".district").text(districts[i]["name"]);
+            districtNameAndViewLocations.find('.district').attr(`data-id`, i);
+            districtNameAndViewLocations.find(".viewLocations").text(">>");
+            districtNameAndViewLocations.find('.viewLocations').attr(`data-id`, i);
 
-            $(".districts").append(divClone);
+            $(".districts").append(districtNameAndViewLocations);
 
             $(".districts").on('click', '.district[data-id="' + i + '"]', function () {
                 console.log(districts[i]["name"]);
@@ -53,8 +52,8 @@ class ObaLocationController {
         let locations = await this.obaLocationRepository.getAllLocations(district["id"]);
         console.log(locations);
 
-        $(".obalocationsDiv").find(".visitorstext").addClass("d-none")
-        const chosenDistrict = $(".textdiv.d-none").removeClass("d-none");
+        $(".districtsAndLocations").find(".visitorstext").addClass("d-none")
+        const chosenDistrict = $(".locationsOfADistrict.d-none").removeClass("d-none");
         chosenDistrict.find(".goBackToDistricts");
         chosenDistrict.find(".districtText").removeClass("ml-3").text(district["name"]);
 
@@ -72,12 +71,13 @@ class ObaLocationController {
                 locationCard.prop("disabled", true);
             }
 
-            locationCard.on('click', () => this.selectDate(locations[i]));
+            locationCard.on('click', () => this.selectDate(locations[i]) &&
+                $("#locationName").text(locations[i]["location_name"]));
 
             $(".districts").append(locationCard);
         }
 
-        $(".obalocationsDiv").on('click', '.goBackToDistricts', () => {
+        $(".districtsAndLocations").on('click', '.goBackToDistricts', () => {
                 $.get("views/obaLocation.html")
                     .done((data) => this.setup(data))
                     .fail(() => this.error());
@@ -94,7 +94,6 @@ class ObaLocationController {
         $(".chartAndButtonsDiv").append(dateDropdown);
 
         let allDate = await this.obaLocationRepository.getAllDate();
-        console.log(allDate);
         for (let i = 0; i < allDate.length; i++) {
             const dates = dateDropdown.find(".dateDropdown-item.d-none").first().clone().removeClass("d-none");
 
@@ -115,22 +114,30 @@ class ObaLocationController {
 
     //Shows dropdown menu with year options
     async selectYear(location) {
-        //Removes display-none, so that it is shown on the screen
         const yearDropdown = $("#yearDropdown").first().clone().removeClass("d-none");
         $(".chartAndButtonsDiv").append(yearDropdown);
 
-
-
-        let allYears = await this.obaLocationRepository.getAllYears();
+        let allYears = await this.obaLocationRepository.getAllYears(location["alias_name"]);
         console.log(allYears);
 
         for (let i = 0; i < allYears.length; i++) {
-            const years = yearDropdown.find(".yearDropdown-item.d-none").first().clone().removeClass("d-none");
+            let visitorDataYear = await this.obaLocationRepository.getChosenYear(location["alias_name"], allYears[i]["year"]);
 
-            years.text(allYears[i]["year"]);
-            years.attr(`data-id`, i);
+            //Checks if the visitor data of every month of a year is null
+            let checkIfYearDataIsEmpty = 0;
+            for (let j = 0; j < visitorDataYear.length; j++) {
+                if (visitorDataYear[j]["amount"] === 0) {
+                    checkIfYearDataIsEmpty++;
+                }
+            }
 
-            yearDropdown.find(".yearDropdown-menu").append(years);
+            if (checkIfYearDataIsEmpty < visitorDataYear.length) {
+                const years = yearDropdown.find(".yearDropdown-item.d-none").first().clone().removeClass("d-none");
+                years.text(allYears[i]["year"]);
+                years.attr(`data-id`, i);
+
+                yearDropdown.find(".yearDropdown-menu").append(years);
+            }
 
             yearDropdown.find(".yearDropdown-menu").on('click', '.yearDropdown-item[data-id="' + i + '"]', () =>
                 this.showYearChart(allYears[i]["year"], location));
@@ -139,15 +146,6 @@ class ObaLocationController {
 
     async showYearChart(year, location) {
         console.log(year, location);
-
-        //Chart color
-        let color = [];
-        let borderColor = [];
-
-        for (let i = 0; i < 12; i++) {
-            color = 'rgba(75, 192, 192, 0.5)';
-            borderColor = 'rgb(75, 192, 192)';
-        }
 
         //get all months in a year to display in chart
         let months = [];
@@ -159,22 +157,31 @@ class ObaLocationController {
         let monthData = [];
         let visitorDataYear = await this.obaLocationRepository.getChosenYear(location["alias_name"], year);
         for (let i = 0; i < visitorDataYear.length; i++) {
-            monthData[i] = visitorDataYear[i]["SUM(`visitors`)"];
+            monthData[i] = visitorDataYear[i]["amount"];
         }
 
         console.log(visitorDataYear);
 
-        $(".chart").find(".allMonthsOfAYearChart").removeAttr('id');
+        //Chart color
+        let color = [];
+        let borderColor = [];
+
+        for (let i = 0; i < monthData.length; i++) {
+            color = 'rgba(75, 192, 192, 0.5)';
+            borderColor = 'rgb(75, 192, 192)';
+        }
+
+        $(".chart").find(".choseDateChart").removeAttr('id');
         $(".chartAndButtonsDiv").find(".chart").remove();
 
         const chartDiv = $(".chart").first().clone().removeClass("d-none");
-        const monthsChart = $(".allMonthsOfAYearChart").first().clone()
-            .removeClass("d-none").attr('id', 'allMonthsOfAYearChart'); //id blijft gelden over verwijderde element
+        const monthsChart = $(".choseDateChart").first().clone()
+            .removeClass("d-none").attr('id', 'choseDateChart');
         chartDiv.append(monthsChart);
         $(".chartAndButtonsDiv").append(chartDiv)
 
 
-        new Chart(document.getElementById('allMonthsOfAYearChart'), {
+        new Chart(document.getElementById('choseDateChart'), {
             type: 'bar',
             data: {
                 labels: months,
@@ -204,71 +211,71 @@ class ObaLocationController {
         });
     }
 
-    async showWeekChart() {
-        let week = await this.obaLocationRepository.getChosenWeek("OBA Indische buurt", 5, 2019);
-        console.log(week);
-        new Chart(document.getElementById("weekChart"), {
-            type: 'bar',
-            data: {
-                labels: ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"],
-                datasets: [{
-                    label: "OBA bezoekers",
-                    backgroundColor: [
-                        'rgba(255, 205, 86, 0.5)',
-                        'rgba(255, 205, 86, 0.5)',
-                        'rgba(255, 205, 86, 0.5)',
-                        'rgba(255, 205, 86, 0.5)',
-                        'rgba(255, 205, 86, 0.5)',
-                        'rgba(255, 205, 86, 0.5)',
-                        'rgba(255, 205, 86, 0.5)',
-
-                        // 'rgba(255, 99, 132, 0.5)',
-                        // 'rgba(255, 159, 64, 0.5)',
-                        // 'rgba(255, 205, 86, 0.5)',
-                        // 'rgba(75, 192, 192, 0.5)',
-                        // 'rgba(54, 162, 235, 0.5)',
-                        // 'rgba(153, 102, 255, 0.5)',
-                        // 'rgba(201, 203, 207, 0.5)'
-                    ],
-                    borderColor: [
-                        'rgb(255, 205, 86)',
-                        'rgb(255, 205, 86)',
-                        'rgb(255, 205, 86)',
-                        'rgb(255, 205, 86)',
-                        'rgb(255, 205, 86)',
-                        'rgb(255, 205, 86)',
-                        'rgb(255, 205, 86)',
-
-                        // 'rgb(255, 99, 132)',
-                        // 'rgb(255, 159, 64)',
-                        // 'rgb(255, 205, 86)',
-                        // 'rgb(75, 192, 192)',
-                        // 'rgb(54, 162, 235)',
-                        // 'rgb(153, 102, 255)',
-                        // 'rgb(201, 203, 207)'
-                    ],
-                    borderWidth: 2,
-                    data: [week[0]["visitors"], week[1]["visitors"], week[2]["visitors"], week[3]["visitors"],
-                        week[4]["visitors"], week[5]["visitors"], week[6]["visitors"]],
-                }]
-            },
-            options: {
-                legend: {display: false},
-                title: {
-                    display: true,
-                    text: 'OBA bezoekers over (geselecteerde week hier...)'
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                        }
-                    }]
-                }
-
-            }
-        });
-    }
+    // async showWeekChart() {
+    //     let week = await this.obaLocationRepository.getChosenWeek("OBA Indische buurt", 5, 2019);
+    //     console.log(week);
+    //     new Chart(document.getElementById("weekChart"), {
+    //         type: 'bar',
+    //         data: {
+    //             labels: ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"],
+    //             datasets: [{
+    //                 label: "OBA bezoekers",
+    //                 backgroundColor: [
+    //                     'rgba(255, 205, 86, 0.5)',
+    //                     'rgba(255, 205, 86, 0.5)',
+    //                     'rgba(255, 205, 86, 0.5)',
+    //                     'rgba(255, 205, 86, 0.5)',
+    //                     'rgba(255, 205, 86, 0.5)',
+    //                     'rgba(255, 205, 86, 0.5)',
+    //                     'rgba(255, 205, 86, 0.5)',
+    //
+    //                     // 'rgba(255, 99, 132, 0.5)',
+    //                     // 'rgba(255, 159, 64, 0.5)',
+    //                     // 'rgba(255, 205, 86, 0.5)',
+    //                     // 'rgba(75, 192, 192, 0.5)',
+    //                     // 'rgba(54, 162, 235, 0.5)',
+    //                     // 'rgba(153, 102, 255, 0.5)',
+    //                     // 'rgba(201, 203, 207, 0.5)'
+    //                 ],
+    //                 borderColor: [
+    //                     'rgb(255, 205, 86)',
+    //                     'rgb(255, 205, 86)',
+    //                     'rgb(255, 205, 86)',
+    //                     'rgb(255, 205, 86)',
+    //                     'rgb(255, 205, 86)',
+    //                     'rgb(255, 205, 86)',
+    //                     'rgb(255, 205, 86)',
+    //
+    //                     // 'rgb(255, 99, 132)',
+    //                     // 'rgb(255, 159, 64)',
+    //                     // 'rgb(255, 205, 86)',
+    //                     // 'rgb(75, 192, 192)',
+    //                     // 'rgb(54, 162, 235)',
+    //                     // 'rgb(153, 102, 255)',
+    //                     // 'rgb(201, 203, 207)'
+    //                 ],
+    //                 borderWidth: 2,
+    //                 data: [week[0]["visitors"], week[1]["visitors"], week[2]["visitors"], week[3]["visitors"],
+    //                     week[4]["visitors"], week[5]["visitors"], week[6]["visitors"]],
+    //             }]
+    //         },
+    //         options: {
+    //             legend: {display: false},
+    //             title: {
+    //                 display: true,
+    //                 text: 'OBA bezoekers over (geselecteerde week hier...)'
+    //             },
+    //             scales: {
+    //                 yAxes: [{
+    //                     ticks: {
+    //                         beginAtZero: true,
+    //                     }
+    //                 }]
+    //             }
+    //
+    //         }
+    //     });
+    // }
 
     //Called when the login.html failed to load
     error() {

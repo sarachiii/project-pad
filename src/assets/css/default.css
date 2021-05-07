@@ -4,39 +4,46 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
 .wrapper {
     display: grid;
     grid-template-columns: repeat(3, 100%);
     overflow: hidden;
     scroll-behavior: smooth;
 }
+
 .wrapper section {
     width: 100%;
     position: relative;
     display: grid;
     grid-template-columns: repeat(6, auto);
 }
+
 .wrapper section .item {
     position: relative;
     padding: 0 2px;
     transition: 250ms all;
 }
+
 .wrapper section .item:hover {
     margin: 0 40px;
     transform: scale(1.2);
 }
+
 .wrapper section .item .heading {
     position: absolute;
     bottom: 20px;
     left: 20px;
     color: #fff;
 }
+
 .wrapper section .item .duration {
     position: absolute;
     bottom: 0;
     left: 20px;
     color: #fff;
 }
+
 .wrapper section .arrow__btn {
     position: absolute;
     color: black;
@@ -46,11 +53,13 @@ footer {
     text-align: center;
     z-index: 1;
 }
+
 .wrapper section .left-arrow {
     top: 0;
     bottom: 0;
     left: 0;
 }
+
 .wrapper section .right-arrow {
     top: 0;
     bottom: 0;
@@ -70,7 +79,7 @@ footer {
 
 #chartdiv {
     border-radius: 10px;
-    box-shadow: 0px 0px 50px -4px rgba(0,0,0,0.44);
+    box-shadow: 0px 0px 50px -4px rgba(0, 0, 0, 0.44);
     padding: 15px;
     position: fixed;
     top: 50%;
@@ -84,27 +93,29 @@ footer {
 /*}*/
 
 .scrollbar {
-    margin:5px;
-    padding:5px;
+    margin: 5px;
+    padding: 5px;
     width: 300px;
     height: 92%;
     overflow: auto;
-    text-align:justify;
+    text-align: justify;
 }
-h1{
+
+h1 {
     text-align: center;
     font-size: 46px;
 }
-p{
+
+p {
     text-align: center;
 }
-#chartYear{
+
+#chartYear {
     width: 100%;
 }
 
-.obalocationsDiv {
+.districtsAndLocations {
     width: 305px;
     height: 90%;
-
 }
 
