@@ -1,3 +1,4 @@
+<div class="grid grid-cols-2">
 <div class="obalocationsDiv shadow-md rounded-md fixed">
     <h4 class="visitorstext text-gray-600 bg-white rounded-md ml-3 mb-2 mt-2">Bezoekers per stadsdeel</h4>
 
@@ -7,7 +8,7 @@
     </div>
 
     <div class="districts scrollbar">
-</div>
+    </div>
 
     <div class="districtName d-none text-gray-600 ml-3 pb-11 pt-2">
         <div class="grid grid-cols-2">
@@ -26,3 +27,43 @@
         </div>
     </button>
 </div>
+
+<div class="chartAndButtonsDiv" align="right"></div>
+<div class="chart d-none h-20 w-50"></div>
+
+
+    <!-- Select a date -->
+    <div class="dateDropdown dropdown d-none mt-2 mb-2 w-24">
+        <button class="btn btn-secondary dropdown-toggle" type="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Selecteer periode
+        </button>
+
+        <a class="dateDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
+        </a>
+        <button class="dateDropdown-item dropdown-item d-none"></button>
+    </div>
+
+    <!-- Select a year -->
+    <div id="yearDropdown" class="yearDropdown dropdown d-none">
+        <button class="btn btn-secondary dropdown-toggle" type="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Selecteer jaar
+        </button>
+        <a class="yearDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
+        </a>
+        <button class="yearDropdown-item dropdown-item d-none"></button>
+    </div>
+
+<div class="container h-10 w-25 d-none">
+    <div>
+        <canvas id="weekChart"></canvas>
+    </div>
+
+    <div>
+        <canvas class="allMonthsOfAYearChart d-none" id="allMonthsOfAYearChart"></canvas>
+    </div>
+</div>
+</div>
+
+

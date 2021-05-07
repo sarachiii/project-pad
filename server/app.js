@@ -113,27 +113,27 @@ app.get("/books/all", (req, res) => {
 });
 
 //Insert books into database
-app.post("/books/addBook", (req, res) => {
-
-    const id = req.body.id;
-    const title = req.body.title;
-    const author = req.body.author;
-    const genre = req.body.genre;
-    const image = req.body.image;
-    const recap = req.body.recap;
-
-    db.handleQuery(
-        connectionPool, {
-            query: "INSERT INTO `book` (`idBook`, `Title`, `Author`, `Genre`, `Image`, `Recap`) VALUES (?, ?, ?, ?, ?, ?)",
-            values: [id, title, author, genre, image, recap],
-        },
-        (data) => {
-            //just give all data back as json
-            res.status(httpOkCode).json(data);
-        },
-        (err) => res.status(badRequestCode).json({reason: err})
-    );
-});
+// app.post("/books/addBook", (req, res) => {
+//
+//     const id = req.body.id;
+//     const title = req.body.title;
+//     const author = req.body.author;
+//     const genre = req.body.genre;
+//     const image = req.body.image;
+//     const recap = req.body.recap;
+//
+//     db.handleQuery(
+//         connectionPool, {
+//             query: "INSERT INTO `book` (`idBook`, `Title`, `Author`, `Genre`, `Image`, `Recap`) VALUES (?, ?, ?, ?, ?, ?)",
+//             values: [id, title, author, genre, image, recap],
+//         },
+//         (data) => {
+//             //just give all data back as json
+//             res.status(httpOkCode).json(data);
+//         },
+//         (err) => res.status(badRequestCode).json({reason: err})
+//     );
+// });
 
 app.get("/location", (req, res) => {
     db.handleQuery(
@@ -155,7 +155,7 @@ app.get("/visitoryear", (req, res) => {
             query: "SELECT SUM(`visitors`) as 'amount', `location`, `year` FROM `visitordata` " +
                 "WHERE `year` < 2020 " +
                 "GROUP BY `location`, `year`"
-                // "HAVING SUM(`visitors`) > 0"
+            // "HAVING SUM(`visitors`) > 0"
         },
         (data) => {
 
@@ -199,12 +199,13 @@ app.get("/location/districts", (req, res) => {
 //Get all locations that belongs to one district
 app.get("/location/all", (req, res) => {
 
-    let districtName = `${req.query.q}`;
+    const districtId = req.query.district;
 
     db.handleQuery(
+
         connectionPool, {
             query: "SELECT `location`.* FROM `location` WHERE `location`.`id` = ?",
-            values: [districtName],
+            values: [districtId],
 
         },
         (data) => {
@@ -216,10 +217,91 @@ app.get("/location/all", (req, res) => {
     );
 })
 
+//Get all years of the visitors data
+app.get("/location/getAllDate", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT * FROM `date`",
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all years of the visitors data
+app.get("/location/getAllYears", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT DISTINCT `year` FROM `visitordata` ORDER BY `year` ASC",
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+//Get all months of the visitors data
+app.get("/location/getAllMonths", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `name` FROM `datenames` WHERE `id` = 2",
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all visitors data of a chosen location, week and year
+app.get("/location/chosenWeek", (req, res) => {
+
+    const location = req.query.location;
+    const week = req.query.week;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT * FROM `visitordata` WHERE `visitordata`.`location` = ? AND " +
+                "`visitordata`.`week` = ? AND `visitordata`.`year` = ?",
+            values: [location, week, year],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all visitors data of a chosen location, week and year
+app.get("/location/chosenYear", (req, res) => {
+
+    const location = req.query.location;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `month`, `location`, `year`, SUM(`visitors`) FROM `visitordata` WHERE `visitordata`.`location` = ? " +
+                "AND `visitordata`.`year` = ? GROUP BY `month`",
+            values: [location, year],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
 
 app.post("/upload", function (req, res) {
     if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(badRequestCode).json({ reason: "No files were uploaded." });
+        return res.status(badRequestCode).json({reason: "No files were uploaded."});
     }
 
     let sampleFile = req.files.sampleFile;
@@ -227,11 +309,10 @@ app.post("/upload", function (req, res) {
     let filePath = appPath + "server/XMLData/XMLBezoekers.xml"
 
 
-    sampleFile.mv(filePath , function (err) {
+    sampleFile.mv(filePath, function (err) {
         if (err) {
-            return res.status(badRequestCode).json({ reason: err });
+            return res.status(badRequestCode).json({reason: err});
         }
-
 
 
         let date;
@@ -249,46 +330,46 @@ app.post("/upload", function (req, res) {
         let xml_string = fs.readFileSync(filePath, "utf8");
 
 
-            parser.parseString(xml_string, function (error, result) {
-                if (error === null) {
+        parser.parseString(xml_string, function (error, result) {
+            if (error === null) {
 
-                    for (let i = 0; i < result["oba-data-bezoekers"].record.length; i++) {
+                for (let i = 0; i < result["oba-data-bezoekers"].record.length; i++) {
 
-                        if (result["oba-data-bezoekers"].record[i].jaar[0] == 2013 || result["oba-data-bezoekers"].record[i].jaar[0] == 2014) {
+                    if (result["oba-data-bezoekers"].record[i].jaar[0] == 2013 || result["oba-data-bezoekers"].record[i].jaar[0] == 2014) {
 
-                        } else {
+                    } else {
 
-                            date = result["oba-data-bezoekers"].record[i].datum[0];
-                            year = result["oba-data-bezoekers"].record[i].jaar[0];
-                            month = result["oba-data-bezoekers"].record[i].maand[0];
-                            week = result["oba-data-bezoekers"].record[i].week[0];
-                            day = result["oba-data-bezoekers"].record[i].dag[0];
-                            weekday = result["oba-data-bezoekers"].record[i].weekdag[0];
-                            location = result["oba-data-bezoekers"].record[i].vestiging[0];
-                            visitors = result["oba-data-bezoekers"].record[i].bezoekers[0];
+                        date = result["oba-data-bezoekers"].record[i].datum[0];
+                        year = result["oba-data-bezoekers"].record[i].jaar[0];
+                        month = result["oba-data-bezoekers"].record[i].maand[0];
+                        week = result["oba-data-bezoekers"].record[i].week[0];
+                        day = result["oba-data-bezoekers"].record[i].dag[0];
+                        weekday = result["oba-data-bezoekers"].record[i].weekdag[0];
+                        location = result["oba-data-bezoekers"].record[i].vestiging[0];
+                        visitors = result["oba-data-bezoekers"].record[i].bezoekers[0];
 
 
-                            db.handleQuery(
-                                connectionPool, {
-                                    query: "INSERT INTO `visitordata` (`date`, `year`, `month`, `week`, `day`, `weekday`, `location`, `visitors`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                                    values: [date, year, month, week, day, weekday, location, visitors],
-                                },
-                                (data) => {
-                                    console.log((i + 1) + " of the " + result["oba-data-bezoekers"].record.length + " inserted")
-                                },
-                                (err) => res.status(badRequestCode).json({reason: err})
-                            );
-                        }
+                        db.handleQuery(
+                            connectionPool, {
+                                query: "INSERT INTO `visitordata` (`date`, `year`, `month`, `week`, `day`, `weekday`, `location`, `visitors`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                                values: [date, year, month, week, day, weekday, location, visitors],
+                            },
+                            (data) => {
+                                console.log((i + 1) + " of the " + result["oba-data-bezoekers"].record.length + " inserted")
+                            },
+                            (err) => res.status(badRequestCode).json({reason: err})
+                        );
                     }
-
-                    console.log("All dates inserted")
-                    res.status(httpOkCode);
-
-                } else {
-                    console.log(error);
-                    res.status(badRequestCode)
                 }
-            });
+
+                console.log("All dates inserted")
+                res.status(httpOkCode);
+
+            } else {
+                console.log(error);
+                res.status(badRequestCode)
+            }
+        });
 
 
     });
