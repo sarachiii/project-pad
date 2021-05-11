@@ -8,8 +8,8 @@
             <button class="goBackToDistricts bg-gray-600 text-white shadow-md rounded-md h-8 w-14">Terug</button>
             <h4 class="districtText text-gray-600 bg-white rounded-md">stadsdeelnaam</h4>
         </div>
-
-        <div class="districts scrollbar"></div>
+        <div class="moveDistrictsToHere scrollbar"></div>
+<!--//here-->
     </div>
 
     <!-- Shows the chosen location name -->
@@ -17,11 +17,16 @@
 
     <!-- Shows chart and buttons to choose a date, chart is shown after a date is chosen -->
     <div class="chartAndButtonsDiv"></div>
+
 </div>
 
 
 
 <!-- Items below are used for cloning, they are not shown on screen unless cloned -->
+<div class="districts d-none"></div>
+
+
+
 
 <!-- District name and button to view the locations -->
 <div class="districtName d-none text-gray-600 ml-3 pb-11 pt-2">
@@ -45,7 +50,7 @@
 </button>
 
 
-<!-- Select a date dropdown -->
+<!-- Date dropdown -->
 <div class="dateDropdown dropdown d-none mt-2 mb-2 w-24">
     <button class="btn btn-secondary dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,8 +63,8 @@
 </div>
 
 
-<!-- Select a year dropdown -->
-<div id="yearDropdown" class="yearDropdown dropdown d-none">
+<!-- Year dropdown -->
+<div class="yearDropdown dropdown d-none mt-2 mb-2">
     <button class="btn btn-secondary dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Jaar
@@ -67,6 +72,17 @@
     <a class="yearDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
     </a>
     <button class="yearDropdown-item dropdown-item d-none"></button>
+</div>
+
+<!-- Month/Quarter dropdown -->
+<div class="monthOrQuarterDropdown dropdown d-none mt-2 mb-2">
+    <button class="btn btn-secondary dropdown-toggle" type="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Maand
+    </button>
+    <a class="monthOrQuarterDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
+    </a>
+    <button class="monthOrQuarterDropdown-item dropdown-item d-none"></button>
 </div>
 
 

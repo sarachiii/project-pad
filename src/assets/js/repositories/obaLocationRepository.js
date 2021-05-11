@@ -21,6 +21,13 @@ class ObaLocationRepository {
                 null, "GET");
     }
 
+    async getChosenMonth(location, chosenYear, chosenMonth) {
+        return await networkManager
+            .doRequest(`${this.route}/chosenMonth?location=${location}&year=${chosenYear}&month=${chosenMonth}`,
+                null, "GET");
+
+    }
+
     async getChosenYear(location, chosenYear) {
         return await networkManager
             .doRequest(`${this.route}/chosenYear?location=${location}&year=${chosenYear}`,
@@ -29,17 +36,23 @@ class ObaLocationRepository {
 
     async getAllDate() {
         return await networkManager
-            .doRequest(`${this.route}/getAllDate`, null, "GET");
+            .doRequest(`${this.route}/allDate`, null, "GET");
     }
 
     async getAllYears(location) {
         return await networkManager
-            .doRequest(`${this.route}/getAllYears?location=${location}`, null, "GET");
+            .doRequest(`${this.route}/allYears?location=${location}`, null, "GET");
     }
 
-    async getAllMonths() {
+    async getAllMonthsOfAYear() {
         return await networkManager
-            .doRequest(`${this.route}/getAllMonths`, null, "GET");
+            .doRequest(`${this.route}/allMonthsOfAYear`, null, "GET");
+    }
+
+    async getAllMonths(location, year, month) {
+        return await networkManager
+    .doRequest(`${this.route}/allMonths?location=${location}&year=${year}&month=${month}`,
+            null, "GET");
     }
 
 

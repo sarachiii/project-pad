@@ -202,7 +202,6 @@ app.get("/location/all", (req, res) => {
     const districtId = req.query.district;
 
     db.handleQuery(
-
         connectionPool, {
             query: "SELECT `location`.* FROM `location` WHERE `location`.`id` = ?",
             values: [districtId],
@@ -218,7 +217,7 @@ app.get("/location/all", (req, res) => {
 })
 
 //Get all years of the visitors data
-app.get("/location/getAllDate", (req, res) => {
+app.get("/location/allDate", (req, res) => {
     db.handleQuery(
         connectionPool, {
             query: "SELECT * FROM `date`",
@@ -232,7 +231,7 @@ app.get("/location/getAllDate", (req, res) => {
 })
 
 //Get all years of the visitors data
-app.get("/location/getAllYears", (req, res) => {
+app.get("/location/allYears", (req, res) => {
 
     const location = req.query.location;
 
@@ -249,11 +248,34 @@ app.get("/location/getAllYears", (req, res) => {
         (err) => res.status(badRequestCode).json({reason: err})
     );
 })
+
 //Get all months of the visitors data
-app.get("/location/getAllMonths", (req, res) => {
+app.get("/location/allMonthsOfAYear", (req, res) => {
     db.handleQuery(
         connectionPool, {
             query: "SELECT `name` FROM `datenames` WHERE `id` = 2",
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all visitors data of a chosen location, week and year
+app.get("/location/allMonths", (req, res) => {
+
+    const location = req.query.location;
+    const year = req.query.year;
+    const month = req.query.month;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'amount' " +
+                "FROM `visitordata` WHERE `visitordata`.`location` = ? " +
+                "AND `visitordata`.`year` = ? AND `visitordata`.`month` = ?",
+            values: [location, year, month],
         },
         (data) => {
             //just give all data back as json
@@ -275,6 +297,27 @@ app.get("/location/chosenWeek", (req, res) => {
             query: "SELECT * FROM `visitordata` WHERE `visitordata`.`location` = ? AND " +
                 "`visitordata`.`week` = ? AND `visitordata`.`year` = ?",
             values: [location, week, year],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all visitors data of a chosen location, week and year
+app.get("/location/chosenMonth", (req, res) => {
+
+    const location = req.query.location;
+    const month = req.query.month;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT * FROM `visitordata` WHERE `visitordata`.`location` = ? AND " +
+                "`visitordata`.`month` = ? AND `visitordata`.`year` = ?",
+            values: [location, month, year],
         },
         (data) => {
             //just give all data back as json
