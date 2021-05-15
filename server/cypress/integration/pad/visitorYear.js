@@ -85,9 +85,6 @@ describe("visitorYear", () => {
         //Start a fake server
         cy.server();
 
-        //Add a stub with the URL /books/searchNew?q=pad as a GET
-        //Respond with a JSON-object when requested and set the status-code tot 401.
-        //Give the stub the alias: @search
         cy.route({
             method: "GET",
             url: "/visitoryear",

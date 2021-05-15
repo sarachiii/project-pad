@@ -15,7 +15,6 @@ class VisitorYearController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.visitorYear);
 
-
         //Change colour of navbar item
         $(".nav-item").removeClass("active");
         $(".visitorYearItem").addClass("active");
@@ -23,19 +22,17 @@ class VisitorYearController {
         this.buildYearChart()
     }
 
-    //Called when the dashboard.html failed to load
-    error() {
-        $(".content").html("Failed to load the chart!");
-    }
-
     /**
      * async function that builds the chart using chart.js
      */
     async buildYearChart() {
+
         let promise = await this.visitorYearRepository.getYearData();
         let locations = [];
         let years = [];
         let visitors = [];
+
+        try {
 
         //Puts locations in array
         for (let i = 0; i < promise.length; i++) {
@@ -88,5 +85,21 @@ class VisitorYearController {
             });
         }
         myLineChart.update();
+
+        } catch(e) {
+            //if unauthorized error show error to user
+            if(e.code === 401) {
+                this.visitorYear
+                    .find(".error")
+                    .html(e.reason);
+            } else {
+                console.log(e);
+            }
+        }
+    }
+
+    //Called when the visitorYear.html failed to load
+    error() {
+        $(".content").html("Failed to load content!");
     }
 }
