@@ -27,12 +27,12 @@ class VisitorYearController {
      */
     async buildYearChart() {
 
+        try {
+
         let promise = await this.visitorYearRepository.getYearData();
         let locations = [];
         let years = [];
         let visitors = [];
-
-        try {
 
         //Puts locations in array
         for (let i = 0; i < promise.length; i++) {

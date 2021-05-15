@@ -53,6 +53,8 @@ describe("visitorYear", () => {
                 {"amount":0,"location":"OBA Bos en Lommerplein","year":2019}
             ]).as("graphResponse");
 
+        cy.get(".viewLocations[data-id=1]").click();
+
         //check if the fake request is valid
         cy.wait("@graphResponse").then(request => {
             console.log(request.url);
