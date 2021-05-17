@@ -9,24 +9,29 @@
             <h4 class="districtText text-gray-600 bg-white rounded-md">stadsdeelnaam</h4>
         </div>
         <div class="moveDistrictsToHere scrollbar"></div>
-<!--//here-->
+        <!--//here-->
     </div>
-
     <!-- Shows the chosen location name -->
-    <h2 id="locationName" align="right"></h2>
+    <h2 id="locationName" align="center"></h2>
 
     <!-- Shows chart and buttons to choose a date, chart is shown after a date is chosen -->
-    <div class="chartAndButtonsDiv"></div>
-    <div class="buttons"></div>
+    <div class="chartAndButtonsDiv w-3/5 h-3/5">
+            <p><input type="text" class="week-picker w-20 shadow-md rounded-md">
+                <label>Gekozen week:</label> <span id="startDate"></span> - <span id="endDate"></span>
+                <span id="chosenWeek"></span>
+            </p>
+    </div>
+
 
 </div>
 
 
-
 <!-- Items below are used for cloning, they are not shown on screen unless cloned -->
+
 <div class="districts d-none"></div>
 
-
+<!-- Here comes all the buttons that are used to pick a date-->
+<div class="buttons d-none row gap-x-2" align="center"></div>
 
 
 <!-- District name and button to view the locations -->
@@ -52,7 +57,7 @@
 
 
 <!-- Date dropdown -->
-<div class="dateDropdown dropdown d-none mt-2 mb-2 w-24">
+<div class="dateDropdown dropdown d-none mt-2 mb-2 w-48">
     <button class="btn btn-secondary dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Selecteer periode
@@ -65,7 +70,7 @@
 
 
 <!-- Year dropdown -->
-<div class="yearDropdown dropdown d-none mt-2 mb-2">
+<div class="yearDropdown dropdown d-none mt-2 mb-2 w-24">
     <button class="btn btn-secondary dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Jaar
@@ -76,7 +81,7 @@
 </div>
 
 <!-- Month/Quarter dropdown -->
-<div class="monthOrQuarterDropdown dropdown d-none mt-2 mb-2">
+<div class="monthOrQuarterDropdown dropdown d-none mt-2 mb-2 w-28">
     <button class="btn btn-secondary dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     </button>

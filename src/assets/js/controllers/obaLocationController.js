@@ -19,6 +19,9 @@ class ObaLocationController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.obaLocationView);
         this.showAllDistricts();
+
+        this.selectWeek();
+
     }
 
 
@@ -97,7 +100,9 @@ class ObaLocationController {
     async selectDate(location) {
         $(".chartAndButtonsDiv").empty();
         const dateDropdown = $(".dateDropdown.dropdown.d-none").first().clone().removeClass("d-none");
-        $(".chartAndButtonsDiv").append(dateDropdown);
+        const buttons = $(".buttons.d-none").first().clone().removeClass("d-none");
+        buttons.append(dateDropdown);
+        $(".chartAndButtonsDiv").append(buttons);
 
         let allDate = await this.obaLocationRepository.getAllDate();
         for (let i = 0; i < allDate.length; i++) {
@@ -129,7 +134,7 @@ class ObaLocationController {
         this.removeChart();
 
         const yearDropdown = $(".yearDropdown").first().clone().removeClass("d-none");
-        $(".chartAndButtonsDiv").append(yearDropdown);
+        $(".chartAndButtonsDiv").find(".buttons").append(yearDropdown);
 
         let allYears = await this.obaLocationRepository.getAllYears(location["alias_name"]);
 
@@ -172,22 +177,70 @@ class ObaLocationController {
         }
     }
 
+    selectWeek(){
+
+        var startDate;
+        var endDate;
+
+        var selectCurrentWeek = function () {
+            window.setTimeout(function () {
+                $('.week-picker').find('.ui-datepicker-current-day a').addClass('ui-state-active')
+            }, 1);
+        }
+
+        $('.week-picker').datepicker({
+            showWeek: true,
+            dateFormat: 'dd-mm-yy',
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            firstDay: 1,
+            onSelect: function (dateText, inst) {
+                var date = $(this).datepicker('getDate');
+                startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
+                endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
+                var dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
+                $('#startDate').text($.datepicker.formatDate(dateFormat, startDate, inst.settings));
+                $('#endDate').text($.datepicker.formatDate(dateFormat, endDate, inst.settings));
+                $('#chosenWeek').text($.datepicker.iso8601Week(date));
+
+
+                selectCurrentWeek();
+            },
+            beforeShowDay: function (date) {
+                var cssClass = '';
+                if (date >= startDate && date <= endDate)
+                    cssClass = 'ui-datepicker-current-day';
+                return [true, cssClass];
+            },
+            onChangeMonthYear: function (year, month, inst) {
+                selectCurrentWeek();
+            }
+        });
+
+        $('.week-picker .ui-datepicker-calendar tr').live('mousemove', function () {
+            $(this).find('td a').addClass('ui-state-hover');
+        });
+        $('.week-picker .ui-datepicker-calendar tr').live('mouseleave', function () {
+            $(this).find('td a').removeClass('ui-state-hover');
+        });
+}
+
     async selectQuarter(location, year) {
         this.removeChart();
-        $(".chartAndButtonsDiv").find(".monthOrQuarterDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".monthOrQuarterDropdown").remove();
         const quarterDropdown = $(".monthOrQuarterDropdown").first().clone().removeClass("d-none");
         quarterDropdown.find(".btn.btn-secondary").text("Kwartaal");
-        $(".chartAndButtonsDiv").append(quarterDropdown);
+        $(".chartAndButtonsDiv").find(".buttons").append(quarterDropdown);
 
         let quarters = await this.obaLocationRepository.getAllQuarterOfAYear();
         console.log(quarters);
 
         for (let i = 0; i < quarters.length; i++) {
-                const quarterText = quarterDropdown.find(".monthOrQuarterDropdown-item.d-none").first().clone().removeClass("d-none");
-                quarterText.text(quarters[i]["name"]);
-                quarterText.attr(`data-id`, i);
+            const quarterText = quarterDropdown.find(".monthOrQuarterDropdown-item.d-none").first().clone().removeClass("d-none");
+            quarterText.text(quarters[i]["name"]);
+            quarterText.attr(`data-id`, i);
 
-                quarterDropdown.find(".monthOrQuarterDropdown-menu").append(quarterText);
+            quarterDropdown.find(".monthOrQuarterDropdown-menu").append(quarterText);
 
             quarterDropdown.find(".monthOrQuarterDropdown-menu").on('click', '.monthOrQuarterDropdown-item[data-id="' + i + '"]', () =>
                 this.getQuarterData(location, year, i, quarters[i]["name"]));
@@ -196,10 +249,10 @@ class ObaLocationController {
 
     async selectMonth(location, year, allMonthsOfAYear) {
         this.removeChart();
-        $(".chartAndButtonsDiv").find(".monthOrQuarterDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".monthOrQuarterDropdown").remove();
         const monthDropdown = $(".monthOrQuarterDropdown").first().clone().removeClass("d-none");
         monthDropdown.find(".btn.btn-secondary").text("Maand");
-        $(".chartAndButtonsDiv").append(monthDropdown);
+        $(".chartAndButtonsDiv").find(".buttons").append(monthDropdown);
 
         for (let i = 0; i < allMonthsOfAYear.length; i++) {
             let visitorDataMonth = await this.obaLocationRepository.getAllMonths(location["alias_name"], year, allMonthsOfAYear[i]["name"]);
@@ -224,7 +277,7 @@ class ObaLocationController {
         }
     }
 
-    async getQuarterData(location, year, numberOfChosenQuarter, chosenQuarterName){
+    async getQuarterData(location, year, numberOfChosenQuarter, chosenQuarterName) {
         let chosenQuarter;
         let weeks = [];
         let quarterData = [];
@@ -324,7 +377,7 @@ class ObaLocationController {
                 legend: {display: false},
                 title: {
                     display: true,
-                    text: 'OBA bezoekers: ' + type + year
+                    text: 'OBA bezoekers ' + type + year
                 },
                 scales: {
                     xAxes: [{
@@ -360,8 +413,8 @@ class ObaLocationController {
 
     //Checks if an date dropdown is still in a div and removes it
     removePickDateButton() {
-        $(".chartAndButtonsDiv").find(".yearDropdown").remove();
-        $(".chartAndButtonsDiv").find(".monthOrQuarterDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".yearDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".monthOrQuarterDropdown").remove();
     }
 
 
