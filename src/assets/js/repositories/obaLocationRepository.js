@@ -28,6 +28,30 @@ class ObaLocationRepository {
 
     }
 
+    async getFirstQuarter(location, chosenYear) {
+        return await networkManager
+            .doRequest(`${this.route}/firstQuarter?location=${location}&year=${chosenYear}`,
+                null, "GET");
+    }
+
+    async getSecondQuarter(location, chosenYear) {
+        return await networkManager
+            .doRequest(`${this.route}/secondQuarter?location=${location}&year=${chosenYear}`,
+                null, "GET");
+    }
+
+    async getThirdQuarter(location, chosenYear) {
+        return await networkManager
+            .doRequest(`${this.route}/thirdQuarter?location=${location}&year=${chosenYear}`,
+                null, "GET");
+    }
+
+    async getFourthQuarter(location, chosenYear) {
+        return await networkManager
+            .doRequest(`${this.route}/fourthQuarter?location=${location}&year=${chosenYear}`,
+                null, "GET");
+    }
+
     async getChosenYear(location, chosenYear) {
         return await networkManager
             .doRequest(`${this.route}/chosenYear?location=${location}&year=${chosenYear}`,
@@ -42,6 +66,11 @@ class ObaLocationRepository {
     async getAllYears(location) {
         return await networkManager
             .doRequest(`${this.route}/allYears?location=${location}`, null, "GET");
+    }
+
+    async getAllQuarterOfAYear() {
+        return await networkManager
+            .doRequest(`${this.route}/allQuarterOfAYear`, null, "GET");
     }
 
     async getAllMonthsOfAYear() {
