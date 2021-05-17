@@ -15,9 +15,9 @@ class ObaLocationRepository {
 
     }
 
-    async getChosenWeek(location, chosenWeek, chosenYear) {
+    async getChosenWeek(location, chosenYear, chosenWeek) {
         return await networkManager
-            .doRequest(`${this.route}/chosenWeek?location=${location}&week=${chosenWeek}&year=${chosenYear}`,
+            .doRequest(`${this.route}/chosenWeek?location=${location}&year=${chosenYear}&week=${chosenWeek}`,
                 null, "GET");
     }
 
@@ -80,8 +80,14 @@ class ObaLocationRepository {
 
     async getAllMonths(location, year, month) {
         return await networkManager
-    .doRequest(`${this.route}/allMonths?location=${location}&year=${year}&month=${month}`,
-            null, "GET");
+            .doRequest(`${this.route}/allMonths?location=${location}&year=${year}&month=${month}`,
+                null, "GET");
+    }
+
+    async getAllWeeksOfAYear(location, year) {
+        return await networkManager
+            .doRequest(`${this.route}/allWeeksOfAYear?location=${location}&year=${year}`,
+                null, "GET");
     }
 
 

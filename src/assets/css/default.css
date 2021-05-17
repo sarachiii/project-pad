@@ -119,9 +119,12 @@ p {
     height: 90%;
 }
 
-
-
-
-
- /*.*/
+.weekDropdown-menu {
+    margin: 5px;
+    padding: 5px;
+    width: 150px;
+    max-height:200px;
+    overflow: auto;
+    text-align: justify;
+}
 
