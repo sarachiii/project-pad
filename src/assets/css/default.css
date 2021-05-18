@@ -131,3 +131,8 @@ p {
     text-align: justify;
 }
 
+
+.chart-h-w{
+    height: 400px;
+    width: 600px ;
+}
