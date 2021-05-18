@@ -24,6 +24,8 @@ class UploadXMLController {
 
         //File upload
         this.welcomeView.find("#upload").on("click", function() {
+
+
             //Set the proper action url
             $(this).closest("form").attr("action", `${baseUrl}/upload`);
 
