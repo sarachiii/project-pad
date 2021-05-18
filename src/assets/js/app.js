@@ -17,6 +17,7 @@ const CONTROLLER_SEARCHBOOKS = "books";
 const CONTROLLER_UPLOADXML = "uploadXML";
 const CONTROLLER_OBALOCATION = "obaLocation";
 const CONTROLLER_VISITORYEAR = "visitoryear";
+const CONTROLLER_WEEKDAYVISITORS = "weekdayVisitors"
 
 
 const sessionManager = new SessionManager();
@@ -94,6 +95,11 @@ class App {
             case CONTROLLER_UPLOADXML:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new UploadXMLController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_WEEKDAYVISITORS:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new WeekdayVisitorsController(), () => new LoginController());
                 break;
 
             default:

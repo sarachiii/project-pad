@@ -249,11 +249,44 @@ app.get("/location/allYears", (req, res) => {
     );
 })
 
+//Get all quarters of the visitors data
+app.get("/location/allQuarterOfAYear", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `name` FROM `datenames` WHERE `id` = 3",
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
 //Get all months of the visitors data
 app.get("/location/allMonthsOfAYear", (req, res) => {
     db.handleQuery(
         connectionPool, {
             query: "SELECT `name` FROM `datenames` WHERE `id` = 2",
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all weeks of the visitors data
+app.get("/location/allWeeksOfAYear", (req, res) => {
+    const location = req.query.location;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `location`, `year`, `week`, `visitors` FROM `visitordata` WHERE `visitordata`.`location` = ? " +
+                "AND `visitordata`.`year` = ? group by `week`",
+            values: [location, year],
         },
         (data) => {
             //just give all data back as json
@@ -318,6 +351,101 @@ app.get("/location/chosenMonth", (req, res) => {
             query: "SELECT * FROM `visitordata` WHERE `visitordata`.`location` = ? AND " +
                 "`visitordata`.`month` = ? AND `visitordata`.`year` = ?",
             values: [location, month, year],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all visitors data of the first quarter, data per week
+app.get("/location/firstQuarter", (req, res) => {
+
+    const location = req.query.location;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'amount' FROM " +
+                "`visitordata` WHERE `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND " +
+                "`visitordata`.`month` = 'januari' " +
+                "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'februari' " +
+                "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'maart' " +
+                "GROUP BY `week` ASC",
+            values: [location, year, location, year, location, year],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all visitors data of the second quarter, data per week
+app.get("/location/secondQuarter", (req, res) => {
+
+    const location = req.query.location;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'amount' FROM " +
+                "`visitordata` WHERE `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND " +
+                "`visitordata`.`month` = 'april' " +
+                "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'mei' " +
+                "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'juni' " +
+                "GROUP BY `week` ASC",
+            values: [location, year, location, year, location, year],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all visitors data of the third quarter, data per week
+app.get("/location/thirdQuarter", (req, res) => {
+
+    const location = req.query.location;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'amount' FROM " +
+                "`visitordata` WHERE `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND " +
+                "`visitordata`.`month` = 'juli' " +
+                "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'augustus' " +
+                "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'september' " +
+                "GROUP BY `week` ASC",
+            values: [location, year, location, year, location, year],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+//Get all visitors data of the fourth quarter, data per week
+app.get("/location/fourthQuarter", (req, res) => {
+
+    const location = req.query.location;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'amount' FROM " +
+                "`visitordata` WHERE `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND " +
+                "`visitordata`.`month` = 'oktober' " +
+                "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'november' " +
+                "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'december' GROUP BY `week` ASC",
+            values: [location, year, location, year, location, year],
         },
         (data) => {
             //just give all data back as json
@@ -422,6 +550,56 @@ app.post("/upload", function (req, res) {
 
     });
 });
+
+app.get("/weekdayVisitors", (req, res) => {
+
+    const year = req.query.year;
+    const location = req.query.location;
+
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `visitors`, `weekday` FROM `visitordata` WHERE `year` = ? AND `location` = ?",
+            values: [year, location],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+app.get("/weekdayVisitors/yearOptions", (req, res) => {
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT DISTINCT `year` FROM `visitordata`",
+            values: [],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+app.get("/weekdayVisitors/locationOptions", (req, res) => {
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT DISTINCT `location` FROM `visitordata`",
+            values: [],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
 
 
 //------- END ROUTES -------
