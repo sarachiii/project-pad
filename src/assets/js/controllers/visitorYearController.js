@@ -28,21 +28,20 @@ class VisitorYearController {
     async buildYearChart() {
 
         try {
-
-        let promise = await this.visitorYearRepository.getYearData();
+        let data = await this.visitorYearRepository.getYearData();
         let locations = [];
         let years = [];
         let visitors = [];
 
         //Puts locations in array
-        for (let i = 0; i < promise.length; i++) {
-            locations[i] = promise[i].location
-            years[i] = promise[i].year
-            visitors[i] = promise[i].amount
+        for (let i = 0; i < data.length; i++) {
+            locations[i] = data[i].location
+            years[i] = data[i].year
+            visitors[i] = data[i].amount
         }
 
         //Builds chart in canvas element
-        const CHART = document.getElementById('chartYear').getContext('2d');
+        const CHART = $('chartYear').getContext('2d');
 
         //Create random colours for each chart line
         var randomColorGenerator = function () {

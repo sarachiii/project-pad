@@ -9,7 +9,6 @@ describe("select Location", () => {
         cy.visit("http://localhost:8080/#obaLocation");
     });
 
-
     //Check if switching between locations and districts work
     it("Check if switching between locations and districts work", function () {
 

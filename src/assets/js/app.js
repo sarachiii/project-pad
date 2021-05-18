@@ -17,8 +17,7 @@ const CONTROLLER_SEARCHBOOKS = "books";
 const CONTROLLER_UPLOADXML = "uploadXML";
 const CONTROLLER_OBALOCATION = "obaLocation";
 const CONTROLLER_VISITORYEAR = "visitoryear";
-const CONTROLLER_WEEKDAYVISITORS = "weekdayVisitors"
-
+const CONTROLLER_WEEKDAYVISITORS = "weekdayVisitors";
 
 const sessionManager = new SessionManager();
 const networkManager = new NetworkManager();
