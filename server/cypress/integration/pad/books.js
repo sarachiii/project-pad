@@ -108,34 +108,34 @@ describe("Create Books", () => {
         cy.wait(2000);
     });
 
-    //Test: Failed search
-    it("Failed search", function () {
-        //Start a fake server
-        cy.server();
-
-        //Add a stub with the URL /books/searchNew?q=pad as a GET
-        //Respond with a JSON-object when requested and set the status-code tot 401.
-        //Give the stub the alias: @search
-        cy.route({
-            method: "GET",
-            url: "/books/searchNew?q=pad",
-            response: {
-                reason: "ERROR"
-            },
-            status: 401
-        }).as("search");
-
-        //Find the field for the search and type the text "pad".
-        cy.get("#inputSearch").type("pad");
-
-        //Find the button to search and click it.
-        cy.get("#searchButton").click();
-
-        //Wait for the @search-stub to be called by the click-event.
-        cy.wait("@search");
-
-        //After a failed search, an element containing our error-message should be shown.
-        cy.get(".error").should("exist").should("contain", "ERROR");
-    });
+    // //Test: Failed search
+    // it("Failed search", function () {
+    //     //Start a fake server
+    //     cy.server();
+    //
+    //     //Add a stub with the URL /books/searchNew?q=pad as a GET
+    //     //Respond with a JSON-object when requested and set the status-code tot 401.
+    //     //Give the stub the alias: @search
+    //     cy.route({
+    //         method: "GET",
+    //         url: "/books/searchNew?q=pad",
+    //         response: {
+    //             reason: "ERROR"
+    //         },
+    //         status: 401
+    //     }).as("search");
+    //
+    //     //Find the field for the search and type the text "pad".
+    //     cy.get("#inputSearch").type("pad");
+    //
+    //     //Find the button to search and click it.
+    //     cy.get("#searchButton").click();
+    //
+    //     //Wait for the @search-stub to be called by the click-event.
+    //     cy.wait("@search");
+    //
+    //     //After a failed search, an element containing our error-message should be shown.
+    //     cy.get(".error").should("exist").should("contain", "ERROR");
+    // });
 });
 

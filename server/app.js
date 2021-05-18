@@ -7,7 +7,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const db = require("./utils/databaseHelper");
-const cryptoHelper = require("./utils/cryptoHelper");
 const corsConfig = require("./utils/corsConfigHelper");
 const app = express();
 const fileUpload = require("express-fileupload");
@@ -35,11 +34,9 @@ app.get("/books/searchNew", (req, res) => {
             const json = Buffer.concat(bodyChunks).toString();
 
             //send to the one who request this route(eg. front-end), it's already json so dont use .json(..)
-
             res.header('Access-Control-Allow-Origin', '*');
             res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
             res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-
             res.status(httpOkCode).send(json);
         })
     });
@@ -74,8 +71,6 @@ const authorizationErrCode = 401;
 
 app.post("/user/login", (req, res) => {
     const username = req.body.username;
-
-    //TODO: We shouldn't save a password unencrypted!! Improve this by using cryptoHelper :)
     const password = req.body.password;
 
     db.handleQuery(
@@ -112,29 +107,6 @@ app.get("/books/all", (req, res) => {
     );
 });
 
-//Insert books into database
-// app.post("/books/addBook", (req, res) => {
-//
-//     const id = req.body.id;
-//     const title = req.body.title;
-//     const author = req.body.author;
-//     const genre = req.body.genre;
-//     const image = req.body.image;
-//     const recap = req.body.recap;
-//
-//     db.handleQuery(
-//         connectionPool, {
-//             query: "INSERT INTO `book` (`idBook`, `Title`, `Author`, `Genre`, `Image`, `Recap`) VALUES (?, ?, ?, ?, ?, ?)",
-//             values: [id, title, author, genre, image, recap],
-//         },
-//         (data) => {
-//             //just give all data back as json
-//             res.status(httpOkCode).json(data);
-//         },
-//         (err) => res.status(badRequestCode).json({reason: err})
-//     );
-// });
-
 app.get("/location", (req, res) => {
     db.handleQuery(
         connectionPool, {
@@ -155,7 +127,6 @@ app.get("/visitoryear", (req, res) => {
             query: "SELECT SUM(`visitors`) as 'amount', `location`, `year` FROM `visitordata` " +
                 "WHERE `year` < 2020 " +
                 "GROUP BY `location`, `year`"
-            // "HAVING SUM(`visitors`) > 0"
         },
         (data) => {
 
@@ -481,15 +452,12 @@ app.post("/upload", function (req, res) {
     }
 
     let sampleFile = req.files.sampleFile;
-
     let filePath = appPath + "server/XMLData/XMLBezoekers.xml"
-
 
     sampleFile.mv(filePath, function (err) {
         if (err) {
             return res.status(badRequestCode).json({reason: err});
         }
-
 
         let date;
         let year;
@@ -504,7 +472,6 @@ app.post("/upload", function (req, res) {
         const fs = require('fs');
         const parser = new xml2js.Parser({attrkey: "ATTR"});
         let xml_string = fs.readFileSync(filePath, "utf8");
-
 
         parser.parseString(xml_string, function (error, result) {
             if (error === null) {
@@ -524,7 +491,6 @@ app.post("/upload", function (req, res) {
                         location = result["oba-data-bezoekers"].record[i].vestiging[0];
                         visitors = result["oba-data-bezoekers"].record[i].bezoekers[0];
 
-
                         db.handleQuery(
                             connectionPool, {
                                 query: "INSERT INTO `visitordata` (`date`, `year`, `month`, `week`, `day`, `weekday`, `location`, `visitors`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -537,17 +503,13 @@ app.post("/upload", function (req, res) {
                         );
                     }
                 }
-
                 console.log("All dates inserted")
                 res.status(httpOkCode);
-
             } else {
                 console.log(error);
                 res.status(badRequestCode)
             }
         });
-
-
     });
 });
 
@@ -555,7 +517,6 @@ app.get("/weekdayVisitors", (req, res) => {
 
     const year = req.query.year;
     const location = req.query.location;
-
 
     db.handleQuery(
         connectionPool, {
@@ -599,8 +560,6 @@ app.get("/weekdayVisitors/locationOptions", (req, res) => {
         (err) => res.status(badRequestCode).json({reason: err})
     );
 })
-
-
 
 //------- END ROUTES -------
 module.exports = app;
