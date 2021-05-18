@@ -277,6 +277,25 @@ app.get("/location/allMonthsOfAYear", (req, res) => {
     );
 })
 
+//Get all weeks of the visitors data
+app.get("/location/allWeeksOfAYear", (req, res) => {
+    const location = req.query.location;
+    const year = req.query.year;
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `location`, `year`, `week`, `visitors` FROM `visitordata` WHERE `visitordata`.`location` = ? " +
+                "AND `visitordata`.`year` = ? group by `week`",
+            values: [location, year],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
 //Get all visitors data of a chosen location, week and year
 app.get("/location/allMonths", (req, res) => {
 

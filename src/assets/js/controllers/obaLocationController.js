@@ -97,7 +97,9 @@ class ObaLocationController {
     async selectDate(location) {
         $(".chartAndButtonsDiv").empty();
         const dateDropdown = $(".dateDropdown.dropdown.d-none").first().clone().removeClass("d-none");
-        $(".chartAndButtonsDiv").append(dateDropdown);
+        const buttons = $(".buttons.d-none").first().clone().removeClass("d-none");
+        buttons.append(dateDropdown);
+        $(".chartAndButtonsDiv").append(buttons);
 
         let allDate = await this.obaLocationRepository.getAllDate();
         for (let i = 0; i < allDate.length; i++) {
@@ -112,6 +114,9 @@ class ObaLocationController {
                 console.log(allDate[i]["name"]);
             });
         }
+
+        dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 0 + '"]', () =>
+            this.disableButton(allDate, 0) && this.selectYear(location, "week"));
 
         dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 1 + '"]', () =>
             this.disableButton(allDate, 1) && this.selectYear(location, "month"));
@@ -129,7 +134,7 @@ class ObaLocationController {
         this.removeChart();
 
         const yearDropdown = $(".yearDropdown").first().clone().removeClass("d-none");
-        $(".chartAndButtonsDiv").append(yearDropdown);
+        $(".chartAndButtonsDiv").find(".buttons").append(yearDropdown);
 
         let allYears = await this.obaLocationRepository.getAllYears(location["alias_name"]);
 
@@ -146,8 +151,7 @@ class ObaLocationController {
 
             if (checkIfYearDataIsEmpty < visitorDataYear.length) {
                 const years = yearDropdown.find(".yearDropdown-item.d-none").first().clone().removeClass("d-none");
-                years.text(allYears[i]["year"]);
-                years.attr(`data-id`, i);
+                years.text(allYears[i]["year"]).attr(`data-id`, i);
 
                 yearDropdown.find(".yearDropdown-menu").append(years);
             }
@@ -167,27 +171,49 @@ class ObaLocationController {
                     yearDropdown.find(".yearDropdown-menu").on('click', '.yearDropdown-item[data-id="' + i + '"]', () =>
                         this.selectMonth(location, allYears[i]["year"], allMonthsOfAYear));
                     break;
+                case "week":
+                    yearDropdown.find(".yearDropdown-menu").on('click', '.yearDropdown-item[data-id="' + i + '"]', () =>
+                        this.selectWeek(location, allYears[i]["year"]));
+                    break;
             }
+        }
+    }
 
+    async selectWeek(location, year) {
+        this.removeChart();
+        $(".chartAndButtonsDiv").find(".buttons").find(".weekDropdown").remove();
+        const weekDropdown = $(".weekDropdown").first().clone().removeClass("d-none");
+        weekDropdown.find(".btn.btn-secondary").text("Week");
+        $(".chartAndButtonsDiv").find(".buttons").append(weekDropdown);
+
+        let allWeeksOfAYear = await this.obaLocationRepository.getAllWeeksOfAYear(location["alias_name"], year);
+        console.log(allWeeksOfAYear)
+        for (let i = 0; i < allWeeksOfAYear.length; i++) {
+            //Checks if the visitor data of every week of a year is null
+            if (allWeeksOfAYear[i]["visitors"] !== 0) {
+                const weeks = weekDropdown.find(".weekDropdown-item.d-none").first().clone().removeClass("d-none");
+                weeks.text(allWeeksOfAYear[i]["week"]).attr(`data-id`, i);
+                weekDropdown.find(".weekDropdown-menu").append(weeks);
+            }
+            weekDropdown.find(".weekDropdown-menu").on('click', '.weekDropdown-item[data-id="' + i + '"]', () =>
+                this.getWeekData(location, year, allWeeksOfAYear[i]["week"]));
         }
     }
 
     async selectQuarter(location, year) {
         this.removeChart();
-        $(".chartAndButtonsDiv").find(".monthOrQuarterDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".monthOrQuarterDropdown").remove();
         const quarterDropdown = $(".monthOrQuarterDropdown").first().clone().removeClass("d-none");
         quarterDropdown.find(".btn.btn-secondary").text("Kwartaal");
-        $(".chartAndButtonsDiv").append(quarterDropdown);
+        $(".chartAndButtonsDiv").find(".buttons").append(quarterDropdown);
 
         let quarters = await this.obaLocationRepository.getAllQuarterOfAYear();
         console.log(quarters);
 
         for (let i = 0; i < quarters.length; i++) {
-                const quarterText = quarterDropdown.find(".monthOrQuarterDropdown-item.d-none").first().clone().removeClass("d-none");
-                quarterText.text(quarters[i]["name"]);
-                quarterText.attr(`data-id`, i);
-
-                quarterDropdown.find(".monthOrQuarterDropdown-menu").append(quarterText);
+            const quarterText = quarterDropdown.find(".monthOrQuarterDropdown-item.d-none").first().clone().removeClass("d-none");
+            quarterText.text(quarters[i]["name"]).attr(`data-id`, i);
+            quarterDropdown.find(".monthOrQuarterDropdown-menu").append(quarterText);
 
             quarterDropdown.find(".monthOrQuarterDropdown-menu").on('click', '.monthOrQuarterDropdown-item[data-id="' + i + '"]', () =>
                 this.getQuarterData(location, year, i, quarters[i]["name"]));
@@ -196,17 +222,19 @@ class ObaLocationController {
 
     async selectMonth(location, year, allMonthsOfAYear) {
         this.removeChart();
-        $(".chartAndButtonsDiv").find(".monthOrQuarterDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".monthOrQuarterDropdown").remove();
         const monthDropdown = $(".monthOrQuarterDropdown").first().clone().removeClass("d-none");
         monthDropdown.find(".btn.btn-secondary").text("Maand");
-        $(".chartAndButtonsDiv").append(monthDropdown);
+        $(".chartAndButtonsDiv").find(".buttons").append(monthDropdown);
+
 
         for (let i = 0; i < allMonthsOfAYear.length; i++) {
             let visitorDataMonth = await this.obaLocationRepository.getAllMonths(location["alias_name"], year, allMonthsOfAYear[i]["name"]);
+
             //Checks if the visitor data of every month of a year is null
             let checkIfMonthDataIsEmpty = 0;
             for (let j = 0; j < visitorDataMonth.length; j++) {
-                if (visitorDataMonth[j]["amount"] === 0) { //Nieuwe functie maken???
+                if (visitorDataMonth[j]["amount"] === 0) {
                     checkIfMonthDataIsEmpty++;
                 }
             }
@@ -224,7 +252,26 @@ class ObaLocationController {
         }
     }
 
-    async getQuarterData(location, year, numberOfChosenQuarter, chosenQuarterName){
+    async getWeekData(location, year, chosenWeek) {
+        let days = [];
+        let weekData = [];
+        let color = [];
+        let borderColor = [];
+        let week = await this.obaLocationRepository.getChosenWeek(location["alias_name"], year, chosenWeek);
+
+        for (let i = 0; i < week.length; i++) {
+            days[i] = week[i]["weekday"];
+            weekData[i] = week[i]["visitors"];
+            color = 'rgba(255, 205, 86, 0.5)';
+            borderColor = 'rgb(255, 205, 86)';
+
+        }
+
+        this.showChart(days, weekData, color, borderColor, year, "dagen", "week: " + chosenWeek + " van ");
+        console.log(week);
+    }
+
+    async getQuarterData(location, year, numberOfChosenQuarter, chosenQuarterName) {
         let chosenQuarter;
         let weeks = [];
         let quarterData = [];
@@ -324,7 +371,7 @@ class ObaLocationController {
                 legend: {display: false},
                 title: {
                     display: true,
-                    text: 'OBA bezoekers: ' + type + year
+                    text: 'OBA bezoekers ' + type + year
                 },
                 scales: {
                     xAxes: [{
@@ -344,7 +391,7 @@ class ObaLocationController {
         });
     }
 
-    //Enables all buttons first and then disable the button that is clicked
+//Enables all buttons first and then disable the button that is clicked
     async disableButton(allDate, id) {
         for (let i = 0; i < allDate.length; i++) {
             $(".dateDropdown.dropdown").find('.dateDropdown-item[data-id="' + i + '"]').attr("disabled", false);
@@ -352,56 +399,57 @@ class ObaLocationController {
         $(".dateDropdown.dropdown").find('.dateDropdown-item[data-id="' + id + '"]').attr("disabled", true);
     }
 
-    //Removes chart and the chart id
+//Removes chart and the chart id
     removeChart() {
         $(".chart").find(".choseDateChart").removeAttr('id');
         $(".chartAndButtonsDiv").find(".chart").remove();
     }
 
-    //Checks if an date dropdown is still in a div and removes it
+//Checks if an date dropdown is still in a div and removes it
     removePickDateButton() {
-        $(".chartAndButtonsDiv").find(".yearDropdown").remove();
-        $(".chartAndButtonsDiv").find(".monthOrQuarterDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".weekDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".yearDropdown").remove();
+        $(".chartAndButtonsDiv").find(".buttons").find(".monthOrQuarterDropdown").remove();
     }
 
 
-    //                 label: "OBA bezoekers",
-    //                 backgroundColor: [
-    //                     'rgba(255, 205, 86, 0.5)',
-    //                     'rgba(255, 205, 86, 0.5)',
-    //                     'rgba(255, 205, 86, 0.5)',
-    //                     'rgba(255, 205, 86, 0.5)',
-    //                     'rgba(255, 205, 86, 0.5)',
-    //                     'rgba(255, 205, 86, 0.5)',
-    //                     'rgba(255, 205, 86, 0.5)',
-    //
-    //                     // 'rgba(255, 99, 132, 0.5)',
-    //                     // 'rgba(255, 159, 64, 0.5)',
-    //                     // 'rgba(255, 205, 86, 0.5)',
-    //                     // 'rgba(75, 192, 192, 0.5)',
-    //                     // 'rgba(54, 162, 235, 0.5)',
-    //                     // 'rgba(153, 102, 255, 0.5)',
-    //                     // 'rgba(201, 203, 207, 0.5)'
-    //                 ],
-    //                 borderColor: [
-    //                     'rgb(255, 205, 86)',
-    //                     'rgb(255, 205, 86)',
-    //                     'rgb(255, 205, 86)',
-    //                     'rgb(255, 205, 86)',
-    //                     'rgb(255, 205, 86)',
-    //                     'rgb(255, 205, 86)',
-    //                     'rgb(255, 205, 86)',
-    //
-    //                     // 'rgb(255, 99, 132)',
-    //                     // 'rgb(255, 159, 64)',
-    //                     // 'rgb(255, 205, 86)',
-    //                     // 'rgb(75, 192, 192)',
-    //                     // 'rgb(54, 162, 235)',
-    //                     // 'rgb(153, 102, 255)',
-    //                     // 'rgb(201, 203, 207)'
-    //                 ],
+//                 label: "OBA bezoekers",
+//                 backgroundColor: [
+//                     'rgba(255, 205, 86, 0.5)',
+//                     'rgba(255, 205, 86, 0.5)',
+//                     'rgba(255, 205, 86, 0.5)',
+//                     'rgba(255, 205, 86, 0.5)',
+//                     'rgba(255, 205, 86, 0.5)',
+//                     'rgba(255, 205, 86, 0.5)',
+//                     'rgba(255, 205, 86, 0.5)',
+//
+//                     // 'rgba(255, 99, 132, 0.5)',
+//                     // 'rgba(255, 159, 64, 0.5)',
+//                     // 'rgba(255, 205, 86, 0.5)',
+//                     // 'rgba(75, 192, 192, 0.5)',
+//                     // 'rgba(54, 162, 235, 0.5)',
+//                     // 'rgba(153, 102, 255, 0.5)',
+//                     // 'rgba(201, 203, 207, 0.5)'
+//                 ],
+//                 borderColor: [
+//                     'rgb(255, 205, 86)',
+//                     'rgb(255, 205, 86)',
+//                     'rgb(255, 205, 86)',
+//                     'rgb(255, 205, 86)',
+//                     'rgb(255, 205, 86)',
+//                     'rgb(255, 205, 86)',
+//                     'rgb(255, 205, 86)',
+//
+//                     // 'rgb(255, 99, 132)',
+//                     // 'rgb(255, 159, 64)',
+//                     // 'rgb(255, 205, 86)',
+//                     // 'rgb(75, 192, 192)',
+//                     // 'rgb(54, 162, 235)',
+//                     // 'rgb(153, 102, 255)',
+//                     // 'rgb(201, 203, 207)'
+//                 ],
 
-    //Called when the obaLocation.html failed to load
+//Called when the obaLocation.html failed to load
     error() {
         $(".content").html("Failed to load content!");
     }
