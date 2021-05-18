@@ -483,11 +483,7 @@ app.post("/upload", function (req, res) {
     let sampleFile = req.files.sampleFile;
 
     let filePath = appPath + "server/XMLData/XMLBezoekers.xml"
-    var extension = filePath.replace(/^.*\./, '');
 
-    if(extension != ".xml"){
-        return res.status(badRequestCode).json({reason: "Wrong filetype"});
-    }
 
     sampleFile.mv(filePath, function (err) {
         if (err) {
@@ -546,7 +542,7 @@ app.post("/upload", function (req, res) {
 
             } else {
                 console.log(error);
-                return res.status(badRequestCode).json({reason: err});
+                res.status(badRequestCode).json({reason: err});
             }
         });
 
