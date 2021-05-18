@@ -47,7 +47,7 @@ describe("select Location", () => {
         cy.get('.districtName').should('be.visible');
 
         //Find the go back to district button and chosen district text and check if it invisible.
-        cy.get('.textdiv').should('not.be.visible');
+        cy.get('.locationsOfADistrict').should('not.be.visible');
 
         //Make a fake locations GET response
         cy.route("GET", "**",
@@ -123,7 +123,7 @@ describe("select Location", () => {
         cy.get('.districtName').should('not.be.visible');
 
         //Find the go back to district button and chosen district text and check if it visible.
-        cy.get('.textdiv').should('be.visible');
+        cy.get('.locationsOfADistrict').should('be.visible');
 
         //Check if the text show the right district name
         cy.get('.districtText').contains('Nieuw-West');
