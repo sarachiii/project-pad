@@ -40,16 +40,13 @@ class VisitorYearController {
             visitors[i] = data[i].amount
         }
 
-        //Builds chart in canvas element
-        const CHART = $('chartYear').getContext('2d');
-
         //Create random colours for each chart line
         var randomColorGenerator = function () {
             return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
         };
 
         //Create chart with data of one OBA location
-        let myLineChart = new Chart(CHART, {
+        let myLineChart = new Chart($('#chartYear'), {
             type: 'line',
             options: {
                 elements: {

@@ -95,6 +95,21 @@ describe("Create Books", () => {
                 expect(request.response.body["results"][1].genres[0]).eq("Detectiveroman");
             });
 
+        //Check of content shown on the page matches the results
+        cy.get('#tableRow').find('img').should('have.attr', 'src').should('include',
+            'https://cover.biblion.nl/coverlist.dll?doctype=morebutton&bibliotheek=oba&style=0' +
+            '&ppn=398125236&isbn=9789022575970&lid=&aut=&ti=&size=70');
+        cy.get('#tableRow').find('.title').should("contain", "Het slechte pad");
+        cy.get('#tableRow').find('.auteur').should("contain", "Robert Galbraith,Sabine Mutsaers");
+        cy.get('#tableRow').find('.genre').should("contain", "Detectiveroman");
+
+        cy.get('#tableRow1').find('img').should('have.attr', 'src').should('include',
+            'https://cover.biblion.nl/coverlist.dll?doctype=morebutton&bibliotheek=oba&' +
+            'style=0&ppn=302331697&isbn=9789055661404&lid=&aut=&ti=&size=70');
+        cy.get('#tableRow1').find('.title').should("contain", "Pad");
+        cy.get('#tableRow1').find('.auteur').should("contain", "Stephen Savage,T. Dijkhof");
+        cy.get('#tableRow1').find('.genre').should("contain", "-");
+
         //Find the table bar, check if it visible.
         cy.get('#tableBar').should('be.visible');
 
@@ -108,34 +123,34 @@ describe("Create Books", () => {
         cy.wait(2000);
     });
 
-    // //Test: Failed search
-    // it("Failed search", function () {
-    //     //Start a fake server
-    //     cy.server();
-    //
-    //     //Add a stub with the URL /books/searchNew?q=pad as a GET
-    //     //Respond with a JSON-object when requested and set the status-code tot 401.
-    //     //Give the stub the alias: @search
-    //     cy.route({
-    //         method: "GET",
-    //         url: "/books/searchNew?q=pad",
-    //         response: {
-    //             reason: "ERROR"
-    //         },
-    //         status: 401
-    //     }).as("search");
-    //
-    //     //Find the field for the search and type the text "pad".
-    //     cy.get("#inputSearch").type("pad");
-    //
-    //     //Find the button to search and click it.
-    //     cy.get("#searchButton").click();
-    //
-    //     //Wait for the @search-stub to be called by the click-event.
-    //     cy.wait("@search");
-    //
-    //     //After a failed search, an element containing our error-message should be shown.
-    //     cy.get(".error").should("exist").should("contain", "ERROR");
-    // });
+    //Test: Failed search
+    it("Failed search", function () {
+        //Start a fake server
+        cy.server();
+
+        //Add a stub with the URL /books/searchNew?q=pad as a GET
+        //Respond with a JSON-object when requested and set the status-code tot 401.
+        //Give the stub the alias: @search
+        cy.route({
+            method: "GET",
+            url: "/books/searchNew?q=pad",
+            response: {
+                reason: "ERROR"
+            },
+            status: 401
+        }).as("search");
+
+        //Find the field for the search and type the text "pad".
+        cy.get("#inputSearch").type("pad");
+
+        //Find the button to search and click it.
+        cy.get("#searchButton").click();
+
+        //Wait for the @search-stub to be called by the click-event.
+        cy.wait("@search");
+
+        //After a failed search, an element containing our error-message should be shown.
+        cy.get(".error").should("exist").should("contain", "ERROR");
+    });
 });
 

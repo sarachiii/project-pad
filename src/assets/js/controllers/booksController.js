@@ -68,14 +68,15 @@ class BooksController {
             booksTable.empty();
             for (let i = 0; i < results.length; i++) {
                 //Get code from external html file
-                $.get("views/booksTable.html", function (tabel) {
-                    const rij = $(tabel);
+                $.get("views/booksTable.html", function (table) {
+                    const row = $(table);
+
+                    $('#tableRow').attr("id", "tableRow" + i); //increase ID by i to make all the rows unique
 
                     /* BOOK COVER IMAGE */
 
                     //Retrieve image URL from OBA API
                     let book = results[i]['coverimages'];
-
                     let firstLink = book[0];
 
                     //Retrieve title with author from OBA API
@@ -94,38 +95,35 @@ class BooksController {
                         height = img.height;
                         width = img.width;
 
-                        rij.find(`#coverImage`).attr("id", "coverImage" + i); //increase ID by i to make it unique every loop
+                        row.find('#coverImage').attr("id", "coverImage" + i); //increase ID by i to make it unique every loop
 
                         if (height == 1 || width == 1) {
-                            rij.find(`#coverImage` + i).attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
+                            row.find(`#coverImage` + i).attr('src', "https://v112.nbc.bibliotheek.nl/thumbnail?uri=" +
                                 "//http://data.bibliotheek.nl/ggc/ppn/820177083&token=c1322402");
                         } else {
-                            rij.find(`#coverImage` + i).attr('src', firstLink);
+                            row.find(`#coverImage` + i).attr('src', firstLink);
                         }
                     };
-
-                    rij.find('.image').removeClass("d-none");
-                    rij.find('.title.d-none').text(firstTitle);
-                    rij.find('.title').removeClass("d-none");
-                    rij.find('.auteur.d-none').text(results[i]['authors']);
-                    rij.find('.auteur').removeClass("d-none");
+                    row.find('.image').removeClass("d-none");
+                    row.find('.title.d-none').text(firstTitle);
+                    row.find('.title').removeClass("d-none");
+                    row.find('.auteur.d-none').text(results[i]['authors']);
+                    row.find('.auteur').removeClass("d-none");
 
                     let genre = results[i]['genres'];
                     if (genre == null) {
-                        rij.find('.genre.d-none').text("-");
+                        row.find('.genre.d-none').text("-");
                     } else {
-                        rij.find('.genre.d-none').text(genre);
+                        row.find('.genre.d-none').text(genre);
                     }
-                    rij.find('.genre').removeClass("d-none");
+                    row.find('.genre').removeClass("d-none");
 
                     $(".infoButton .d-none").on('click', function (e) {
                         // prevent default submit van button
                         e.preventDefault();
                     });
-                    rij.find('.infoButton').attr(`data-id`, i);
-                    rij.find('.infoButton').removeClass("d-none");
-                    // rij.find(".addBook").on("click", (event) => this.onBorrowBook(event, results[i]['id'], firstTitle,
-                    //     results[i]['authors'], genre, firstLink, results[i]['summaries']));
+                    row.find('.infoButton').attr(`data-id`, i);
+                    row.find('.infoButton').removeClass("d-none");
 
                     /* Pop-up info screen*/
                     $("#books").on('click', '.infoButton[data-id="' + i + '"]', function () {
@@ -150,11 +148,8 @@ class BooksController {
                         bookInfo.find(".information .isbn span").text(results[i]['isbn']);
                         bookInfo.find(".information .publisher span").text(results[i]['publisher']);
                         bookInfo.find(".information .siso span").text(results[i]['siso']);
-                        // bookInfo.find(".addBook").on("click", (event) => this.onBorrowBook(event, results[i]['id'], firstTitle,
-                        //     results[i]['authors'], genre, firstLink, results[i]['summaries']));
-
                     });
-                    booksTable.append(rij);
+                    booksTable.append(row);
 
                     document.getElementById("addBook").addEventListener("click", function () {
                             document.getElementById("addBook").innerHTML = "Boek geleend!"
