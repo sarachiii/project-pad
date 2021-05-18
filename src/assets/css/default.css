@@ -91,6 +91,9 @@ footer {
 /*#inlogbtn {*/
 /*    width: 100%;*/
 /*}*/
+.hide-navigation-item {
+    display: none !important;
+}
 
 .scrollbar {
     margin: 5px;

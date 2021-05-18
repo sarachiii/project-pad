@@ -13,7 +13,7 @@ describe("XML upload", () => {
     //checks if all html elements exist
     it("check existing elements", function () {
 
-//        check form element
+        //check form element
         cy.get("form").should("exist")
 
         //check first and second input

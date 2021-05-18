@@ -22,7 +22,7 @@ class WelcomeController {
 
         //Change colour of navbar item
         $(".nav-item").removeClass("active");
-        $(".welcomeItem").addClass("active");
+        $(".logoutItem").removeClass("hide-navigation-item");
 
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.welcomeView);
