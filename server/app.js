@@ -532,6 +532,56 @@ app.post("/upload", function (req, res) {
     });
 });
 
+app.get("/weekdayVisitors", (req, res) => {
+
+    const year = req.query.year;
+    const location = req.query.location;
+
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT `visitors`, `weekday` FROM `visitordata` WHERE `year` = ? AND `location` = ?",
+            values: [year, location],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+app.get("/weekdayVisitors/yearOptions", (req, res) => {
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT DISTINCT `year` FROM `visitordata`",
+            values: [],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+app.get("/weekdayVisitors/locationOptions", (req, res) => {
+
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT DISTINCT `location` FROM `visitordata`",
+            values: [],
+        },
+        (data) => {
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+})
+
+
 
 //------- END ROUTES -------
 module.exports = app;
