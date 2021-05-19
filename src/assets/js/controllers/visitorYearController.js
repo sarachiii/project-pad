@@ -47,35 +47,25 @@ class VisitorYearController {
 
         //Create chart with data of one OBA location
         let myLineChart = new Chart($('#chartYear'), {
-            type: 'line',
-            options: {
-                elements: {
-                    line: {
-                        tension: 0
-                    }
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-            },
+            type: 'bar',
             data: {
                 labels: [years[0], years[1], years[2], years[3], years[4]],
                 datasets: [],
-            }
-        });
+            },
+            options: {
+                responsive: true,
+                    legend: {
+                        position: 'left',
+                    },
+                },
+            });
 
         //Add the data dynamically to the graph, the lines will be hidden in the graph
         for (let i = 0; i < locations.length; i += 5) {
             myLineChart.data.datasets.push({
                 label: locations[i],
-                backgroundColor: 'transparent',
-                borderColor: randomColorGenerator(),
+                backgroundColor: randomColorGenerator(),
                 borderWidth: 2,
-                fill: false,
                 data: [visitors[i], visitors[i + 1], visitors[i + 2], visitors[i + 3], visitors[i + 4]],
                 hidden: true
             });
