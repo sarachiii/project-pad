@@ -18,6 +18,7 @@ const CONTROLLER_UPLOADXML = "uploadXML";
 const CONTROLLER_OBALOCATION = "obaLocation";
 const CONTROLLER_VISITORYEAR = "visitoryear";
 const CONTROLLER_WEEKDAYVISITORS = "weekdayVisitors";
+const CONTROLLER_DIFFERENCEYEARS = "differenceyears";
 
 const sessionManager = new SessionManager();
 const networkManager = new NetworkManager();
@@ -99,6 +100,11 @@ class App {
             case CONTROLLER_WEEKDAYVISITORS:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new WeekdayVisitorsController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_DIFFERENCEYEARS:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new differenceYearsController(), () => new LoginController());
                 break;
 
             default:
