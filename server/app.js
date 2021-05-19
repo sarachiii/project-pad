@@ -181,6 +181,24 @@ app.get("/featured", (req, res) => {
     );
 })
 
+//Query to retrieve visitors data to compare them in percentages
+app.get("/percentageYear", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT SUM(`visitors`) as 'amount', `year` FROM `visitordata` " +
+                "GROUP BY `year`"
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+});
+
+
+
 //Get all districts
 app.get("/location/districts", (req, res) => {
     db.handleQuery(
