@@ -35,7 +35,7 @@ class differenceYearsController {
              let data = await this.differenceYearsRepository.getdifferenceyears();
               let years = [];
               let visitors = [];
-            //
+            console.log(data);
                //Puts locations in array
             for (let i = 0; i < data.length; i++) {
                   years[i] = data[i].year
@@ -50,17 +50,18 @@ class differenceYearsController {
                 type: 'line',
                 data: {
                     //labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-                    labels: [year[0], year[1], year[2], year[3], year[4], year[5]],
+                    labels: years,
                     datasets: [{
                         label: "OBA bezoekers",
-                        // backgroundColor: 'rgb(255, 99, 132)',
-                        // borderColor: 'rgb(255, 99, 132)',
-                        // borderWidth: 2,
-                        data: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                        backgroundColor: 'rgb(255, 99, 132, 0.4)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        borderWidth: 2,
+                        data: visitors,
                         // data: [visitors[i], visitors[i + 1], visitors[i + 2], visitors[i + 3], visitors[i + 4]],
                     }]
                 },
                 options: {
+                    legend: {display: false},
                     elements: {
                         line: {
                             tension: 0
