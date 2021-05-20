@@ -17,6 +17,6 @@ class weekdayVisitorsRepository {
 
     async getWeekdayData(year, location) {
         return await networkManager
-            .doRequest(`${this.route}`, {year: year, location: location}, "GET");
+            .doRequest(`${this.route}?year=${year}&location=${location}`, null, "GET");
     }
 }

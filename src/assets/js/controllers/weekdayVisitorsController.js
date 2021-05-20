@@ -57,19 +57,59 @@ class WeekdayVisitorsController {
         }
 
 
-        document.getElementById("buildChart").onclick = async function() {
+        $("#buildChart").click(async function () {
 
-            this.weekdayVisitorsRepository1 = new weekdayVisitorsRepository();
+            let maandag;
+            let dinsdag;
+            let woensdag;
+            let donderdag;
+            let vrijdag;
+            let zaterdag;
+            let zondag;
+
+            let weekDayVisitorsRepository = new weekdayVisitorsRepository();
 
             const year = document.getElementById("yearOptions").value;
-            const location =  document.getElementById("locationOptions").value;
+            const location = document.getElementById("locationOptions").value;
+
+            let chartPromise = await weekDayVisitorsRepository.getWeekdayData(year, location)
+
+                maandag = Math.round(chartPromise[0].average);
+            dinsdag = Math.round(chartPromise[1].average);
+            woensdag = Math.round(chartPromise[2].average);
+            donderdag = Math.round(chartPromise[3].average);
+            vrijdag = Math.round(chartPromise[4].average);
+            zaterdag = Math.round(chartPromise[5].average);
+            zondag = Math.round(chartPromise[6].average);
 
 
-            let chartpromise = await this.weekdayVisitorsRepository1.getWeekdayData(year, location)
-            console.log(chartpromise);
-        };
+
+
+
+            console.log("maandag: " + maandag);
+            console.log("dinsdag: " + dinsdag);
+            console.log("woensdag: " + woensdag);
+            console.log("donderdag: " + donderdag);
+            console.log("vrijdag: " + vrijdag);
+            console.log("zaterdag: " + zaterdag);
+            console.log("zondag: " + zondag);
+            return false
+
+        });
+
+        // document.getElementsByClassName("buildChart").onclick = async function() {
+        //
+        //     const year = document.getElementById("yearOptions").value;
+        //     const location =  document.getElementById("locationOptions").value;
+        //
+        //
+        //     let chartpromise = await this.
+        //     console.log(chartpromise);
+        //
+        // };
+
+
     }
-
 
 
 }
