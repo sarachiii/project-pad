@@ -576,12 +576,25 @@ app.get("/weekdayVisitors", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `visitors`, `weekday` FROM `visitordata` WHERE `year` = ? AND `location` = ?",
-            values: [year, location],
+            query: "SELECT AVG (`visitors`) AS 'average' FROM `visitordata` WHERE `year` = ? AND `location` = ? AND `weekday`= ?" +
+                "UNION " +
+                "SELECT AVG(`visitors`) FROM `visitordata` WHERE `year` = ? AND `location` = ? AND `weekday`= ?" +
+                "UNION " +
+                "SELECT AVG(`visitors`) FROM `visitordata` WHERE `year` = ? AND `location` = ? AND `weekday`= ?" +
+                "UNION " +
+                "SELECT AVG(`visitors`) FROM `visitordata` WHERE `year` = ? AND `location` = ? AND `weekday`= ?" +
+                "UNION " +
+                "SELECT AVG(`visitors`) FROM `visitordata` WHERE `year` = ? AND `location` = ? AND `weekday`= ?" +
+                "UNION " +
+                "SELECT AVG(`visitors`) FROM `visitordata` WHERE `year` = ? AND `location` = ? AND `weekday`= ?" +
+                "UNION " +
+                "SELECT AVG(`visitors`) FROM `visitordata` WHERE `year` = ? AND `location` = ? AND `weekday`= ?",
+            values: [year, location, "maandag", year, location, "dinsdag", year, location, "woensdag", year, location, "donderdag", year, location, "vrijdag", year, location, "zaterdag", year, location, "zondag"]
         },
         (data) => {
             //just give all data back as json
             res.status(httpOkCode).json(data);
+            console.log(data);
         },
         (err) => res.status(badRequestCode).json({reason: err})
     );
