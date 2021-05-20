@@ -28,53 +28,83 @@ class VisitorYearController {
     async buildYearChart() {
 
         try {
-        let data = await this.visitorYearRepository.getYearData();
-        let locations = [];
-        let years = [];
-        let visitors = [];
+            let data = await this.visitorYearRepository.getYearData();
+            let locations = [];
+            let years = [];
+            let visitors = [];
+            let myChart;
 
-        //Puts locations in array
-        for (let i = 0; i < data.length; i++) {
-            locations[i] = data[i].location
-            years[i] = data[i].year
-            visitors[i] = data[i].amount
-        }
+            //Put all data in arrays
+            for (let i = 0; i < data.length; i++) {
+                locations[i] = data[i].location
+                years[i] = data[i].year
+                visitors[i] = data[i].amount
+            }
 
-        //Create random colours for each chart line
-        var randomColorGenerator = function () {
-            return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
-        };
+            //Create random colours for each chart bar
+            var randomColorGenerator = function () {
+                return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+            };
 
-        //Create chart with data of one OBA location
-        let myLineChart = new Chart($('#chartYear'), {
-            type: 'bar',
-            data: {
-                labels: [years[0], years[1], years[2], years[3], years[4]],
-                datasets: [],
-            },
-            options: {
-                responsive: true,
-                    legend: {
-                        position: 'left',
+            createChart();
+
+            //Create chart
+            function createChart()
+            {
+                myChart = new Chart($('#chartYear'), {
+                    type: 'bar',
+                    data: {
+                        labels: [years[0], years[1], years[2], years[3], years[4]],
+                        datasets: [],
                     },
-                },
-            });
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'left',
+                        },
+                    },
+                });
+            }
 
-        //Add the data dynamically to the graph, the lines will be hidden in the graph
-        for (let i = 0; i < locations.length; i += 5) {
-            myLineChart.data.datasets.push({
-                label: locations[i],
-                backgroundColor: randomColorGenerator(),
-                borderWidth: 2,
-                data: [visitors[i], visitors[i + 1], visitors[i + 2], visitors[i + 3], visitors[i + 4]],
-                hidden: true
-            });
-        }
-        myLineChart.update();
+            //Get checkbox values
+            let selectedLocations = [];
 
-        } catch(e) {
+            $('#selectbox').click(function () {
+
+                //reset chart
+                myChart.destroy();
+                createChart();
+
+                //Reset data in chart
+                // myChart.data.labels.pop();
+                // myChart.data.datasets.forEach((dataset) => {
+                //     dataset.data.pop();
+                // });
+                // myChart.update();
+
+                //Fill array with selected items from dropdown menu
+                $('#selectbox :selected').each(function (i, sel) {
+                    selectedLocations.push($(sel).val() * 5);
+                });
+                console.log(selectedLocations);
+
+                //Add the selected data dynamically to the graph
+                for (let i = 0; i < selectedLocations.length; i++) {
+                    myChart.data.datasets.push({
+                        label: locations[selectedLocations[i]],
+                        backgroundColor: randomColorGenerator(),
+                        borderWidth: 2,
+                        data: [visitors[selectedLocations[i]], visitors[selectedLocations[i] + 1], visitors[selectedLocations[i] + 2],
+                            visitors[selectedLocations[i] + 3], visitors[selectedLocations[i] + 4]],
+                        hidden: false
+                    });
+                    myChart.update();
+                    selectedLocations = []; //Empty array
+                }
+            });
+        } catch (e) {
             //if unauthorized error show error to user
-            if(e.code === 401) {
+            if (e.code === 401) {
                 this.visitorYear
                     .find(".error")
                     .html(e.reason);
