@@ -19,6 +19,7 @@ const CONTROLLER_OBALOCATION = "obaLocation";
 const CONTROLLER_VISITORYEAR = "visitoryear";
 const CONTROLLER_WEEKDAYVISITORS = "weekdayVisitors";
 const CONTROLLER_DIFFERENCEYEARS = "differenceyears";
+const CONTROLLER_BUSYDISTRICT = "busyDistricts";
 
 const sessionManager = new SessionManager();
 const networkManager = new NetworkManager();
@@ -105,6 +106,11 @@ class App {
             case CONTROLLER_DIFFERENCEYEARS:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new differenceYearsController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_BUSYDISTRICT:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new BusyDistrictController(), () => new LoginController());
                 break;
 
             default:
