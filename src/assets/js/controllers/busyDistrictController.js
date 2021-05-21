@@ -27,26 +27,24 @@ class BusyDistrictController {
      * async function that builds the chart using chart.js
      */
     async buildChart() {
-        let promise = await this.busyDistrictRepository.getDistricts();
+        let promiseDistrict = await this.busyDistrictRepository.getDistricts();
+        let promiseMonths = await this.busyDistrictRepository.getMonths();
 
         let locations = [];
         let visitors = [];
         let totalAmount = [];
         let colors = [];
+        let months = [];
+        let districts = [];
 
-        //Puts locations in array
-        for (let i = 0; i < promise.length; i++) {
-            locations[i] = promise[i].Location
+        //Puts months in array
+        for (let i = 0; i < promiseMonths.length; i++) {
+            months[i] = promiseMonths[i].name
         }
 
-        //Puts amount of people in array
-        for (let i = 0; i < promise.length; i++) {
-            visitors[i] = promise[i].Amount
-        }
-
-        //Puts total amount of people in array
-        for (let i = 0; i < promise.length; i++) {
-            totalAmount[i] = promise[i].TotalAmount
+        //Puts districts in array
+        for (let i = 0; i < promiseDistrict.length; i++) {
+            districts[i] = promiseDistrict[i].name
         }
 
         let percentage = [];
@@ -72,16 +70,15 @@ class BusyDistrictController {
         }
 
         //Builds chart in canvas element
-        let myChart = document.getElementById('districtGraph').getContext('2d');
+        let districtChart = document.getElementById('districtChart').getContext('2d');
 
-        let massPopChart = new Chart(myChart, {
+        let massPopChart = new Chart(districtChart, {
             type: 'horizontalBar',
             data: {
-                labels: locations,
+                labels: months,
                 datasets: [{
                     label: 'Drukte',
-                    data: percentage,
-                    backgroundColor: colors
+                    data: districts,
                 }]
             },
             options: {
@@ -100,7 +97,7 @@ class BusyDistrictController {
                                 return value + "%"
                             },
                             beginAtZero: true,
-                            max: MAXVALUE
+                            max: 100
                         }
                     }]
                 }

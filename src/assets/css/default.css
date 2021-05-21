@@ -95,6 +95,21 @@ footer {
     display: none !important;
 }
 
+/* ChartYear*/
+#chartWrapper{
+    display: flex;
+}
+
+#selectboxDiv{
+    margin: 20px;
+    float:left;
+    width: 200px;
+}
+
+#selectbox{
+    height: 200px;
+}
+
 .scrollbar {
     margin: 5px;
     padding: 5px;
