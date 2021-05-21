@@ -27,6 +27,13 @@ class UploadXMLController {
         //File upload
         this.welcomeView.find("#upload").on("click", function() {
 
+            //Alert user if no file was chosen
+            if (!$('#uploadfile').val()) {
+                alert('Geen bestand geselecteerd!');
+                return false;
+            }
+
+            $('.waitmessage').removeClass('d-none');
 
             //Set the proper action url
             $(this).closest("form").attr("action", `${baseUrl}/upload`);

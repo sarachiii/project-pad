@@ -143,6 +143,10 @@ p {
     height: 90%;
 }
 
+.waitmessage{
+    margin-top: 20px;
+}
+
 .weekDropdown-menu {
     margin: 5px;
     padding: 5px;

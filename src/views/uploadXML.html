@@ -3,9 +3,13 @@
         <label>Upload hier uw XML bestand met bezoekers data</label>
         <form method="post" encType="multipart/form-data">
             <div>
-                <input type="file" name="sampleFile" accept="text/xml"/>
+                <input type="file" name="sampleFile" accept="text/xml" id="uploadfile"/>
             </div>
             <input type="submit" value="Upload!" id="upload" />
         </form>
+        <div class="waitmessage d-none text-success">
+            Wacht tot het bestand geüpload is...
+        </div>
     </div>
+
 </div>
