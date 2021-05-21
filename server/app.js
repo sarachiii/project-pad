@@ -129,6 +129,22 @@ app.get("/visitoryear", (req, res) => {
     );
 });
 
+app.get("/visitoryear/allLocations", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT DISTINCT `location` FROM `visitordata` " +
+                "WHERE `year` < 2020 " +
+                "ORDER BY `location`"
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+});
+
 //Request featured books and Query featured, get books
 app.get("/featured", (req, res) => {
     db.handleQuery(

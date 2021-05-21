@@ -1,39 +1,18 @@
 <div id="chartWrapper">
 <div id="selectboxDiv">
-    <select multiple id="selectbox" class="shadow-lg p-3 mb-5 bg-white rounded">
-        <option value="" disabled> -- Selecteer locaties met ctrl -- </option>
-        <option value="0">Banne</option>
-        <option value="1">Bijlmerplein</option>
-        <option value="2">Bos en Lommerplein</option>
-        <option value="3">Bos en Lommerweg</option>
-        <option value="4">Buitenveldert</option>
-        <option value="5">Amstel</option>
-        <option value="6">Cinetol</option>
-        <option value="7">De Hallen</option>
-        <option value="8">De Hallene</option>
-        <option value="9">Diemen</option>
-        <option value="10">Duivendrecht</option>
-        <option value="11">Ganzenhoef</option>
-        <option value="12">Geuzenveld</option>
-        <option value="13">Ijburg</option>
-        <option value="14">Indische Buurt</option>
-        <option value="15">Linnaeusstraat</option>
-        <option value="16">Mercatorplein</option>
-        <option value="17">Molenwijk</option>
-        <option value="18">Olympisch Kwartier</option>
-        <option value="19">Oosterdok</option>
-        <option value="20">Osdorp</option>
-        <option value="21">Ouderkerk</option>
-        <option value="22">Reigersbos</option>
-        <option value="23">Roelof Hartplein</option>
-        <option value="24">Slotermeer</option>
+    <select multiple id="selectbox" class="shadow-lg p-3 mb-4 bg-white rounded">
+        <option value="" disabled> -- Selecteer locaties -- </option>
     </select>
+    <button type="button" class="btn btn-danger btn-sm d-none" onclick="window.location.reload();">Wis keuzes</button>
 </div>
 <div class="container h-4/5" id="chartDiv">
     <div class="error mb-3 text-danger"></div>
     <h1>OBA bezoekers per jaar</h1>
-    <div class="container" id="chartContainer">
-    <canvas id="chartYear" height="500px"></canvas>
+    <div class="container chartContainer">
     </div>
 </div>
 </div>
+
+<option class="option d-none" value="1">Bijlmerplein</option>
+<canvas class="chartInYears d-none" height="700px"></canvas>
+

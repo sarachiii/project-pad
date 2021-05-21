@@ -87,10 +87,10 @@ footer {
     transform: translate(-50%, -50%);
 }
 
-
 /*#inlogbtn {*/
 /*    width: 100%;*/
 /*}*/
+
 .hide-navigation-item {
     display: none !important;
 }
@@ -101,13 +101,15 @@ footer {
 }
 
 #selectboxDiv{
-    margin: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
     float:left;
-    width: 200px;
+    width: 250px
 }
 
 #selectbox{
     height: 200px;
+    width: 250px;
 }
 
 .scrollbar {
@@ -132,6 +134,10 @@ p {
     width: 100%;
 }
 
+#chartInYears{
+    width: 100%;
+}
+
 .districtsAndLocations {
     width: 305px;
     height: 90%;
@@ -145,7 +151,6 @@ p {
     overflow: auto;
     text-align: justify;
 }
-
 
 .chart-h-w{
     height: 400px;
