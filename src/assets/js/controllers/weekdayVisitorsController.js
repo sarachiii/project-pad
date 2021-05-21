@@ -21,15 +21,17 @@ class WeekdayVisitorsController {
         this.getOptions()
     }
 
+    //function to generate the options available to pick
     async getOptions() {
 
+        //get options from datatbase
         let promiseYear = await this.weekdayVisitorsRepository.getyearOptions()
         let promiseLocation = await this.weekdayVisitorsRepository.getlocationOptions()
 
         let yearOptions = [];
         let locationOptions = [];
 
-
+        //put all options in arrays
         for (let i = 0; i < promiseYear.length; i++) {
             yearOptions[i] = promiseYear[i].year
         }
@@ -42,6 +44,7 @@ class WeekdayVisitorsController {
         var selectLocation = document.getElementById('locationOptions');
         var selectYear = document.getElementById('yearOptions');
 
+        //add options to html
         for (let i = 0; i < yearOptions.length; i++) {
             var option = document.createElement('option');
             option.value = yearOptions[i];
@@ -57,56 +60,69 @@ class WeekdayVisitorsController {
         }
 
 
-        $("#buildChart").click(async function () {
+        //function to buildchart is called when button is pressed
+        $(".options").change(async function () {
 
-            let maandag;
-            let dinsdag;
-            let woensdag;
-            let donderdag;
-            let vrijdag;
-            let zaterdag;
-            let zondag;
+            //delete and then remake a new canvas element
+            document.getElementById("canvasDiv").innerHTML = "";
+            let weekDayCanvas = document.createElement('canvas')
+            weekDayCanvas.setAttribute("id", "myChart")
+            document.getElementById("canvasDiv").appendChild(weekDayCanvas);
 
+            let average = [];
+            let color = "#FF0000";
             let weekDayVisitorsRepository = new weekdayVisitorsRepository();
 
+            //get chosen location and year
             const year = document.getElementById("yearOptions").value;
             const location = document.getElementById("locationOptions").value;
 
             let chartPromise = await weekDayVisitorsRepository.getWeekdayData(year, location)
 
-                maandag = Math.round(chartPromise[0].average);
-            dinsdag = Math.round(chartPromise[1].average);
-            woensdag = Math.round(chartPromise[2].average);
-            donderdag = Math.round(chartPromise[3].average);
-            vrijdag = Math.round(chartPromise[4].average);
-            zaterdag = Math.round(chartPromise[5].average);
-            zondag = Math.round(chartPromise[6].average);
+                //add data to array
+                average[0] = Math.round(chartPromise[0].average);
+            average[1] = Math.round(chartPromise[1].average);
+            average[2] = Math.round(chartPromise[2].average);
+            average[3] = Math.round(chartPromise[3].average);
+            average[4] = Math.round(chartPromise[4].average);
+            average[5] = Math.round(chartPromise[5].average);
+            average[6] = Math.round(chartPromise[6].average);
+
+            //chart setup and config
+            const labels = [
+                'maandag',
+                'dinsdag',
+                'woensdag',
+                'donderdag',
+                'vrijdag',
+                'zaterdag',
+                'zondag'
+            ];
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: location,
+                    backgroundColor: color,
+                    borderColor: color,
+                    data: average,
+                }]
+            };
+
+            const config = {
+                type: 'bar',
+                data,
+                options: {}
+            };
 
 
 
 
+            //build chart
+            let weekDayChart = new Chart(myChart, config)
 
-            console.log("maandag: " + maandag);
-            console.log("dinsdag: " + dinsdag);
-            console.log("woensdag: " + woensdag);
-            console.log("donderdag: " + donderdag);
-            console.log("vrijdag: " + vrijdag);
-            console.log("zaterdag: " + zaterdag);
-            console.log("zondag: " + zondag);
             return false
 
         });
-
-        // document.getElementsByClassName("buildChart").onclick = async function() {
-        //
-        //     const year = document.getElementById("yearOptions").value;
-        //     const location =  document.getElementById("locationOptions").value;
-        //
-        //
-        //     let chartpromise = await this.
-        //     console.log(chartpromise);
-        //
-        // };
 
 
     }
