@@ -60,14 +60,14 @@ class WeekdayVisitorsController {
         }
 
 
-        //function to buildchart is called when button is pressed
+        //function to buildchart is called when selection is changed
         $(".options").change(async function () {
 
             //delete and then remake a new canvas element
-            document.getElementById("canvasDiv").innerHTML = "";
+            document.getElementById("canvasdiv").innerHTML = "";
             let weekDayCanvas = document.createElement('canvas')
             weekDayCanvas.setAttribute("id", "myChart")
-            document.getElementById("canvasDiv").appendChild(weekDayCanvas);
+            document.getElementById("canvasdiv").appendChild(weekDayCanvas);
 
             let average = [];
             let color = "#FF0000";
@@ -79,53 +79,68 @@ class WeekdayVisitorsController {
 
             let chartPromise = await weekDayVisitorsRepository.getWeekdayData(year, location)
 
+            //check if there is a response
+            if (chartPromise.length < 7){
+                alert("Geen data beschikbaar");
+            } else {
+
                 //add data to array
                 average[0] = Math.round(chartPromise[0].average);
-            average[1] = Math.round(chartPromise[1].average);
-            average[2] = Math.round(chartPromise[2].average);
-            average[3] = Math.round(chartPromise[3].average);
-            average[4] = Math.round(chartPromise[4].average);
-            average[5] = Math.round(chartPromise[5].average);
-            average[6] = Math.round(chartPromise[6].average);
+                average[1] = Math.round(chartPromise[1].average);
+                average[2] = Math.round(chartPromise[2].average);
+                average[3] = Math.round(chartPromise[3].average);
+                average[4] = Math.round(chartPromise[4].average);
+                average[5] = Math.round(chartPromise[5].average);
+                average[6] = Math.round(chartPromise[6].average);
 
-            //chart setup and config
-            const labels = [
-                'maandag',
-                'dinsdag',
-                'woensdag',
-                'donderdag',
-                'vrijdag',
-                'zaterdag',
-                'zondag'
-            ];
-            const data = {
-                labels: labels,
-                datasets: [{
-                    label: location,
-                    backgroundColor: color,
-                    borderColor: color,
-                    data: average,
-                }]
-            };
+                //chart setup and config
+                const labels = [
+                    'maandag',
+                    'dinsdag',
+                    'woensdag',
+                    'donderdag',
+                    'vrijdag',
+                    'zaterdag',
+                    'zondag'
+                ];
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        label: (location + " (" + year + ")"),
+                        backgroundColor: color,
+                        borderColor: color,
+                        data: average,
+                    }]
+                };
 
-            const config = {
-                type: 'bar',
-                data,
-                options: {}
-            };
+                const config = {
+                    type: 'bar',
+                    data,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'gemiddeld aantal bezoekers'
+                                },
+                            }]
+                        }
+                    }
+                };
+
+                //build chart
+                let weekDayChart = new Chart(myChart, config)
+            }
 
 
-
-
-            //build chart
-            let weekDayChart = new Chart(myChart, config)
-
-            return false
 
         });
 
 
     }
 
+    async buildChart(){
+
+    }
 
 }
