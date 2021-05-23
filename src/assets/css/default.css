@@ -160,3 +160,7 @@ p {
     height: 400px;
     width: 600px ;
 }
+
+option:hover {
+    background-color: rgba(114,111,124,0.67);
+}
