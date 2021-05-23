@@ -53,12 +53,6 @@ class VisitorYearController {
                 $("#selectbox").append(option);
             }
 
-            //Create canvas for chart
-            removeChart();
-            const yearChartCopy = $(".chartInYears").first().clone().removeClass("d-none").attr('id', 'chartInYears');
-            $("#canvasdiv").append(yearChartCopy);
-
-
             //setup graph
             const config = {
                 type: 'bar',
@@ -73,7 +67,7 @@ class VisitorYearController {
                     },
                 },
             };
-            let yearChart = new Chart($('#chartInYears'), config)
+            let yearChart = new Chart($('.chartInYears'), config)
 
             //Click function for multiselector
             $('#selectbox').click(function () {
@@ -107,7 +101,6 @@ class VisitorYearController {
 
             //Delete graph and make a new one
             $('button').click(function () {
-                deleteGraph();
                 removeChart();
                 selectedLocations = []; //empty array
             });
@@ -131,23 +124,14 @@ class VisitorYearController {
         }
     }
 
-
     //Called when the visitorYear.html failed to load
     error() {
         $(".content").html("Failed to load content!");
     }
-
 }
-
-function deleteGraph() {
+function removeChart() {
     $('button').addClass('d-none'); //hide button
     $('#selectbox').children('option').removeAttr('disabled'); //make all options clickable again
     $('#selectbox').children('option:selected').prop("selected", false); //deselect last choice
-}
-
-function removeChart() {
-    $("#canvasdiv").find(".chartInYears").removeAttr('id');
-    $("#canvasdiv").find(".chartInYears").remove();
     $("#canvasdiv").empty();
-
 }
