@@ -508,6 +508,7 @@ class ObaLocationController {
         $(".chart" + placeNumber).find(".choseDateChart" + placeNumber).removeAttr('id');
         $("." + place).find(".chart" + placeNumber).remove();
     }
+    //                $(".canvasdiv").empty();
 
 //Checks if an date dropdown is still in a div and removes it
     removePickDateButton(place,placeNumber) {

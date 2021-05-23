@@ -52,45 +52,46 @@ class VisitorYearController {
                 $("#selectbox").append(option);
             }
 
-            //create canvas for chart
-            createCanvas();
+            //Create canvas for chart
+            removeChart();
+
+            const yearChart = $(".chartInYears").first().clone().removeClass("d-none").attr('id', 'chartInYears');
+            $("#canvasdiv").append(yearChart);
+
+            //setup graph
+            const config = {
+                type: 'bar',
+                data: {
+                    labels: [years[0], years[1], years[2], years[3], years[4]],
+                    datasets: [],
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'left',
+                    },
+                },
+            };
+            let yearChart2 = new Chart($('#chartInYears'), config)
 
             //Click function for multiselector
-            $('#selectbox').click(function (){
-
+            $('#selectbox').click(function () {
                 $('button').removeClass('d-none'); //Show remove button
                 $(this).children('option:selected').attr("disabled", true); //Prevent double clicking on item
 
-                //setup graph
-                const config = {
-                    type: 'bar',
-                    data: {
-                        labels: [years[0], years[1], years[2], years[3], years[4]],
-                        datasets: [],
-                    },
-                    options: {
-                        responsive: true,
-                        legend: {
-                            position: 'left',
-                        },
-                    },
-                };
 
                 //Fill array with selected items from dropdown menu
-                $('#selectbox :selected').each(function (i, sel) {
-                    selectedLocations.push($(sel).val() * 5);
-                });
+                selectedLocations.length = 0;
+                selectedLocations.push($('#selectbox :selected').val() * 5);
 
                 //Create random colours for each chart bar
                 var randomColorGenerator = function () {
                     return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
                 };
 
-                let yearChart = new Chart(myChart, config)
-
                 //Add the selected data dynamically to the graph
                 for (let i = 0; i < selectedLocations.length; i++) {
-                    yearChart.data.datasets.push({
+                    yearChart2.data.datasets.push({
                         label: locations[selectedLocations[i]],
                         backgroundColor: randomColorGenerator(),
                         borderWidth: 2,
@@ -99,15 +100,17 @@ class VisitorYearController {
                             visitors[selectedLocations[i] + 4]],
                         hidden: false
                     });
-                    yearChart.update();
+                    yearChart2.update();
                 }
             });
 
             //Delete graph and make a new one
-            $('button').click(function (){
+            $('button').click(function () {
                 deleteGraph();
+                removeChart();
                 selectedLocations = []; //empty array
             });
+
 
         } catch (e) {
             //if unauthorized error show error to user
@@ -121,28 +124,21 @@ class VisitorYearController {
         }
     }
 
-    createChart(myChart, config) {
-        return new Chart(myChart, config)
-    }
 
     //Called when the visitorYear.html failed to load
     error() {
         $(".content").html("Failed to load content!");
     }
+
 }
 
-function deleteGraph(){
+function deleteGraph() {
     $('button').addClass('d-none'); //hide button
     $('#selectbox').children('option').removeAttr('disabled'); //make all options clickable again
     $('#selectbox').children('option:selected').prop("selected", false); //deselect last choice
-    createCanvas();
 }
 
-function createCanvas(){
-    //Create canvas for chart
-    document.getElementById('canvasdiv').innerHTML = "";
-    let yearCanvas = document.createElement('canvas');
-    yearCanvas.setAttribute("id", "myChart");
-    document.getElementById("canvasdiv").appendChild(yearCanvas);
-    
+function removeChart() {
+    $("#canvasdiv").find(".chartInYears").removeAttr('id');
+    $("#canvasdiv").find(".chartInYears").remove();
 }
