@@ -54,8 +54,7 @@ class VisitorYearController {
             }
 
             //Create canvas for chart
-            $("#canvasdiv").find(".chartInYears").removeAttr('id');
-            $("#canvasdiv").find(".chartInYears").remove();
+            removeChart();
             const yearChartCopy = $(".chartInYears").first().clone().removeClass("d-none").attr('id', 'chartInYears');
             $("#canvasdiv").append(yearChartCopy);
 
