@@ -22,6 +22,7 @@ class VisitorYearController {
         document.title = "Bezoekers per locatie in jaren"
 
         this.getData()
+
     }
 
     async getData() {
@@ -53,10 +54,11 @@ class VisitorYearController {
             }
 
             //Create canvas for chart
-            removeChart();
+            $("#canvasdiv").find(".chartInYears").removeAttr('id');
+            $("#canvasdiv").find(".chartInYears").remove();
+            const yearChartCopy = $(".chartInYears").first().clone().removeClass("d-none").attr('id', 'chartInYears');
+            $("#canvasdiv").append(yearChartCopy);
 
-            const yearChart = $(".chartInYears").first().clone().removeClass("d-none").attr('id', 'chartInYears');
-            $("#canvasdiv").append(yearChart);
 
             //setup graph
             const config = {
@@ -72,7 +74,7 @@ class VisitorYearController {
                     },
                 },
             };
-            let yearChart2 = new Chart($('#chartInYears'), config)
+            let yearChart = new Chart($('#chartInYears'), config)
 
             //Click function for multiselector
             $('#selectbox').click(function () {
@@ -91,7 +93,7 @@ class VisitorYearController {
 
                 //Add the selected data dynamically to the graph
                 for (let i = 0; i < selectedLocations.length; i++) {
-                    yearChart2.data.datasets.push({
+                    yearChart.data.datasets.push({
                         label: locations[selectedLocations[i]],
                         backgroundColor: randomColorGenerator(),
                         borderWidth: 2,
@@ -100,7 +102,7 @@ class VisitorYearController {
                             visitors[selectedLocations[i] + 4]],
                         hidden: false
                     });
-                    yearChart2.update();
+                    yearChart.update();
                 }
             });
 
@@ -111,6 +113,12 @@ class VisitorYearController {
                 selectedLocations = []; //empty array
             });
 
+            $("button").on('click', () => {
+                    $.get("views/visitorYear.html")
+                        .done((data) => this.setup(data))
+                        .fail(() => this.error());
+                }
+            );
 
         } catch (e) {
             //if unauthorized error show error to user
@@ -141,4 +149,6 @@ function deleteGraph() {
 function removeChart() {
     $("#canvasdiv").find(".chartInYears").removeAttr('id');
     $("#canvasdiv").find(".chartInYears").remove();
+    $("#canvasdiv").empty();
+
 }
