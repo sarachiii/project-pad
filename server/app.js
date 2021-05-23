@@ -482,7 +482,7 @@ app.get("/location/chosenYear", (req, res) => {
     db.handleQuery(
         connectionPool, {
             query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'amount' FROM `visitordata` WHERE `visitordata`.`location` = ? " +
-                "AND `visitordata`.`year` = ? GROUP BY `month`",
+                "AND `visitordata`.`year` = ? GROUP BY `month` ASC",
             values: [location, year],
         },
         (data) => {

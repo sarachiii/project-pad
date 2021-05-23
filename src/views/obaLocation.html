@@ -11,14 +11,19 @@
         <!--//here-->
     </div>
 
-        <!-- Shows chosen location -->
-        <h2 id="locationName" class="pl-96"></h2>
+    <!-- Shows chosen location -->
+    <h2 id="locationName" class="pl-96"></h2>
 
-        <!-- Shows filter chart-->
-        <div class="chartAndButtonsDiv w-3/5 h-3/5"></div>
-    </div>
+    <!-- Shows filter chart-->
+    <div class="chartAndButtonsDiv w-3/5 h-3/5"></div>
+    <div></div>
+    <div class="chartAndButtonsDiv2 w-3/5 h-3/5"></div>
+</div>
 
 <!-- Items below are used for cloning, they are not shown on screen unless cloned -->
+<button type="button" class="close shadow-md rounded-md h-8 w-8" style="background: red" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
 
 <div class="districts d-none"></div>
 
@@ -57,14 +62,25 @@
 </div>
 
 <!-- Year dropdown -->
-<div class="yearDropdown dropdown d-none mt-2 mb-2 w-40">
-    <button class="btn btn-secondary dropdown-toggle" type="button"
+<div class="yearDropdown1 dropdown d-none mt-2 mb-2 w-40">
+    <button class="btn btn-secondary 1 dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Jaar
     </button>
-    <a class="yearDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="yearDropdown-menu1 dropdown-menu" aria-labelledby="dropdownMenuButton">
     </a>
-    <button class="yearDropdown-item dropdown-item d-none"></button>
+    <button class="yearDropdown-item1 dropdown-item d-none"></button>
+</div>
+
+<!-- Year dropdown -->
+<div class="yearDropdown2 dropdown d-none mt-2 mb-2 w-40">
+    <button class="btn btn-secondary 2 dropdown-toggle" type="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Jaar
+    </button>
+    <a class="yearDropdown-menu2 dropdown-menu" aria-labelledby="dropdownMenuButton">
+    </a>
+    <button class="yearDropdown-item2 dropdown-item d-none"></button>
 </div>
 
 <!-- Month/Quarter dropdown -->
@@ -88,12 +104,14 @@
 </div>
 
 <!-- Chart -->
-<div>
-    <canvas class="choseDateChart d-none"></canvas>
-</div>
+<canvas class="choseDateChart1 d-none"></canvas>
+<canvas class="choseDateChart2 d-none"></canvas>
+
 
 <!-- A Chart gets appended to this place to set the height and width of the chart -->
-<div class="chart d-none chart-h-w"></div>
+<div class="chart1 d-none chart-h-w"></div>
+<div class="chart2 d-none chart-h-w"></div>
+
 <!--h-48 w-96-->
 
 
