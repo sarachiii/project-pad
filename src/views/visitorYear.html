@@ -1,8 +1,18 @@
-<div class="container h-4/5">
+<div id="chartWrapper">
+<div id="selectboxDiv">
+    <select multiple id="selectbox" class="shadow-lg p-3 mb-4 bg-white rounded">
+        <option value="" disabled> -- Selecteer locaties -- </option>
+    </select>
+    <button type="button" class="btn btn-danger btn-sm d-none">Wis keuzes</button>
+</div>
+<div class="container h-4/5" id="chartDiv">
     <div class="error mb-3 text-danger"></div>
     <h1>OBA bezoekers per jaar</h1>
-    <p>(Klik op locatie om te tonen)</p>
-    <div>
-    <canvas id="chartYear" height="700px"></canvas>
+    <div class="container chartContainer" id="canvasdiv">
     </div>
 </div>
+</div>
+
+<option class="option d-none" value="1">Bijlmerplein</option>
+<!-- <canvas class="chartInYears d-none" height="700px"></canvas> -->
+

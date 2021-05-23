@@ -98,43 +98,6 @@ app.post("/user/login", (req, res) => {
     );
 });
 
-//Request all books
-app.get("/books/all", (req, res) => {
-    db.handleQuery(
-        connectionPool, {
-            query: "SELECT * FROM book",
-        },
-        (data) => {
-            //just give all data back as json
-            res.status(httpOkCode).json(data);
-        },
-        (err) => res.status(badRequestCode).json({reason: err})
-    );
-});
-
-//Insert books into database
-// app.post("/books/addBook", (req, res) => {
-//
-//     const id = req.body.id;
-//     const title = req.body.title;
-//     const author = req.body.author;
-//     const genre = req.body.genre;
-//     const image = req.body.image;
-//     const recap = req.body.recap;
-//
-//     db.handleQuery(
-//         connectionPool, {
-//             query: "INSERT INTO `book` (`idBook`, `Title`, `Author`, `Genre`, `Image`, `Recap`) VALUES (?, ?, ?, ?, ?, ?)",
-//             values: [id, title, author, genre, image, recap],
-//         },
-//         (data) => {
-//             //just give all data back as json
-//             res.status(httpOkCode).json(data);
-//         },
-//         (err) => res.status(badRequestCode).json({reason: err})
-//     );
-// });
-
 app.get("/location", (req, res) => {
     db.handleQuery(
         connectionPool, {
@@ -154,8 +117,24 @@ app.get("/visitoryear", (req, res) => {
         connectionPool, {
             query: "SELECT SUM(`visitors`) as 'amount', `location`, `year` FROM `visitordata` " +
                 "WHERE `year` < 2020 " +
-                "GROUP BY `location`, `year`"
-            // "HAVING SUM(`visitors`) > 0"
+                "GROUP BY `location`, `year` " +
+                "ORDER BY `location`"
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+});
+
+app.get("/visitoryear/allLocations", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT DISTINCT `location` FROM `visitordata` " +
+                "WHERE `year` < 2020 " +
+                "ORDER BY `location`"
         },
         (data) => {
 
@@ -196,8 +175,6 @@ app.get("/percentageYear", (req, res) => {
         (err) => res.status(badRequestCode).json({reason: err})
     );
 });
-
-
 
 //Get all districts
 app.get("/location/districts", (req, res) => {
