@@ -280,7 +280,7 @@ app.get("/location/allWeeksOfAYear", (req, res) => {
     db.handleQuery(
         connectionPool, {
             query: "SELECT `location`, `year`, `week`, `visitors` FROM `visitordata` WHERE `visitordata`.`location` = ? " +
-                "AND `visitordata`.`year` = ? group by `week`",
+                "AND `visitordata`.`year` = ? GROUP by `week` ASC",
             values: [location, year],
         },
         (data) => {
@@ -291,7 +291,7 @@ app.get("/location/allWeeksOfAYear", (req, res) => {
     );
 })
 
-//Get all visitors data of a chosen location, week and year
+//Get all visitors data of a chosen location, month and year
 app.get("/location/allMonths", (req, res) => {
 
     const location = req.query.location;
@@ -302,7 +302,10 @@ app.get("/location/allMonths", (req, res) => {
         connectionPool, {
             query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'amount' " +
                 "FROM `visitordata` WHERE `visitordata`.`location` = ? " +
-                "AND `visitordata`.`year` = ? AND `visitordata`.`month` = ?",
+                "AND `visitordata`.`year` = ? AND `visitordata`.`month` = ? " +
+                "ORDER BY FIELD(`month`, 'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli'," +
+                "'augustus', 'september', 'oktober', 'november', 'december')",
+
             values: [location, year, month],
         },
         (data) => {
@@ -323,7 +326,8 @@ app.get("/location/chosenWeek", (req, res) => {
     db.handleQuery(
         connectionPool, {
             query: "SELECT * FROM `visitordata` WHERE `visitordata`.`location` = ? AND " +
-                "`visitordata`.`week` = ? AND `visitordata`.`year` = ?",
+                "`visitordata`.`week` = ? AND `visitordata`.`year` = ? " +
+                "ORDER BY FIELD(`weekday`, 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag', 'zondag')",
             values: [location, week, year],
         },
         (data) => {
@@ -459,7 +463,9 @@ app.get("/location/chosenYear", (req, res) => {
     db.handleQuery(
         connectionPool, {
             query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'amount' FROM `visitordata` WHERE `visitordata`.`location` = ? " +
-                "AND `visitordata`.`year` = ? GROUP BY `month` ASC",
+                "AND `visitordata`.`year` = ? GROUP BY `month`" +
+                "ORDER BY FIELD(`month`, 'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli'," +
+                "'augustus', 'september', 'oktober', 'november', 'december')",
             values: [location, year],
         },
         (data) => {
@@ -606,7 +612,6 @@ app.get("/weekdayVisitors/locationOptions", (req, res) => {
         (err) => res.status(badRequestCode).json({reason: err})
     );
 })
-
 
 
 //------- END ROUTES -------

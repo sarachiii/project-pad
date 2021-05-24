@@ -70,13 +70,12 @@ class VisitorYearController {
             let yearChart = new Chart($('.chartInYears'), config)
 
             //Click function for multiselector
-            $('#selectbox').click(function () {
+            $('#selectbox').change(function () {
                 $('button').removeClass('d-none'); //Show remove button
                 $(this).children('option:selected').attr("disabled", true); //Prevent double clicking on item
 
-
                 //Fill array with selected items from dropdown menu
-                selectedLocations.length = 0;
+                selectedLocations = [];
                 selectedLocations.push($('#selectbox :selected').val() * 5);
 
                 //Create random colours for each chart bar
