@@ -164,3 +164,9 @@ p {
 option:hover {
     background-color: rgba(114,111,124,0.67);
 }
+
+.tabjes{
+    border: 1px solid black;
+    height: 30px;
+    width: 100%;
+}
