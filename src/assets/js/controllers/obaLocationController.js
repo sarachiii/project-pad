@@ -549,31 +549,3 @@ class ObaLocationController {
         $(".content").html("Failed to load content!");
     }
 }
-
-function changeView(){
-    $("#locationsub").on('click', () => {
-        $.get("views/obaLocation.html")
-            .done((data) => this.setup(data))
-            .fail(() => this.error());
-    });
-    $("#yearsub").on('click', () => {
-        $.get("views/visitorYear.html")
-            .done((data) => this.setup(data))
-            .fail(() => this.error());
-    });
-    $("#differencesub").on('click', () => {
-        $.get("views/differenceYears.html")
-            .done((data) => this.setup(data))
-            .fail(() => this.error());
-    });
-    $("#weekdaysub").on('click', () => {
-        $.get("views/weekdayVisitors.html")
-            .done((data) => this.setup(data))
-            .fail(() => this.error());
-    });
-    $("#districtsub").on('click', () => {
-        $.get("views/busyDistrict.html")
-            .done((data) => this.setup(data))
-            .fail(() => this.error());
-    });
-}
