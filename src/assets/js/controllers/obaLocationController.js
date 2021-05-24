@@ -15,6 +15,7 @@ class ObaLocationController {
         //Change colour of navbar item
         $(".nav-item").removeClass("active");
         $(".obaLocationItem").addClass("active");
+        document.title = "Filter en vergelijk locaties"
 
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.obaLocationView);
@@ -118,84 +119,84 @@ class ObaLocationController {
             }
         }
 
-        let DATEDROPDOWN = $(".dateDropdown.dropdown.d-none").first().clone().removeClass("d-none");
-        let BUTTONS = $(".buttons.d-none").first().clone().removeClass("d-none");
+        let dateDropdown = $(".dateDropdown.dropdown.d-none").first().clone().removeClass("d-none");
+        let buttons = $(".buttons.d-none").first().clone().removeClass("d-none");
 
         if ($('.chartAndButtonsDiv').children().length <= 0) {
-            BUTTONS.append(DATEDROPDOWN);
-            $(".chartAndButtonsDiv").append(BUTTONS);
+            buttons.append(dateDropdown);
+            $(".chartAndButtonsDiv").append(buttons);
             //this.fillDateDropdown(location, DATEDROPDOWN, "chartAndButtonsDiv");
             let div = "chartAndButtonsDiv";
 
             for (let i = 0; i < allDate.length; i++) {
-                const DATES = DATEDROPDOWN.find(".dateDropdown-item.d-none").first().clone().removeClass("d-none");
+                const DATES = dateDropdown.find(".dateDropdown-item.d-none").first().clone().removeClass("d-none");
 
                 DATES.text(allDate[i]["name"]);
                 DATES.attr(`data-id`, i);
 
-                DATEDROPDOWN.find(".dateDropdown-menu").append(DATES);
+                dateDropdown.find(".dateDropdown-menu").append(DATES);
 
-                DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + i + '"]', function () {
+                dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + i + '"]', function () {
                     console.log(allDate[i]["name"]);
                 });
             }
 
-            DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 0 + '"]', () =>
+            dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 0 + '"]', () =>
                 this.disableButton(allDate, 0) &&
-                DATEDROPDOWN.find(".btn.btn-secondary").text("Periode: " + allDate[0]["name"]) &&
+                dateDropdown.find(".btn.btn-secondary").text("Periode: " + allDate[0]["name"]) &&
                 this.selectYear(location, "week", div, 1));
 
-            DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 1 + '"]', () =>
+            dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 1 + '"]', () =>
                 this.disableButton(allDate, 1) &&
-                DATEDROPDOWN.find(".btn.btn-secondary").text("Periode: " + allDate[1]["name"])
+                dateDropdown.find(".btn.btn-secondary").text("Periode: " + allDate[1]["name"])
                 && this.selectYear(location, "month", div, 1));
 
-            DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 2 + '"]', () =>
+            dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 2 + '"]', () =>
                 this.disableButton(allDate, 2) &&
-                DATEDROPDOWN.find(".btn.btn-secondary").text("Periode: " + allDate[2]["name"])
+                dateDropdown.find(".btn.btn-secondary").text("Periode: " + allDate[2]["name"])
                 && this.selectYear(location, "quarter", div, 1));
 
-            DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 3 + '"]', () =>
+            dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 3 + '"]', () =>
                 this.disableButton(allDate, 3) &&
-                DATEDROPDOWN.find(".btn.btn-secondary").text("Periode: " + allDate[3]["name"])
+                dateDropdown.find(".btn.btn-secondary").text("Periode: " + allDate[3]["name"])
                 && this.selectYear(location, "year", div, 1));
 
 
         } else if ($('.chartAndButtonsDiv2').children().length <= 0) {
-            BUTTONS.append(DATEDROPDOWN);
-            $(".chartAndButtonsDiv2").append(BUTTONS);
+            buttons.append(dateDropdown);
+            $(".chartAndButtonsDiv2").append(buttons);
             let div = "chartAndButtonsDiv2";
             for (let i = 0; i < allDate.length; i++) {
-                const DATES = DATEDROPDOWN.find(".dateDropdown-item.d-none").first().clone().removeClass("d-none");
+                const DATES = dateDropdown.find(".dateDropdown-item.d-none").first().clone().removeClass("d-none");
 
                 DATES.text(allDate[i]["name"]);
                 DATES.attr(`data-id`, i);
 
-                DATEDROPDOWN.find(".dateDropdown-menu").append(DATES);
+                dateDropdown.find(".dateDropdown-menu").append(DATES);
 
-                DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + i + '"]', function () {
+                dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + i + '"]', function () {
                     console.log(allDate[i]["name"]);
                 });
             }
 
-            DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 0 + '"]', () =>
+            dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 0 + '"]', () =>
                 this.disableButton(allDate, 0) &&
-                DATEDROPDOWN.find(".btn.btn-secondary").text("Periode: " + allDate[0]["name"]) &&
+                dateDropdown.find(".btn.btn-secondary").text("Periode: " + allDate[0]["name"]) &&
                 this.selectYear(location, "week", div, 2));
 
-            DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 1 + '"]', () =>
+            dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 1 + '"]', () =>
                 this.disableButton(allDate, 1) &&
-                DATEDROPDOWN.find(".btn.btn-secondary").text("Periode: " + allDate[1]["name"])
+                dateDropdown.find(".btn.btn-secondary").text("Periode: " + allDate[1]["name"])
                 && this.selectYear(location, "month", div, 2));
 
-            DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 2 + '"]', () =>
+            dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 2 + '"]', () =>
                 this.disableButton(allDate, 2) &&
-                DATEDROPDOWN.find(".btn.btn-secondary").text("Periode: " + allDate[2]["name"])
+                dateDropdown.find(".btn.btn-secondary").text("Periode: " + allDate[2]["name"])
                 && this.selectYear(location, "quarter", div, 2));
 
-            DATEDROPDOWN.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 3 + '"]', () =>
+            dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 3 + '"]', () =>
                 this.disableButton(allDate, 3) &&
-                DATEDROPDOWN.find(".btn.btn-secondary").text("Periode: " + allDate[3]["name"])
+                dateDropdown.find(".btn.btn-secondary").text("Periode: " + allDate[3]["name"])
                 && this.selectYear(location, "year", div, 2));
 
             //   this.fillDateDropdown(location, DATEDROPDOWN, "chartAndButtonsDiv2");
@@ -212,7 +213,6 @@ class ObaLocationController {
 
         if (place === "chartAndButtonsDiv") {
             this.removePickDateButton(place, placeNumber);
-            this.removeChart(place);
             console.log(place);
             YEARDROPDOWN1 = $(".yearDropdown1").first().clone().removeClass("d-none");
             $(".chartAndButtonsDiv").find(".buttons").append(YEARDROPDOWN1);
@@ -221,8 +221,7 @@ class ObaLocationController {
 
         } else if (place === "chartAndButtonsDiv2") {
             console.log(place);
-            this.removePickDateButton(place,placeNumber);
-            this.removeChart(place);
+            this.removePickDateButton(place, placeNumber);
             YEARDROPDOWN2 = $(".yearDropdown2").first().clone().removeClass("d-none");
             $(".chartAndButtonsDiv2").find(".buttons").append(YEARDROPDOWN2);
             this.fillYearDropdown(location, type, place, 2, YEARDROPDOWN2);
@@ -277,26 +276,38 @@ class ObaLocationController {
     }
 
     async selectWeek(location, year, place, placeNumber) {
-        this.removeChart(place, placeNumber);
-        $(".chartAndButtonsDiv").find(".buttons").find(".weekDropdown").remove();
-        const WEEKDROPDOWN = $(".weekDropdown").first().clone().removeClass("d-none");
-        WEEKDROPDOWN.find(".btn.btn-secondary").text("Week");
-        $(".chartAndButtonsDiv").find(".buttons").append(WEEKDROPDOWN);
+        $(".chartAndButtonsDiv" + placeNumber).find(".buttons").find(".weekDropdown" + placeNumber).remove();
+        if (place === "chartAndButtonsDiv") {
+            this.removeChart(place, placeNumber);
+            console.log(place);
+            let weekDropDown1 = $(".weekDropdown1").first().clone().removeClass("d-none");
+            $(".chartAndButtonsDiv").find(".buttons").append(weekDropDown1);
+            this.fillWeekDropdown(location, year, place, placeNumber, weekDropDown1);
 
+        } else if (place === "chartAndButtonsDiv2") {
+            this.removeChart(place, placeNumber);
+            let weekDropdown2 = $(".weekDropdown2").first().clone().removeClass("d-none");
+            $(".chartAndButtonsDiv2").find(".buttons").append(weekDropdown2);
+            this.fillWeekDropdown(location, year, place, placeNumber, weekDropdown2);
+        } else {
+            console.log("nopeee")
+        }
+    }
+
+    async fillWeekDropdown(location, year, place, placeNumber, weekDropdown) {
         let allWeeksOfAYear = await this.obaLocationRepository.getAllWeeksOfAYear(location["alias_name"], year);
         console.log(allWeeksOfAYear)
         for (let i = 0; i < allWeeksOfAYear.length; i++) {
             //Checks if the visitor data of every week of a year is null
             if (allWeeksOfAYear[i]["visitors"] !== 0) {
-                const WEEKS = WEEKDROPDOWN.find(".weekDropdown-item.d-none").first().clone().removeClass("d-none");
+                const WEEKS = weekDropdown.find(".weekDropdown-item.d-none").first().clone().removeClass("d-none");
                 WEEKS.text(allWeeksOfAYear[i]["week"]).attr(`data-id`, i);
-                WEEKDROPDOWN.find(".weekDropdown-menu").append(WEEKS);
+                weekDropdown.find(".weekDropdown-menu").append(WEEKS);
             }
 
-
-            WEEKDROPDOWN.find(".weekDropdown-menu").on('click', '.weekDropdown-item[data-id="' + i + '"]', () =>
-                WEEKDROPDOWN.find(".btn.btn-secondary").text("Week: " + allWeeksOfAYear[i]["week"]) &&
-                this.getWeekData(location, year, allWeeksOfAYear[i]["week"]));
+            weekDropdown.find(".weekDropdown-menu").on('click', '.weekDropdown-item[data-id="' + i + '"]', () =>
+                weekDropdown.find(".btn.btn-secondary").text("Week: " + allWeeksOfAYear[i]["week"]) &&
+                this.getWeekData(location, year, allWeeksOfAYear[i]["week"], place, placeNumber));
         }
     }
 
@@ -353,7 +364,7 @@ class ObaLocationController {
         }
     }
 
-    async getWeekData(location, year, chosenWeek) {
+    async getWeekData(location, year, chosenWeek, place, placeNumber) {
         let days = [];
         let weekData = [];
         let color = [];
@@ -368,7 +379,7 @@ class ObaLocationController {
 
         }
 
-        this.showChart(days, weekData, color, borderColor, year, "dagen", "week: " + chosenWeek + " van ");
+        this.showChart(days, weekData, color, borderColor, year, "dagen", "week: " + chosenWeek + " van ", place, placeNumber);
         console.log(week);
     }
 
@@ -435,15 +446,13 @@ class ObaLocationController {
         let yearData = [];
         let color = [];
         let borderColor = [];
-        let visitorsYear = await this.obaLocationRepository.getChosenYear(location["alias_name"], year);
-        let dataVisitorsYear = [visitorsYear[4], visitorsYear[3], visitorsYear[7], visitorsYear[0], visitorsYear[8],
-            visitorsYear[6], visitorsYear[5], visitorsYear[1], visitorsYear[11], visitorsYear[10], visitorsYear[9], visitorsYear[2]];
 
-        console.log(dataVisitorsYear);
+        let visitorsYear = await this.obaLocationRepository.getChosenYear(location["alias_name"], year);
+        console.log(visitorsYear);
 
         for (let i = 0; i < visitorsYear.length; i++) {
             months[i] = allMonths[i]["name"];
-            yearData[i] = dataVisitorsYear[i]["amount"];
+            yearData[i] = visitorsYear[i]["amount"];
             color = 'rgba(75, 192, 192, 0.5)';
             borderColor = 'rgb(75, 192, 192)';
         }
@@ -508,12 +517,13 @@ class ObaLocationController {
         $(".chart" + placeNumber).find(".choseDateChart" + placeNumber).removeAttr('id');
         $("." + place).find(".chart" + placeNumber).remove();
     }
+
     //                $(".canvasdiv").empty();
 
 //Checks if an date dropdown is still in a div and removes it
-    removePickDateButton(place,placeNumber) {
+    removePickDateButton(place, placeNumber) {
         console.log(place);
-        $("." + place).find(".buttons").find(".weekDropdown").remove();
+        $("." + place).find(".buttons").find(".weekDropdown" + placeNumber).remove();
         $("." + place).find(".buttons").find(".yearDropdown" + placeNumber).remove(); // placenumber!!
         $("." + place).find(".buttons").find(".monthOrQuarterDropdown").remove();
     }
