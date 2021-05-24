@@ -90,7 +90,7 @@ class VisitorYearController {
             var randomColorGenerator = function () {
                 return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
             };
-
+             
             //Add the selected data dynamically to the graph
             for (let i = 0; i < selectedLocations.length; i++) {
                 yearChart.data.datasets.push({
