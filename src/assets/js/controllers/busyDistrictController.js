@@ -15,6 +15,10 @@ class BusyDistrictController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.busyDistricts);
 
+        //Change colour of navbar item
+        $(".btn-group-vertical").removeClass("active");
+        $("#districtsub").addClass("active");
+
         this.buildChart()
     }
 
@@ -27,6 +31,20 @@ class BusyDistrictController {
      * async function that builds the chart using chart.js
      */
     async buildChart() {
+        //Change view with submenu
+        $("#locationsub").on('click', () => {
+            new ObaLocationController();
+        });
+        $("#yearsub").on('click', () => {
+            new VisitorYearController();
+        });
+        $("#differencesub").on('click', () => {
+            new differenceYearsController();
+        });
+        $("#weekdaysub").on('click', () => {
+            new WeekdayVisitorsController();
+        });
+
         let promiseDistrict = await this.busyDistrictRepository.getDistricts();
         let promiseMonths = await this.busyDistrictRepository.getMonths();
 

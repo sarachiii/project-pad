@@ -12,18 +12,34 @@ class ObaLocationController {
         //Load content into memory
         this.obaLocationView = $(data);
 
-        //Change colour of navbar item
-        $(".nav-item").removeClass("active");
-        $(".obaLocationItem").addClass("active");
-        document.title = "Filter en vergelijk locaties"
-
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.obaLocationView);
+
+        //Change colour of navbar item
+        $(".btn-group-vertical").removeClass("active");
+        $("#locationsub").addClass("active");
+
+        document.title = "Filter en vergelijk locaties"
+
         this.showAllDistricts();
     }
 
 
     async showAllDistricts() {
+
+        $("#yearsub").on('click', () => {
+            new VisitorYearController();
+        });
+        $("#differencesub").on('click', () => {
+            new differenceYearsController();
+        });
+        $("#weekdaysub").on('click', () => {
+            new WeekdayVisitorsController();
+        });
+        $("#districtsub").on('click', () => {
+           new BusyDistrictController();
+        });
+
         $(".moveDistrictsToHere").empty();
         $(".districtsAndLocations").find(".visitorstext").removeClass("d-none")
         $(".districtsAndLocations").find(".locationsOfADistrict").addClass("d-none")
@@ -532,4 +548,32 @@ class ObaLocationController {
     error() {
         $(".content").html("Failed to load content!");
     }
+}
+
+function changeView(){
+    $("#locationsub").on('click', () => {
+        $.get("views/obaLocation.html")
+            .done((data) => this.setup(data))
+            .fail(() => this.error());
+    });
+    $("#yearsub").on('click', () => {
+        $.get("views/visitorYear.html")
+            .done((data) => this.setup(data))
+            .fail(() => this.error());
+    });
+    $("#differencesub").on('click', () => {
+        $.get("views/differenceYears.html")
+            .done((data) => this.setup(data))
+            .fail(() => this.error());
+    });
+    $("#weekdaysub").on('click', () => {
+        $.get("views/weekdayVisitors.html")
+            .done((data) => this.setup(data))
+            .fail(() => this.error());
+    });
+    $("#districtsub").on('click', () => {
+        $.get("views/busyDistrict.html")
+            .done((data) => this.setup(data))
+            .fail(() => this.error());
+    });
 }

@@ -12,20 +12,32 @@ class WeekdayVisitorsController {
         //Load content into memory
         this.weekdayVisitorsView = $(data);
 
-        //Change colour of navbar item
-        $(".nav-item").removeClass("active");
-        $(".weekdayVisitorsItem").addClass("active");
-
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.weekdayVisitorsView);
 
-        document.title = "Bezoekers per weekdag"
+        //Change colour of navbar item
+        $(".btn-group-vertical").removeClass("active");
+        $("#weekdaysub").addClass("active");
 
         this.getOptions()
     }
 
     //function to generate the options available to pick
     async getOptions() {
+
+        //Change view with submenu
+        $("#locationsub").on('click', () => {
+            new ObaLocationController();
+        });
+        $("#yearsub").on('click', () => {
+            new VisitorYearController();
+        });
+        $("#differencesub").on('click', () => {
+           new differenceYearsController();
+        });
+        $("#districtsub").on('click', () => {
+            new BusyDistrictController();
+        });
 
         //get options from datatbase
         let promiseYear = await this.weekdayVisitorsRepository.getyearOptions()
