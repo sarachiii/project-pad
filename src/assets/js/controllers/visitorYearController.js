@@ -22,7 +22,6 @@ class VisitorYearController {
         document.title = "Bezoekers per locatie in jaren"
 
         this.getData()
-
     }
 
     async getData() {
@@ -30,14 +29,15 @@ class VisitorYearController {
         try {
             //get data from database
             let data = await this.visitorYearRepository.getYearData();
-            let allLocations = await this.visitorYearRepository.getAllLocations();
+            let uniqueLocationsData = await this.visitorYearRepository.getAllLocations();
+            let uniqueYearsData = await this.visitorYearRepository.getUniqueYears();
 
-            //create empty arrays for the data
-            let distinctLocations = [];
+            //create arrays for the data
             let locations = [];
             let years = [];
             let visitors = [];
             let selectedLocations = [];
+            let uniqueYears = [];
 
             //fill arrays with data
             for (let i = 0; i < data.length; i++) {
@@ -47,17 +47,21 @@ class VisitorYearController {
             }
 
             //fill the dropdown menu with data
-            for (let i = 0; i < allLocations.length; i++) {
-                distinctLocations[i] = allLocations[i].location;
-                const option = $(".option").first().clone().removeClass("d-none").text(distinctLocations[i]).val(i);
-                $("#selectbox").append(option);
+            for (let i = 0; i < uniqueLocationsData.length; i++) {
+                const option = $(".option").first().clone().removeClass("d-none").text(uniqueLocationsData[i].location).val(i)
+                $("#selectbox").append(option)
             }
 
-            //setup graph
-            const config = {
+            //fill array with unique years
+            for (let i = 0; i < uniqueYearsData.length; i++) {
+                uniqueYears[i] = uniqueYearsData[i].year
+            }
+
+            //Create chart
+            let yearChart = new Chart($('.chartInYears'), {
                 type: 'bar',
                 data: {
-                    labels: [years[0], years[1], years[2], years[3], years[4]],
+                    labels: uniqueYears,
                     datasets: [],
                 },
                 options: {
@@ -66,17 +70,20 @@ class VisitorYearController {
                         position: 'left',
                     },
                 },
-            };
-            let yearChart = new Chart($('.chartInYears'), config)
+            });
 
             //Click function for multiselector
             $('#selectbox').change(function () {
+
                 $('button').removeClass('d-none'); //Show remove button
                 $(this).children('option:selected').attr("disabled", true); //Prevent double clicking on item
+                //$(this).children('option:selected').attr("disabled", true); //Prevent double clicking on item
+
+                //Empty array
+                selectedLocations.length = 0;
 
                 //Fill array with selected items from dropdown menu
-                selectedLocations = [];
-                selectedLocations.push($('#selectbox :selected').val() * 5);
+                selectedLocations.push($('#selectbox :selected').val() * uniqueYears.length);
 
                 //Create random colours for each chart bar
                 var randomColorGenerator = function () {
@@ -91,7 +98,7 @@ class VisitorYearController {
                         borderWidth: 2,
                         data: [visitors[selectedLocations[i]], visitors[selectedLocations[i] + 1],
                             visitors[selectedLocations[i] + 2], visitors[selectedLocations[i] + 3],
-                            visitors[selectedLocations[i] + 4]],
+                            visitors[selectedLocations[i] + 4], visitors[selectedLocations[i] + 5]],
                         hidden: false
                     });
                     yearChart.update();
@@ -128,6 +135,7 @@ class VisitorYearController {
         $(".content").html("Failed to load content!");
     }
 }
+
 function removeChart() {
     $('button').addClass('d-none'); //hide button
     $('#selectbox').children('option').removeAttr('disabled'); //make all options clickable again

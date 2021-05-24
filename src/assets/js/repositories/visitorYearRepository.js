@@ -13,4 +13,9 @@ class VisitorYearRepository {
         return await networkManager
             .doRequest(`${this.route}/allLocations`, null, "GET");
     }
+
+    async getUniqueYears(){
+        return await networkManager
+            .doRequest(`${this.route}/uniqueYears`, null, "GET");
+    }
 }

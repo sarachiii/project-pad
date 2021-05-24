@@ -44,41 +44,29 @@ class WeekdayVisitorsController {
         }
 
 
-        var selectLocation = document.getElementById('locationOptions');
-        var selectYear = document.getElementById('yearOptions');
-
         //add options to html
         for (let i = 0; i < yearOptions.length; i++) {
-            var option = document.createElement('option');
-            option.value = yearOptions[i];
-            option.innerHTML = yearOptions[i];
-            selectYear.appendChild(option);
+            $("#yearOptions").append("<option value =" + yearOptions[i] + ">" + yearOptions[i] + "</option>")
         }
 
         for (let i = 0; i < locationOptions.length; i++) {
-            option = document.createElement('option');
-            option.value = locationOptions[i];
-            option.innerHTML = locationOptions[i];
-            selectLocation.appendChild(option);
+            $("#locationOptions").append("<option value =" + "'" + locationOptions[i] + "'" + ">" + locationOptions[i] + "</option>");
         }
 
 
         //function to buildchart is called when selection is changed
         $(".options").change(async function () {
+            $("#canvasdiv").empty()
+            $("#canvasdiv").append("<canvas id = myChart></canvas>")
 
-            //delete and then remake a new canvas element
-            document.getElementById("canvasdiv").innerHTML = "";
-            let weekDayCanvas = document.createElement('canvas')
-            weekDayCanvas.setAttribute("id", "myChart")
-            document.getElementById("canvasdiv").appendChild(weekDayCanvas);
 
             let average = [];
             let color = "#FF0000";
             let weekDayVisitorsRepository = new weekdayVisitorsRepository();
 
             //get chosen location and year
-            const year = document.getElementById("yearOptions").value;
-            const location = document.getElementById("locationOptions").value;
+            const year = $("#yearOptions").val();
+            const location = $("#locationOptions").val();
 
             let chartPromise = await weekDayVisitorsRepository.getWeekdayData(year, location)
 

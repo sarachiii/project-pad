@@ -116,7 +116,6 @@ app.get("/visitoryear", (req, res) => {
     db.handleQuery(
         connectionPool, {
             query: "SELECT SUM(`visitors`) as 'amount', `location`, `year` FROM `visitordata` " +
-                "WHERE `year` < 2020 " +
                 "GROUP BY `location`, `year` " +
                 "ORDER BY `location`"
         },
@@ -132,9 +131,21 @@ app.get("/visitoryear", (req, res) => {
 app.get("/visitoryear/allLocations", (req, res) => {
     db.handleQuery(
         connectionPool, {
-            query: "SELECT DISTINCT `location` FROM `visitordata` " +
-                "WHERE `year` < 2020 " +
-                "ORDER BY `location`"
+            query: "SELECT DISTINCT `location` FROM `visitordata` ORDER BY `location`"
+        },
+        (data) => {
+
+            //just give all data back as json
+            res.status(httpOkCode).json(data);
+        },
+        (err) => res.status(badRequestCode).json({reason: err})
+    );
+});
+
+app.get("/visitoryear/uniqueYears", (req, res) => {
+    db.handleQuery(
+        connectionPool, {
+            query: "SELECT DISTINCT `year` FROM `visitordata` ORDER BY `year`"
         },
         (data) => {
 
