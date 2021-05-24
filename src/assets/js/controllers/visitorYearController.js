@@ -77,7 +77,7 @@ class VisitorYearController {
         //Click function for multiselector
         $('#selectbox').change(function () {
 
-            $('button').removeClass('d-none'); //Show remove button
+            $('.btn.btn-danger.btn-sm.d-none').removeClass('d-none'); //Show remove button
             $(this).children('option:selected').attr("disabled", true); //Prevent double clicking on item
 
             //Empty array
@@ -107,12 +107,12 @@ class VisitorYearController {
         });
 
         //Delete graph and make a new one
-        $('button').click(function () {
+        $('.btn.btn-danger.btn-sm').click(function () {
             removeChart();
             selectedLocations = []; //empty array
         });
 
-        $("button").on('click', () => {
+        $(".btn.btn-danger.btn-sm").on('click', () => {
                 $.get("views/visitorYear.html")
                     .done((data) => this.setup(data))
                     .fail(() => this.error());
@@ -135,7 +135,7 @@ class VisitorYearController {
 }
 
 function removeChart() {
-    $('button').addClass('d-none'); //hide button
+    $('.btn.btn-danger.btn-sm').addClass('d-none'); //hide button
     $('#selectbox').children('option').removeAttr('disabled'); //make all options clickable again
     $('#selectbox').children('option:selected').prop("selected", false); //deselect last choice
     $("#canvasdiv").empty();
