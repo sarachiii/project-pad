@@ -1,10 +1,9 @@
 /**
- * Responsible for handling the actions happening on sidebar view
- *
+ * Responsible for handling the actions happening on submenu view
  */
-class NavbarController {
+class SubmenuController {
     constructor() {
-        $.get("views/navbar.html")
+        $.get("views/submenu.html")
             .done((data) => this.setup(data))
             .fail(() => this.error());
     }
@@ -12,13 +11,13 @@ class NavbarController {
     //Called when the navbar.html has been loaded
     setup(data) {
         //Load the sidebar-content into memory
-        const sidebarView = $(data);
+        const submenuView = $(data);
 
         //Find all anchors and register the click-event
-        sidebarView.find("a").on("click", this.handleClickMenuItem);
+        submenuView.find("btn").on("click", this.handleClickMenuItem);
 
-        //Empty the sidebar-div and add the resulting view to the page
-        $(".sidebar").empty().append(sidebarView);
+        //Empty the submenu-div and add the resulting view to the page
+        $(".content").empty().append(submenuView);
     }
 
     handleClickMenuItem() {
@@ -32,8 +31,8 @@ class NavbarController {
         return false;
     }
 
-    //Called when the login.html failed to load
+    //Called when the submenu.html failed to load
     error() {
-        $(".content").html("Failed to load the sidebar!");
+        $(".content").html("Failed to load the submenu!");
     }
 }

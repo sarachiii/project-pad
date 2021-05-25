@@ -1,5 +1,6 @@
-class VisitorYearController {
+class VisitorYearController extends SubmenuController{
     constructor() {
+        super();
         this.visitorYearRepository = new VisitorYearRepository();
 
         $.get("views/visitorYear.html")
