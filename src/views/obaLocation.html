@@ -1,15 +1,4 @@
-<!-- Submenu for statistics -->
-<div class="tabjes text-right">
-    <div class="btn-group-vertical" role="group" aria-label="Button group">
-        <button type="button" class="btn btn-primary fa fa-building fa-lg" id="locationsub"> Locatie</button>
-        <button type="button" class="btn btn-primary fa fa-line-chart fa-lg mt-1" id="yearsub"> Jaren</button>
-        <button type="button" class="btn btn-primary fa fa-percent fa-lg mt-1" id="differencesub"> Verschil jaren</button>
-        <button type="button" class="btn btn-primary fa fa-bar-chart fa-lg mt-1" id="weekdaysub"> Weekdagen</button>
-        <button type="button" class="btn btn-primary fa fa-map-marker fa-lg mt-1" id="districtsub"> Stadsdelen</button>
-    </div>
-</div>
-<div class="grid grid-cols-2">
-
+<div class="grid grid-cols-3">
     <!--Select a district or location-->
     <div class="districtsAndLocations shadow-md rounded-md fixed">
         <h4 class="visitorstext text-gray-600 bg-white rounded-md ml-3 mb-2 mt-2">Bezoekers per stadsdeel</h4>
@@ -18,16 +7,29 @@
             <h4 class="districtText text-gray-600 bg-white rounded-md">stadsdeelnaam</h4>
         </div>
         <div class="moveDistrictsToHere scrollbar"></div>
-        <!--//here-->
     </div>
 
     <!-- Shows chosen location -->
     <h2 id="locationName" class="pl-96"></h2>
+    <div></div>
+    <!-- Submenu for statistics -->
+    <div class="tabjes text-right">
+        <div class="btn-group-vertical" role="group" aria-label="Button group">
+            <button type="button" class="btn btn-primary fa fa-building fa-lg" id="locationsub"> Locatie</button>
+            <button type="button" class="btn btn-primary fa fa-line-chart fa-lg mt-1" id="yearsub"> Jaren</button>
+            <button type="button" class="btn btn-primary fa fa-percent fa-lg mt-1" id="differencesub"> Verschil jaren
+            </button>
+            <button type="button" class="btn btn-primary fa fa-bar-chart fa-lg mt-1" id="weekdaysub"> Weekdagen</button>
+            <button type="button" class="btn btn-primary fa fa-map-marker fa-lg mt-1" id="districtsub"> Stadsdelen
+            </button>
+        </div>
+    </div>
+    <div></div>
 
     <!-- Shows filter chart-->
-    <div class="chartAndButtonsDiv w-3/5 h-3/5"></div>
+    <div class="chartAndButtonsDiv1 w-3/5 h-3/5 col-span-2"></div>
     <div></div>
-    <div class="chartAndButtonsDiv2 w-3/5 h-3/5"></div>
+    <div class="chartAndButtonsDiv2 w-3/5 h-3/5 col-span-2"></div>
 </div>
 
 <!-- Items below are used for cloning, they are not shown on screen unless cloned -->
@@ -73,28 +75,37 @@
 
 <!-- Year dropdown -->
 <div class="yearDropdown1 dropdown d-none mt-2 mb-2 w-32">
-    <button class="btn btn-secondary 1 dropdown-toggle" type="button"
+    <button class="btn btn-secondary  dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Jaar
     </button>
-    <a class="yearDropdown-menu1 dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="yearDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
     </a>
-    <button class="yearDropdown-item1 dropdown-item d-none"></button>
+    <button class="yearDropdown-item dropdown-item d-none"></button>
 </div>
 
 <!-- Year dropdown -->
 <div class="yearDropdown2 dropdown d-none mt-2 mb-2 w-32">
-    <button class="btn btn-secondary 2 dropdown-toggle" type="button"
+    <button class="btn btn-secondary  dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Jaar
     </button>
-    <a class="yearDropdown-menu2 dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="yearDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
     </a>
-    <button class="yearDropdown-item2 dropdown-item d-none"></button>
+    <button class="yearDropdown-item dropdown-item d-none"></button>
 </div>
 
 <!-- Month/Quarter dropdown -->
-<div class="monthOrQuarterDropdown dropdown d-none mt-2 mb-2 w-28">
+<div class="monthOrQuarterDropdown1 dropdown d-none mt-2 mb-2 w-28">
+    <button class="btn btn-secondary dropdown-toggle" type="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    </button>
+    <a class="monthOrQuarterDropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
+    </a>
+    <button class="monthOrQuarterDropdown-item dropdown-item d-none"></button>
+</div>
+<!-- Month/Quarter dropdown -->
+<div class="monthOrQuarterDropdown2 dropdown d-none mt-2 mb-2 w-28">
     <button class="btn btn-secondary dropdown-toggle" type="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     </button>
