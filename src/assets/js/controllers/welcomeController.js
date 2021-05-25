@@ -25,6 +25,7 @@ class WelcomeController {
         $(".logoutItem").removeClass("hide-navigation-item");
 
         //Empty the content-div and add the resulting view to the page
+        $(".submenu").empty();
         $(".content").empty().append(this.welcomeView);
 
     }

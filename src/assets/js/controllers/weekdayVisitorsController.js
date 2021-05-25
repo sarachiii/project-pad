@@ -27,20 +27,6 @@ class WeekdayVisitorsController {
     //function to generate the options available to pick
     async getOptions() {
 
-        //Change view with submenu
-        $("#locationsub").on('click', () => {
-            new ObaLocationController();
-        });
-        $("#yearsub").on('click', () => {
-            new VisitorYearController();
-        });
-        $("#differencesub").on('click', () => {
-           new differenceYearsController();
-        });
-        $("#districtsub").on('click', () => {
-            new BusyDistrictController();
-        });
-
         //get options from datatbase
         let promiseYear = await this.weekdayVisitorsRepository.getyearOptions()
         let promiseLocation = await this.weekdayVisitorsRepository.getlocationOptions()

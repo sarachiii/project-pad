@@ -22,6 +22,7 @@ class DashboardController {
         $(".dashboardItem").addClass("active");
 
         //Empty the content-div and add the resulting view to the page
+        $(".submenu").empty();
         $(".content").empty().append(this.dashboardView);
 
         this.loadBook();

@@ -17,7 +17,7 @@ class SubmenuController {
         submenuView.find(".btn").on("click", this.handleClickMenuItem);
 
         //Empty the submenu-div and add the resulting view to the page
-        $(".content").empty().append(submenuView);
+        $(".submenu").empty().append(submenuView);
     }
 
     handleClickMenuItem() {

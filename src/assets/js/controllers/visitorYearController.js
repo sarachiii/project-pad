@@ -21,6 +21,8 @@ class VisitorYearController extends SubmenuController{
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.visitorYear);
 
+        $('title', window.parent.document).text('Bezoekers per jaar');
+
         //Change colour of navbar item
         $(".btn-group-vertical").removeClass("active");
         $("#yearsub").addClass("active");
@@ -42,7 +44,6 @@ class VisitorYearController extends SubmenuController{
 
         //create arrays for the data
         let locations = [];
-        let years = [];
         let visitors = [];
         let selectedLocations = [];
         let uniqueYears = [];
@@ -50,7 +51,6 @@ class VisitorYearController extends SubmenuController{
         //fill arrays with data
         for (let i = 0; i < data.length; i++) {
             locations[i] = data[i].location
-            years[i] = data[i].year
             visitors[i] = data[i].amount
         }
 
@@ -124,19 +124,6 @@ class VisitorYearController extends SubmenuController{
                     .fail(() => this.error());
             }
         );
-        //Change view with submenu
-        $("#locationsub").on('click', () => {
-            new ObaLocationController();
-        });
-        $("#differencesub").on('click', () => {
-            new differenceYearsController();
-        });
-        $("#weekdaysub").on('click', () => {
-            new WeekdayVisitorsController();
-        });
-        $("#districtsub").on('click', () => {
-            new BusyDistrictController();
-        });
     }
 }
 
