@@ -1,5 +1,11 @@
-class VisitorYearController {
+/**
+ * Responsible for handling the actions happening on the visitorYear view
+ *
+ * @author Sarah Chrzanowska-Buth
+ */
+class VisitorYearController extends SubmenuController{
     constructor() {
+        super();
         this.visitorYearRepository = new VisitorYearRepository();
 
         $.get("views/visitorYear.html")
