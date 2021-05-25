@@ -1,3 +1,8 @@
+/**
+ * Responsible for handling the actions happening on the visitorYear view
+ *
+ * @author Sarah Chrzanowska-Buth
+ */
 class VisitorYearController extends SubmenuController{
     constructor() {
         super();

@@ -14,7 +14,7 @@ class SubmenuController {
         const submenuView = $(data);
 
         //Find all anchors and register the click-event
-        submenuView.find("btn").on("click", this.handleClickMenuItem);
+        submenuView.find(".btn").on("click", this.handleClickMenuItem);
 
         //Empty the submenu-div and add the resulting view to the page
         $(".content").empty().append(submenuView);
