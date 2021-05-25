@@ -22,7 +22,7 @@ class UploadXMLController {
         $(".nav-item").removeClass("active");
         $(".uploadItem").addClass("active");
 
-        document.title = "Upload bezoekers data";
+        $('title', window.parent.document).text('Upload bezoekers data')
 
         //File upload
         this.welcomeView.find("#upload").on("click", function() {
