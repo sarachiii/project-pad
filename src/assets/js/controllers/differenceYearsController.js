@@ -17,8 +17,8 @@ class differenceYearsController {
 
 
         //Change colour of navbar item
-        $(".nav-item").removeClass("active");
-        $(".differenceYearsItem").addClass("active");
+        $(".btn-group-vertical").removeClass("active");
+        $("#differencesub").addClass("active");
 
         this.buildYearChart()
     }
@@ -30,6 +30,20 @@ class differenceYearsController {
 
     // === include 'setup' then 'config' above ===
     async buildYearChart() {
+        //Change view with submenu
+        $("#locationsub").on('click', () => {
+            new ObaLocationController();
+        });
+        $("#yearsub").on('click', () => {
+            new VisitorYearController();
+        });
+        $("#weekdaysub").on('click', () => {
+            new WeekdayVisitorsController();
+        });
+        $("#districtsub").on('click', () => {
+            new BusyDistrictController();
+        });
+
         try {
 
              let data = await this.differenceYearsRepository.getdifferenceyears();

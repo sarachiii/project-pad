@@ -87,12 +87,29 @@ footer {
     transform: translate(-50%, -50%);
 }
 
-
 /*#inlogbtn {*/
 /*    width: 100%;*/
 /*}*/
+
 .hide-navigation-item {
     display: none !important;
+}
+
+/* ChartYear*/
+#chartWrapper{
+    display: flex;
+}
+
+#selectboxDiv{
+    margin-left: 20px;
+    margin-top: 20px;
+    float:left;
+    width: 250px
+}
+
+#selectbox{
+    height: 200px;
+    width: 250px;
 }
 
 .scrollbar {
@@ -117,12 +134,20 @@ p {
     width: 100%;
 }
 
+#chartInYears{
+    width: 100%;
+}
+
 .districtsAndLocations {
     width: 305px;
     height: 90%;
 }
 
-.weekDropdown-menu {
+.waitmessage{
+    margin-top: 20px;
+}
+
+.weekOrMonthDropdown-menu {
     margin: 5px;
     padding: 5px;
     width: 150px;
@@ -131,8 +156,16 @@ p {
     text-align: justify;
 }
 
-
 .chart-h-w{
-    height: 400px;
-    width: 600px ;
+    height: 250px;
+    width: 500px ;
+}
+
+option:hover {
+    background-color: rgba(114,111,124,0.67);
+}
+
+.tabjes{
+    height: 30px;
+    width: 100%;
 }

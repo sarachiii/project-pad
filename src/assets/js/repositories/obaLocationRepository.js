@@ -1,3 +1,8 @@
+/**
+ *
+ * @author Nazlıcan Eren
+ */
+
 class ObaLocationRepository {
 
     constructor() {

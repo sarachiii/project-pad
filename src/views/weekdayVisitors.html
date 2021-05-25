@@ -1,9 +1,19 @@
 <div>
+    <h1>Gemiddelde OBA bezoekers</h1>
+    <p>(per weekdag van een jaar)</p>
+
     <form>
-        <select name="location" id = "locationOptions"></select>
+        <select name="location" id = "locationOptions" class="options" style = "border: 1px solid black; border-radius: 5px;">
+            <option disabled selected>Locatie</option>
+        </select>
 
-        <select name="year" id="yearOptions"></select>
+        <select name="year" id="yearOptions" class="options" style = "border: 1px solid black; border-radius: 5px;">
+            <option disabled selected>Jaar</option>
+        </select>
 
-        <button id = "buildChart">Verzenden</button>
+
     </form>
+</div>
+
+<div id = "canvasdiv">
 </div>

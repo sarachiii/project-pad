@@ -19,6 +19,8 @@ const CONTROLLER_OBALOCATION = "obaLocation";
 const CONTROLLER_VISITORYEAR = "visitoryear";
 const CONTROLLER_WEEKDAYVISITORS = "weekdayVisitors";
 const CONTROLLER_DIFFERENCEYEARS = "differenceyears";
+const CONTROLLER_BUSYDISTRICT = "busyDistricts";
+const CONTROLLER_SUBMENU = "submenu";
 
 const sessionManager = new SessionManager();
 const networkManager = new NetworkManager();
@@ -28,6 +30,7 @@ class App {
     init() {
         //Always load the sidebar
         this.loadController(CONTROLLER_SIDEBAR);
+        this.loadController(CONTROLLER_SUBMENU);
 
         //Attempt to load the controller from the URL, if it fails, fall back to the welcome controller.
         this.loadControllerFromUrl(CONTROLLER_WELCOME);
@@ -55,6 +58,11 @@ class App {
             case CONTROLLER_LOGIN:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new WelcomeController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_SUBMENU:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new SubmenuController(), () => new LoginController());
                 break;
 
             case CONTROLLER_WELCOME:
@@ -105,6 +113,11 @@ class App {
             case CONTROLLER_DIFFERENCEYEARS:
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new differenceYearsController(), () => new LoginController());
+                break;
+
+            case CONTROLLER_BUSYDISTRICT:
+                this.setCurrentController(name);
+                this.isLoggedIn(() => new BusyDistrictController(), () => new LoginController());
                 break;
 
             default:
