@@ -19,7 +19,7 @@ class ObaLocationController {
         $(".btn-group-vertical").removeClass("active");
         $("#locationsub").addClass("active");
 
-        $('title', window.parent.document).text('Filter en vergelijk locaties');
+            $('title', window.parent.document).text('Filter en vergelijk locaties');
 
         this.showAllDistricts();
     }
@@ -85,8 +85,9 @@ class ObaLocationController {
                 console.log(locations[i]["location_name"]);
             });
 
-            lOCATIONCARD.on('click', () => this.selectDate(locations[i]) &&
-                $("#locationName").text(locations[i]["location_name"]));
+            lOCATIONCARD.on('click', () => this.selectDate(locations[i])
+              //  && $("#locationName").text(locations[i]["location_name"])
+            );
 
             DISTRICTDIV.append(lOCATIONCARD);
         }
@@ -125,11 +126,12 @@ class ObaLocationController {
         //     }
         // }
 
+        let removeChartButton = $(".close.d-none").first().clone().removeClass("d-none");
         let dateDropdown = $(".dateDropdown.dropdown.d-none").first().clone().removeClass("d-none");
         let buttons = $(".buttons.d-none").first().clone().removeClass("d-none");
 
         if ($('.chartAndButtonsDiv1').children().length <= 0) {
-            buttons.append(dateDropdown);
+            buttons.append(removeChartButton, dateDropdown);
             $(".chartAndButtonsDiv1").append(buttons);
             //this.fillDateDropdown(location, DATEDROPDOWN, "chartAndButtonsDiv");
             let div = "chartAndButtonsDiv1";
@@ -146,6 +148,20 @@ class ObaLocationController {
                     console.log(allDate[i]["name"]);
                 });
             }
+
+            this.showChart(location["location_name"], "", [], [], "", "-", "", place1, placeNumber1);
+
+            $('.chartAndButtonsDiv1').find(".buttons").find(".close").click(function () {
+                $(".chart" + placeNumber1).find(".choseDateChart" + placeNumber1).removeAttr('id');
+                $(".chartAndButtonsDiv1").find(".chart" + placeNumber1).remove();
+                $(".chartAndButtonsDiv1").find(".buttons").find(".weekOrMonthDropdown" + placeNumber1).remove();
+                $(".chartAndButtonsDiv1").find(".buttons").find(".yearDropdown" + placeNumber1).remove();
+                $(".chartAndButtonsDiv1").find(".buttons").find(".quarterDropdown" + placeNumber1).remove();
+                $(".chartAndButtonsDiv1").find(".buttons").find(".dateDropdown" + placeNumber1).remove();
+                $(".chartAndButtonsDiv1").find(".buttons").find(".close").remove();
+                $(".chartAndButtonsDiv1").find(".buttons").remove();
+
+            });
 
             dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 0 + '"]', () =>
                 this.disableButton(allDate, 0) &&
@@ -169,7 +185,7 @@ class ObaLocationController {
 
 
         } else if ($('.chartAndButtonsDiv2').children().length <= 0) {
-            buttons.append(dateDropdown);
+            buttons.append(removeChartButton, dateDropdown);
             $(".chartAndButtonsDiv2").append(buttons);
             let div = "chartAndButtonsDiv2";
             for (let i = 0; i < allDate.length; i++) {
@@ -184,6 +200,19 @@ class ObaLocationController {
                     console.log(allDate[i]["name"]);
                 });
             }
+
+            this.showChart(location["location_name"], "", [], [], "", "-", "", place2, placeNumber2);
+
+            $('.chartAndButtonsDiv2').find(".buttons").find(".close").click(function () {
+                $(".chart" + placeNumber2).find(".choseDateChart" + placeNumber2).removeAttr('id');
+                $(".chartAndButtonsDiv2").find(".chart" + placeNumber2).remove();
+                $(".chartAndButtonsDiv2").find(".buttons").find(".weekOrMonthDropdown" + placeNumber2).remove();
+                $(".chartAndButtonsDiv2").find(".buttons").find(".yearDropdown" + placeNumber2).remove();
+                $(".chartAndButtonsDiv2").find(".buttons").find(".quarterDropdown" + placeNumber2).remove();
+                $(".chartAndButtonsDiv2").find(".buttons").find(".close").remove();
+                $(".chartAndButtonsDiv2").find(".buttons").remove();
+
+            });
 
             dateDropdown.find(".dateDropdown-menu").on('click', '.dateDropdown-item[data-id="' + 0 + '"]', () =>
                 this.disableButton(allDate, 0) &&
@@ -272,13 +301,11 @@ class ObaLocationController {
         // this.fillYearDropdown(location, type, place, placeNumber, yearDropdown);
         $(".chartAndButtonsDiv" + placeNumber).find(".buttons").find(".weekOrMonthDropdown" + placeNumber).remove();
         if (place === "chartAndButtonsDiv1") {
-            this.removeChart(place, placeNumber);
             let weekDropDown1 = $(".weekOrMonthDropdown1").first().clone().removeClass("d-none");
             $(".chartAndButtonsDiv" + placeNumber).find(".buttons").append(weekDropDown1);
             this.fillWeekDropdown(location, year, place, placeNumber, weekDropDown1);
 
         } else if (place === "chartAndButtonsDiv2") {
-            this.removeChart(place, placeNumber);
             let weekDropdown2 = $(".weekOrMonthDropdown2").first().clone().removeClass("d-none");
             $(".chartAndButtonsDiv" + placeNumber).find(".buttons").append(weekDropdown2);
             this.fillWeekDropdown(location, year, place, placeNumber, weekDropdown2);
@@ -290,6 +317,8 @@ class ObaLocationController {
     async fillWeekDropdown(location, year, place, placeNumber, weekDropdown) {
         let allWeeksOfAYear = await this.obaLocationRepository.getAllWeeksOfAYear(location["alias_name"], year);
         console.log(allWeeksOfAYear)
+        weekDropdown.find(".btn.btn-secondary").text("Week");
+
         for (let i = 0; i < allWeeksOfAYear.length; i++) {
             //Checks if the visitor data of every week of a year is null
             if (allWeeksOfAYear[i]["visitors"] !== 0) {
@@ -335,7 +364,6 @@ class ObaLocationController {
     async fillQuarterDropdown(location, year, place, placeNumber, quarterDropdown) {
         let quarters = await this.obaLocationRepository.getAllQuarterOfAYear();
         console.log(quarters);
-        quarterDropdown.find(".btn.btn-secondary").text("Kwartaal");
 
         for (let i = 0; i < quarters.length; i++) {
             let quarterText = quarterDropdown.find(".quarterDropdown-item.d-none").first().clone().removeClass("d-none");
@@ -362,7 +390,7 @@ class ObaLocationController {
         // $(".chartAndButtonsDiv").find(".buttons").append(MONTHDROPDOWN);
     }
 
-    async fillMonthDropdown(location, year, allMonthsOfAYear, place, placeNumber, monthDropdown){
+    async fillMonthDropdown(location, year, allMonthsOfAYear, place, placeNumber, monthDropdown) {
         for (let i = 0; i < allMonthsOfAYear.length; i++) {
             let visitorDataMonth = await this.obaLocationRepository.getAllMonths(location["alias_name"], year, allMonthsOfAYear[i]["name"]);
             console.log(visitorDataMonth);
@@ -387,22 +415,20 @@ class ObaLocationController {
                 this.getMonthData(location, year, allMonthsOfAYear[i]["name"], place, placeNumber));
         }
     }
+
     async getWeekData(location, year, chosenWeek, place, placeNumber) {
         let days = [];
         let weekData = [];
         let color = [];
-        let borderColor = [];
         let week = await this.obaLocationRepository.getChosenWeek(location["alias_name"], year, chosenWeek);
 
         for (let i = 0; i < week.length; i++) {
             days[i] = week[i]["weekday"];
             weekData[i] = week[i]["visitors"];
-            color = 'rgba(255, 100, 0, 1)';
-            borderColor = 'rgb(255,100,0)';
-
+            color = 'rgb(255, 100, 0)';
         }
 
-        this.showChart(days, weekData, color, borderColor, year, "dagen", "week: " + chosenWeek + " van ", place, placeNumber);
+        this.showChart(location["location_name"], days, weekData, color, year, "dagen", "week: " + chosenWeek + " van ", place, placeNumber);
         console.log(week);
     }
 
@@ -411,7 +437,6 @@ class ObaLocationController {
         let weeks = [];
         let quarterData = [];
         let color = [];
-        let borderColor = [];
 
         switch (numberOfChosenQuarter) {
             case 0:
@@ -431,13 +456,12 @@ class ObaLocationController {
         for (let i = 0; i < chosenQuarter.length; i++) {
             weeks[i] = chosenQuarter[i]["week"];
             quarterData[i] = chosenQuarter[i]["amount"];
-            color = 'rgba(0, 100, 200, 1)';
-            borderColor = 'rgb(0, 100, 200)';
+            color = 'rgb(0, 100, 200)';
 
         }
         console.log(chosenQuarter);
 
-        this.showChart(weeks, quarterData, color, borderColor, year, "weken", chosenQuarterName + " ", place, placeNumber);
+        this.showChart(location["location_name"], weeks, quarterData, color, year, "weken", chosenQuarterName + " ", place, placeNumber);
 
     }
 
@@ -446,20 +470,18 @@ class ObaLocationController {
         let days = [];
         let monthData = [];
         let color = [];
-        let borderColor = [];
         let visitorDataAllDaysOfMonth = await this.obaLocationRepository.getChosenMonth(location["alias_name"], year, month);
 
         for (let i = 0; i < visitorDataAllDaysOfMonth.length; i++) {
             days[i] = visitorDataAllDaysOfMonth[i]["day"];
             monthData[i] = visitorDataAllDaysOfMonth[i]["visitors"];
-            color = 'rgba(160,0,120,1)';
-            borderColor = 'rgb(160, 0, 120)';
+            color = 'rgb(160,0,120)';
         }
 
         console.log(visitorDataAllDaysOfMonth);
         console.log(days);
 
-        this.showChart(days, monthData, color, borderColor, year, "dagen", month + " ", place, placeNumber);
+        this.showChart(location["location_name"], days, monthData, color, year, "dagen", month + " ", place, placeNumber);
 
     }
 
@@ -468,7 +490,6 @@ class ObaLocationController {
         let months = [];
         let yearData = [];
         let color = [];
-        let borderColor = [];
 
         let visitorsYear = await this.obaLocationRepository.getChosenYear(location["alias_name"], year);
         console.log(visitorsYear);
@@ -476,15 +497,14 @@ class ObaLocationController {
         for (let i = 0; i < visitorsYear.length; i++) {
             months[i] = allMonths[i]["name"];
             yearData[i] = visitorsYear[i]["amount"];
-            color = 'rgba(0,155,150,1)';
-            borderColor = 'rgb(0,155,150)';
+            color = 'rgb(0,155,150)';
         }
 
 
-        this.showChart(months, yearData, color, borderColor, year, "maanden", "", place, placeNumber);
+        this.showChart(location["location_name"], months, yearData, color, year, "maanden", "", place, placeNumber);
     }
 
-    async showChart(label, data, color, borderColor, year, labelType, type, place, placeNumber) {
+    async showChart(location, label, data, color, year, labelType, type, place, placeNumber) {
         this.removeChart(place, placeNumber);
 
         const CHARTDIV = $(".chart" + placeNumber).first().clone().removeClass("d-none");
@@ -496,10 +516,8 @@ class ObaLocationController {
             data: {
                 labels: label,
                 datasets: [{
-                    label: "OBA bezoekers",
+                    label: "OBA" + location + "bezoekers",
                     backgroundColor: color,
-                    borderColor: borderColor,
-                    borderWidth: 2,
                     data: data,
                 }]
             },
@@ -507,7 +525,7 @@ class ObaLocationController {
                 legend: {display: false},
                 title: {
                     display: true,
-                    text: 'OBA bezoekers ' + type + year
+                    text: 'OBA ' + location + ' bezoekers ' + type + year
                 },
                 scales: {
                     xAxes: [{
@@ -546,9 +564,8 @@ class ObaLocationController {
 
 //Checks if an date dropdown is still in a div and removes it
     removePickDateButton(place, placeNumber) {
-        console.log(place);
         $("." + place).find(".buttons").find(".weekOrMonthDropdown" + placeNumber).remove();
-        $("." + place).find(".buttons").find(".yearDropdown" + placeNumber).remove(); // placenumber!!
+        $("." + place).find(".buttons").find(".yearDropdown" + placeNumber).remove();
         $("." + place).find(".buttons").find(".quarterDropdown" + placeNumber).remove();
     }
 
