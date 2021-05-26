@@ -57,7 +57,7 @@ class WeekdayVisitorsController {
         //function to buildchart is called when selection is changed
         $(".options").change(async function () {
             $("#canvasdiv").empty()
-            $("#canvasdiv").append("<canvas id = myChart></canvas>")
+            $("#canvasdiv").append("<canvas id = myChart height ='100'></canvas>")
 
 
             let average = [];
@@ -114,6 +114,9 @@ class WeekdayVisitorsController {
                         options: {
                             scales: {
                                 yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
                                     scaleLabel: {
                                         display: true,
                                         labelString: 'gemiddeld aantal bezoekers'
