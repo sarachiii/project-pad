@@ -21,19 +21,6 @@ class ObaLocationController {
 
             $('title', window.parent.document).text('Filter en vergelijk locaties');
 
-        $("#yearsub").on('click', () => {
-            new VisitorYearController();
-        });
-        $("#differencesub").on('click', () => {
-            new differenceYearsController();
-        });
-        $("#weekdaysub").on('click', () => {
-            new WeekdayVisitorsController();
-        });
-        $("#districtsub").on('click', () => {
-            new BusyDistrictController();
-        });
-
         this.showAllDistricts();
     }
 

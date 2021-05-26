@@ -16,6 +16,7 @@ class UploadXMLController {
         this.welcomeView = $(data);
 
         //Empty the content-div and add the resulting view to the page
+        $(".submenu").empty();
         $(".content").empty().append(this.welcomeView);
 
         //Change colour of navbar item
