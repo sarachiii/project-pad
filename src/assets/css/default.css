@@ -169,3 +169,25 @@ option:hover {
     height: 30px;
     width: 100%;
 }
+
+.navbar .navbar-collapse .navbar-nav .nav-link{
+    color: black; !important;
+    font-weight: bold; !important;
+}
+.navbar .navbar-collapse .navbar-nav .nav-item{
+    width: 200px;!important;
+}
+
+.navbar .navbar-collapse .navbar-nav li{
+    width: 100px;
+    text-align:center;
+}
+
+.navbar .navbar-collapse .navbar-nav i{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+/* Navbar links on mouse-over */
+.navbar .navbar-collapse .navbar-nav a:hover {
+    color: red; !important;
+}
