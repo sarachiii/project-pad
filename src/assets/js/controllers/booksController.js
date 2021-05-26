@@ -19,6 +19,7 @@ class BooksController {
         this.booksView = $(data);
 
         //Empty the content-div and add the resulting view to the page
+        $(".submenu").empty();
         $(".content").empty().append(this.booksView);
 
         //Change colour of navbar item

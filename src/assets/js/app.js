@@ -112,7 +112,7 @@ class App {
 
             case CONTROLLER_DIFFERENCEYEARS:
                 this.setCurrentController(name);
-                this.isLoggedIn(() => new differenceYearsController(), () => new LoginController());
+                this.isLoggedIn(() => new DifferenceYearsController(), () => new LoginController());
                 break;
 
             case CONTROLLER_BUSYDISTRICT:
