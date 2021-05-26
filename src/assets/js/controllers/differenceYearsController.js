@@ -74,7 +74,7 @@ class DifferenceYearsController {
                     //labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
                     labels: years,
                     datasets: [{
-                        label: "OBA bezoekers",
+                        label: "Verschil percentage t.o.v vorig jaar ",
                         backgroundColor: 'rgb(255, 99, 132, 0.4)',
                         borderColor: 'rgb(255, 99, 132)',
                         borderWidth: 2,
