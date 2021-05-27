@@ -1,3 +1,8 @@
+/**
+ * Responsible for handling the actions happening on the obaLocations view
+ *
+ * @author Nazlıcan Eren
+ */
 class ObaLocationController {
     constructor() {
         this.obaLocationRepository = new ObaLocationRepository();
@@ -283,26 +288,10 @@ class ObaLocationController {
                 break;
             case "week":
                 this.fillWeekDropdown(location, year, place, placeNumber, dropdown);
-                break;        }
-
-
+                break;
+        }
     }
 
-    // async selectMonth(location, year, place, placeNumber, allMonthsOfAYear) {
-    //     $(".chartAndButtonsDiv" + placeNumber).find(".buttons").find(".weekOrMonthDropdown" + placeNumber).remove();
-    //     const monthDropdown = $(".weekOrMonthDropdown" + placeNumber).first().clone().removeClass("d-none");
-    //     monthDropdown.find(".btn.btn-secondary").text("Maand");
-    //     $(".chartAndButtonsDiv" + placeNumber).find(".buttons").append(monthDropdown);
-    //     this.fillMonthDropdown(location, year, allMonthsOfAYear, place, placeNumber, monthDropdown);
-    // }
-    //
-    // async selectQuarter(location, year, place, placeNumber) {
-    //     $(".chartAndButtonsDiv" + placeNumber).find(".buttons").find(".quarterDropdown" + placeNumber).remove();
-    //     const quarterDropdown = $(".quarterDropdown" + placeNumber).first().clone().removeClass("d-none");
-    //     $(".chartAndButtonsDiv" + placeNumber).find(".buttons").append(quarterDropdown);
-    //     this.fillQuarterDropdown(location, year, place, placeNumber, quarterDropdown);
-    // }
-    //
     async selectYear(location, type, place, placeNumber) {
         this.removePickDateButton(place, placeNumber);
         const yearDropdown = $(".yearDropdown" + placeNumber).first().clone().removeClass("d-none");
