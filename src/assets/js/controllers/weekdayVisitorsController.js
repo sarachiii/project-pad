@@ -20,8 +20,16 @@ class WeekdayVisitorsController {
         this.getOptions()
     }
 
+    //Called when weekdayVisitors.html failed to load
+    error() {
+        $(".content").html("Failed to load the chart!");
+    }
+
     //function to generate the options available to pick
     async getOptions() {
+
+        const DAYSAMOUNT = 7;
+        const FONTSIZE = 16;
 
         //get options from datatbase
         let promiseYear = await this.weekdayVisitorsRepository.getyearOptions()
@@ -53,7 +61,7 @@ class WeekdayVisitorsController {
         //function to buildchart is called when selection is changed
         $(".options").change(async function () {
             $("#canvasdiv").empty()
-            $("#canvasdiv").append("<canvas id = myChart height ='100'></canvas>")
+            $("#canvasdiv").append("<canvas id = weekdayCanvas style='height: 700px'></canvas>")
 
 
             let average = [];
@@ -65,24 +73,19 @@ class WeekdayVisitorsController {
             const location = $("#locationOptions").val();
 
             //check if an option is selected
-            if(year == null || location == null){
+            if (year != null && location != null) {
 
-            } else {
                 let chartPromise = await weekDayVisitorsRepository.getWeekdayData(year, location)
 
-                //check if there is a response
-                if (chartPromise.length < 7){
+                //check if there is a response thats 7 days long
+                if (chartPromise.length != DAYSAMOUNT) {
                     alert("Geen data beschikbaar");
                 } else {
 
                     //add data to array
-                    average[0] = Math.round(chartPromise[0].average);
-                    average[1] = Math.round(chartPromise[1].average);
-                    average[2] = Math.round(chartPromise[2].average);
-                    average[3] = Math.round(chartPromise[3].average);
-                    average[4] = Math.round(chartPromise[4].average);
-                    average[5] = Math.round(chartPromise[5].average);
-                    average[6] = Math.round(chartPromise[6].average);
+                    for (let i = 0; i < DAYSAMOUNT; i++) {
+                        average[i] = Math.round(chartPromise[i].average);
+                    }
 
                     //chart setup and config
                     const labels = [
@@ -108,32 +111,34 @@ class WeekdayVisitorsController {
                         type: 'bar',
                         data,
                         options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        beginAtZero: true
+                                        fontSize: FONTSIZE
                                     },
                                     scaleLabel: {
+                                        fontSize: FONTSIZE,
                                         display: true,
                                         labelString: 'gemiddeld aantal bezoekers'
                                     },
+                                }],
+
+                                xAxes: [{
+                                    ticks: {
+                                        fontSize: FONTSIZE
+                                    }
                                 }]
                             }
                         }
                     };
 
                     //build chart
-                    let weekDayChart = new Chart(myChart, config)
+                    new Chart(weekdayCanvas, config)
                 }
             }
 
-
-
-
-
         });
-
-
     }
-
 }

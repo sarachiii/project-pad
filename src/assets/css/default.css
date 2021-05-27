@@ -204,3 +204,12 @@ option:hover {
     background-color: #F8AFA6 !important;
     border-color: #F8AFA6 !important;
 }
+
+.selectForm{
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#weekdayCanvas{
+    width:80% !important;
+}

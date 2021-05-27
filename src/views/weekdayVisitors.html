@@ -1,14 +1,13 @@
 <div>
-    <h1>Gemiddelde OBA bezoekers</h1>
-    <p>(per weekdag van een jaar)</p>
-    <br>
+    <h1>Gemiddelde bezoekers per weekdag</h1>
+    <p>(Op jaar basis)</p>
 
-    <form style="padding: 30px">
-        <select name="location" id = "locationOptions" class="options" style = "border: 1px solid black; border-radius: 5px;">
+    <form style="padding-left: 30px" class="mt-3 p-7">
+        <select name="location" id="locationOptions" class="options selectForm">
             <option disabled selected>Locatie</option>
         </select>
 
-        <select name="year" id="yearOptions" class="options" style = "border: 1px solid black; border-radius: 5px;">
+        <select name="year" id="yearOptions" class="options selectForm">
             <option disabled selected>Jaar</option>
         </select>
 
@@ -16,5 +15,7 @@
     </form>
 </div>
 
-<div id = "canvasdiv">
-</div>
+<center>
+    <div id="canvasdiv">
+    </div>
+</center>
