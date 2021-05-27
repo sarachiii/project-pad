@@ -241,3 +241,7 @@ option:hover {
 #weekdayCanvas{
     width:80% !important;
 }
+
+#canvasdiv{
+    height: 500px; !important;
+}
