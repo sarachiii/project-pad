@@ -3,7 +3,7 @@
  *
  * @author Sarah Chrzanowska-Buth
  */
-class VisitorYearController extends SubmenuController{
+class VisitorYearController extends SubmenuController {
     constructor() {
         super();
         this.visitorYearRepository = new VisitorYearRepository();
@@ -23,10 +23,6 @@ class VisitorYearController extends SubmenuController{
 
         $('title', window.parent.document).text('Bezoekers per jaar');
 
-        //Change colour of navbar item
-        $(".btn-group-vertical").removeClass("active");
-        $("#yearsub").addClass("active");
-
         this.getData();
     }
 
@@ -37,93 +33,105 @@ class VisitorYearController extends SubmenuController{
 
     async getData() {
 
-        //get data from database
-        let data = await this.visitorYearRepository.getYearData();
-        let uniqueLocationsData = await this.visitorYearRepository.getAllLocations();
-        let uniqueYearsData = await this.visitorYearRepository.getUniqueYears();
+        try {
 
-        //create arrays for the data
-        let locations = [];
-        let visitors = [];
-        let selectedLocations = [];
-        let uniqueYears = [];
+            //get data from database
+            let data = await this.visitorYearRepository.getYearData();
+            let uniqueLocationsData = await this.visitorYearRepository.getAllLocations();
+            let uniqueYearsData = await this.visitorYearRepository.getUniqueYears();
 
-        //fill arrays with data
-        for (let i = 0; i < data.length; i++) {
-            locations[i] = data[i].location
-            visitors[i] = data[i].amount
-        }
+            //create arrays for the data
+            let locations = [];
+            let visitors = [];
+            let selectedLocations = [];
+            let uniqueYears = [];
 
-        //fill the dropdown menu with data
-        for (let i = 0; i < uniqueLocationsData.length; i++) {
-            const option = $(".option").first().clone().removeClass("d-none").text(uniqueLocationsData[i].location).val(i)
-            $("#selectbox").append(option)
-        }
+            //fill arrays with data
+            for (let i = 0; i < data.length; i++) {
+                locations[i] = data[i].location
+                visitors[i] = data[i].amount
+            }
 
-        //fill array with unique years
-        for (let i = 0; i < uniqueYearsData.length; i++) {
-            uniqueYears[i] = uniqueYearsData[i].year
-        }
+            //fill the dropdown menu with data
+            for (let i = 0; i < uniqueLocationsData.length; i++) {
+                const option = $(".option").first().clone().removeClass("d-none").text(uniqueLocationsData[i].location).val(i)
+                $("#selectbox").append(option)
+            }
 
-        //Create chart
-        let yearChart = new Chart($('.chartInYears'), {
-            type: 'bar',
-            data: {
-                labels: uniqueYears,
-                datasets: [],
-            },
-            options: {
-                responsive: true,
-                legend: {
-                    position: 'left',
+            //fill array with unique years
+            for (let i = 0; i < uniqueYearsData.length; i++) {
+                uniqueYears[i] = uniqueYearsData[i].year
+            }
+
+            //Create chart
+            let yearChart = new Chart($('.chartInYears'), {
+                type: 'bar',
+                data: {
+                    labels: uniqueYears,
+                    datasets: [],
                 },
-            },
-        });
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'left',
+                    },
+                },
+            });
 
-        //Click function for multiselector
-        $('#selectbox').change(function () {
+            //Click function for multiselector
+            $('#selectbox').change(function () {
 
-            $('.btn.btn-danger.btn-sm.d-none').removeClass('d-none'); //Show remove button
-            $(this).children('option:selected').attr("disabled", true); //Prevent double clicking on item
+                $('.btn.btn-danger.btn-sm.d-none').removeClass('d-none'); //Show remove button
+                $(this).children('option:selected').attr("disabled", true); //Prevent double clicking on item
 
-            //Empty array
-            selectedLocations.length = 0;
+                //Empty array
+                selectedLocations.length = 0;
 
-            //Fill array with selected items from dropdown menu
-            selectedLocations.push($('#selectbox :selected').val() * uniqueYears.length);
+                //Fill array with selected items from dropdown menu
+                selectedLocations.push($('#selectbox :selected').val() * uniqueYears.length);
 
-            //Create random colours for each chart bar
-            var randomColorGenerator = function () {
-                return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
-            };
-             
-            //Add the selected data dynamically to the graph
-            for (let i = 0; i < selectedLocations.length; i++) {
-                yearChart.data.datasets.push({
-                    label: locations[selectedLocations[i]],
-                    backgroundColor: randomColorGenerator(),
-                    borderWidth: 2,
-                    data: [visitors[selectedLocations[i]], visitors[selectedLocations[i] + 1],
-                        visitors[selectedLocations[i] + 2], visitors[selectedLocations[i] + 3],
-                        visitors[selectedLocations[i] + 4], visitors[selectedLocations[i] + 5]],
-                    hidden: false
-                });
-                yearChart.update();
+                //Create random colours for each chart bar
+                var randomColorGenerator = function () {
+                    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+                };
+
+                //Add the selected data dynamically to the graph
+                for (let i = 0; i < selectedLocations.length; i++) {
+                    yearChart.data.datasets.push({
+                        label: locations[selectedLocations[i]],
+                        backgroundColor: randomColorGenerator(),
+                        borderWidth: 2,
+                        data: [visitors[selectedLocations[i]], visitors[selectedLocations[i] + 1],
+                            visitors[selectedLocations[i] + 2], visitors[selectedLocations[i] + 3],
+                            visitors[selectedLocations[i] + 4], visitors[selectedLocations[i] + 5]],
+                        hidden: false
+                    });
+                    yearChart.update();
+                }
+            });
+
+            //Delete graph and make a new one
+            $('.btn.btn-danger.btn-sm').click(function () {
+                removeChart();
+                selectedLocations = []; //empty array
+            });
+
+            $(".btn.btn-danger.btn-sm").on('click', () => {
+                    $.get("views/visitorYear.html")
+                        .done((data) => this.setup(data))
+                        .fail(() => this.error());
+                }
+            );
+        } catch (e) {
+            //if unauthorized error show error to user
+            if (e.code === 401) {
+                this.visitorYear
+                    .find(".error")
+                    .html(e.reason);
+            } else {
+                console.log(e);
             }
-        });
-
-        //Delete graph and make a new one
-        $('.btn.btn-danger.btn-sm').click(function () {
-            removeChart();
-            selectedLocations = []; //empty array
-        });
-
-        $(".btn.btn-danger.btn-sm").on('click', () => {
-                $.get("views/visitorYear.html")
-                    .done((data) => this.setup(data))
-                    .fail(() => this.error());
-            }
-        );
+        }
     }
 }
 
