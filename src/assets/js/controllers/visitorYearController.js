@@ -62,9 +62,14 @@ class VisitorYearController extends SubmenuController {
             for (let i = 0; i < uniqueYearsData.length; i++) {
                 uniqueYears[i] = uniqueYearsData[i].year
             }
+            $(".chartContainer").find(".chartInYears").removeAttr('id');
+            $(".chartContainer").find(".chartInYears").remove();
+
+            const chart = $(".chartInYears").first().clone().removeClass("d-none").attr('id', 'chartInYears');
+            $(".chartContainer").append(chart);
 
             //Create chart
-            let yearChart = new Chart($('.chartInYears'), {
+            let yearChart = new Chart($('#chartInYears'), {
                 type: 'bar',
                 data: {
                     labels: uniqueYears,
@@ -136,6 +141,8 @@ class VisitorYearController extends SubmenuController {
 }
 
 function removeChart() {
+    $(".chartContainer").find(".chartInYears").removeAttr('id');
+    $(".chartContainer").find(".chartInYears").remove();
     $('.btn.btn-danger.btn-sm').addClass('d-none'); //hide button
     $('#selectbox').children('option').removeAttr('disabled'); //make all options clickable again
     $('#selectbox').children('option:selected').prop("selected", false); //deselect last choice
