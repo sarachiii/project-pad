@@ -15,10 +15,6 @@ class WeekdayVisitorsController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.weekdayVisitorsView);
 
-        //Change colour of navbar item
-        $(".btn-group-vertical").removeClass("active");
-        $("#weekdaysub").addClass("active");
-
         $('title', window.parent.document).text('Bezoekers per weekdag')
 
         this.getOptions()

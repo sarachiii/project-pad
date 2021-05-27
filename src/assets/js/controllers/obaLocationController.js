@@ -20,10 +20,6 @@ class ObaLocationController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.obaLocationView);
 
-        //Change colour of navbar item
-        $(".btn-group-vertical").removeClass("active");
-        $("#locationsub").addClass("active");
-
         $('title', window.parent.document).text('Filter en vergelijk locaties');
 
         this.showAllDistricts();

@@ -194,5 +194,19 @@ option:hover {
 }
 /* Navbar links on mouse-over */
 .navbar .navbar-collapse .navbar-nav a:hover {
-    color: red; !important;
+    color: #FF0000; !important;
+}
+
+.btn-secondary{
+    border-color: #FC6465 !important;
+    background-color: #FC6465 !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary:visited,
+.btn-secondary:focus {
+    background-color: #F8AFA6 !important;
+    border-color: #F8AFA6 !important;
+}
 }
