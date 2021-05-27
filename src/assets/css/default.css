@@ -226,18 +226,9 @@ option:hover {
     height: 500px;
 }
 
-.btn-secondary:hover,
-.btn-secondary:active,
-.btn-secondary:visited,
-.btn-secondary:focus {
-    background-color: #F8AFA6 !important;
-    border-color: #F8AFA6 !important;
-}
-}
 /* Shadow submenu buttons */
 .btn-group-vertical .btn {
     -moz-box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
     box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
-}
 }
