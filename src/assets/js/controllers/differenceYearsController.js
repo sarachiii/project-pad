@@ -15,10 +15,6 @@ class DifferenceYearsController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.differenceYears);
 
-        //Change colour of navbar item
-        $(".btn-group-vertical").removeClass("active");
-        $("#differencesub").addClass("active");
-
         this.buildYearChart()
     }
 

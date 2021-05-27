@@ -15,10 +15,6 @@ class BusyDistrictController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.busyDistricts);
 
-        //Change colour of navbar item
-        $(".btn-group-vertical").removeClass("active");
-        $("#districtsub").addClass("active");
-
         this.buildChart()
     }
 
