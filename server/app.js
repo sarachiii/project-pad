@@ -303,7 +303,7 @@ app.get("/location/allWeeksOfAYear", (req, res) => {
 })
 
 //Get all visitors data of a chosen location, month and year
-app.get("/location/allMonths", (req, res) => {
+app.get("/location/dataOfMonth", (req, res) => {
 
     const location = req.query.location;
     const year = req.query.year;
@@ -311,7 +311,7 @@ app.get("/location/allMonths", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'amount' " +
+            query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'visitors' " +
                 "FROM `visitordata` WHERE `visitordata`.`location` = ? " +
                 "AND `visitordata`.`year` = ? AND `visitordata`.`month` = ? " +
                 "ORDER BY FIELD(`month`, 'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli'," +
@@ -378,7 +378,7 @@ app.get("/location/firstQuarter", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'amount' FROM " +
+            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'visitors' FROM " +
                 "`visitordata` WHERE `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND " +
                 "`visitordata`.`month` = 'januari' " +
                 "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'februari' " +
@@ -402,7 +402,7 @@ app.get("/location/secondQuarter", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'amount' FROM " +
+            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'visitors' FROM " +
                 "`visitordata` WHERE `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND " +
                 "`visitordata`.`month` = 'april' " +
                 "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'mei' " +
@@ -426,7 +426,7 @@ app.get("/location/thirdQuarter", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'amount' FROM " +
+            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'visitors' FROM " +
                 "`visitordata` WHERE `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND " +
                 "`visitordata`.`month` = 'juli' " +
                 "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'augustus' " +
@@ -450,7 +450,7 @@ app.get("/location/fourthQuarter", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'amount' FROM " +
+            query: "SELECT `month`, `week`, `location`, `year`, SUM(`visitors`) as 'visitors' FROM " +
                 "`visitordata` WHERE `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND " +
                 "`visitordata`.`month` = 'oktober' " +
                 "OR `visitordata`.`location` = ? AND `visitordata`.`year` = ? AND `visitordata`.`month` = 'november' " +
@@ -473,7 +473,7 @@ app.get("/location/chosenYear", (req, res) => {
 
     db.handleQuery(
         connectionPool, {
-            query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'amount' FROM `visitordata` WHERE `visitordata`.`location` = ? " +
+            query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'visitors' FROM `visitordata` WHERE `visitordata`.`location` = ? " +
                 "AND `visitordata`.`year` = ? GROUP BY `month`" +
                 "ORDER BY FIELD(`month`, 'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli'," +
                 "'augustus', 'september', 'oktober', 'november', 'december')",

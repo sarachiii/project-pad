@@ -83,9 +83,9 @@ class ObaLocationRepository {
             .doRequest(`${this.route}/allMonthsOfAYear`, null, "GET");
     }
 
-    async getAllMonths(location, year, month) {
+    async getDataOfMonth(location, year, month) {
         return await networkManager
-            .doRequest(`${this.route}/allMonths?location=${location}&year=${year}&month=${month}`,
+            .doRequest(`${this.route}/dataOfMonth?location=${location}&year=${year}&month=${month}`,
                 null, "GET");
     }
 
