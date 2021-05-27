@@ -54,6 +54,7 @@ describe("weekday visitors", () => {
 
         //select year 2002
         cy.get("#yearOptions").select("2002")
+        cy.get("#locationOptions").select("test")
 
         //check if canvas is initiated
         cy.get("#myChart").should("exist")
