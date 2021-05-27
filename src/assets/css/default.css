@@ -161,6 +161,11 @@ p {
     width: 500px ;
 }
 
+.close-h-w{
+    width: 38px;
+    height: 38px;
+}
+
 option:hover {
     background-color: rgba(114,111,124,0.67);
 }
