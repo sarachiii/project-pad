@@ -28,36 +28,26 @@ class DifferenceYearsController {
 
         try {
 
-             let data = await this.differenceYearsRepository.getdifferenceyears();
-              let years = [];
-              let visitors = [];
-            console.log(data);
-               //Puts locations in array
+            let data = await this.differenceYearsRepository.getdifferenceyears();
+            let years = [];
+            let visitors = [];
+            //Puts locations in array
             for (let i = 0; i < data.length; i++) {
-                  years[i] = data[i].year
-            visitors[i] = data[i].amount
-             }
+                years[i] = data[i].year
+                visitors[i] = data[i].amount
+            }
 
 
             // const dataPercentage = {
 
             //visitors 1 - visitors 0 / visitors 0 * 100
 
-            let year2015 = Math.round((visitors[0] - visitors[0])/visitors[0] * 100);
-            let year2016 = Math.round((visitors[1] - visitors[0])/visitors[0] * 100);
-            let year2017 = Math.round((visitors[2] - visitors[1])/visitors[1] * 100);
-            let year2018 = Math.round((visitors[3] - visitors[2])/visitors[2] * 100);
-            let year2019 = Math.round((visitors[4] - visitors[3])/visitors[3] * 100);
-            let year2020 = Math.round((visitors[5] - visitors[4])/visitors[4] * 100);
-
-
-            console.log(year2015)
-            console.log(year2016)
-            console.log(year2017)
-            console.log(year2018)
-            console.log(year2019)
-            console.log(year2020)
-
+            let year2015 = Math.round((visitors[0] - visitors[0]) / visitors[0] * 100);
+            let year2016 = Math.round((visitors[1] - visitors[0]) / visitors[0] * 100);
+            let year2017 = Math.round((visitors[2] - visitors[1]) / visitors[1] * 100);
+            let year2018 = Math.round((visitors[3] - visitors[2]) / visitors[2] * 100);
+            let year2019 = Math.round((visitors[4] - visitors[3]) / visitors[3] * 100);
+            let year2020 = Math.round((visitors[5] - visitors[4]) / visitors[4] * 100);
 
             let percentage = [year2015, year2016, year2017, year2018, year2019, year2020];
 
@@ -70,7 +60,7 @@ class DifferenceYearsController {
                     //labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
                     labels: years,
                     datasets: [{
-                        label: "Verschil percentage t.o.v vorig jaar ",
+                        label: "Toename/afname t.o.v vorig jaar ",
                         backgroundColor: 'rgb(255, 99, 132, 0.4)',
                         borderColor: 'rgb(255, 99, 132)',
                         borderWidth: 2,
@@ -89,7 +79,11 @@ class DifferenceYearsController {
                         yAxes: [{
                             ticks: {
                                 beginAtZero: true
-                            }
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'In percentages'
+                            },
                         }]
                     },
                 },
@@ -103,8 +97,6 @@ class DifferenceYearsController {
                 this.differenceYears
                     .find(".error")
                     .html(e.reason);
-            } else {
-                console.log(e);
             }
         }
     }
