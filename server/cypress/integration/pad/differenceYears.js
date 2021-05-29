@@ -8,7 +8,7 @@ describe("difference years", () => {
         cy.visit("http://localhost:8080/#differenceyears")
     });
 
-    //Test: Valid visitorYear page
+    //Test: Valid differenceYears page
     it("Valid difference visitors per year page", function () {
 
         //Find the title for the graph

@@ -9,9 +9,9 @@ describe("select Location", () => {
         cy.visit("http://localhost:8080/#obaLocation");
     });
 
-    //Check if switching between locations and districts work
-    it("Check if switching between locations and districts work", function () {
-
+    //Check if districts and locations are shown and
+    //Check if switching works between districts to locations or locations to districts
+    it("Check if districts/locations are shown and that you can switch between them", function () {
         //Start a fake server
         cy.server();
 
@@ -26,6 +26,7 @@ describe("select Location", () => {
         //Check if the fake request is valid
         cy.wait("@districts").then(request => {
             console.log(request.url);
+            expect(request.url).eq("http://localhost:3000/location/districts")
 
             expect(request.response.body[0]).to.have.property('id');
             expect(request.response.body[0]).to.have.property('name');
@@ -38,6 +39,12 @@ describe("select Location", () => {
             expect(request.response.body[1].id).eq(2);
             expect(request.response.body[1].name).eq("Nieuw-West");
         });
+
+        //Check if some district names are shown on screen
+        cy.get('.district').contains("Centrum");
+        cy.get('.district').contains("Nieuw-West");
+        cy.get('.district').contains("Zuid");
+
 
         //Find the all districts text and check if it visible.
         cy.get('.visitorstext').should('be.visible');
@@ -96,6 +103,7 @@ describe("select Location", () => {
         //Check if the fake request is valid
         cy.wait("@locations").then(request => {
             console.log(request.url);
+            expect(request.url).eq("http://localhost:3000/location/all?district=2")
 
             expect(request.response.body[0]).to.have.property('location_name');
             expect(request.response.body[0]).to.have.property('alias_name');
@@ -115,6 +123,19 @@ describe("select Location", () => {
             expect(request.response.body[0].visitor_data).eq("data available");
         });
 
+        cy.get('.locationName').contains("Geuzenveld");
+        cy.get('.locationAddress').contains("Albardakade 3 1067 DD Amsterdam");
+
+        cy.get('.locationName').contains("Casa Sofia");
+        cy.get('.locationAddress').contains("Ottho Heldringstraat 3 1066 AZ Amsterdam");
+        cy.get('.dataAvailable').contains("Gegevens niet beschikbaar");
+
+        cy.get('.locationName').contains("Osdorp");
+        cy.get('.locationName').contains("Postjesweg");
+        cy.get('.locationName').contains("Slotermeer");
+        cy.get('.locationName').contains("Slotervaar");
+
+
         //Find the all districts text and check if it invisible.
         cy.get('.visitorstext').should('not.be.visible');
 
@@ -126,8 +147,6 @@ describe("select Location", () => {
 
         //Check if the text show the right district name
         cy.get('.districtText').contains('Nieuw-West');
-
-        cy.get(".locationCard:first").click();
 
         //Make a fake districts GET response
         cy.route("GET", "**",
@@ -147,6 +166,240 @@ describe("select Location", () => {
 
         //Find the go back to district button and chosen district text and check if it invisible.
         cy.get('.textdiv').should('not.be.visible');
-        
+
     })
+
+
+    //Test: valid year data
+    it("Check if month chart appends with the right dropdowns", function () {
+        //Start a fake server
+        cy.server();
+
+        cy.route("GET", "**",
+            [{"id": 2, "name": "Nieuw-West"}]).as("districts");
+
+        //Check if the fake request is valid
+        cy.wait("@districts");
+
+        cy.wait(2000)
+        cy.route("GET", "**",
+            [{
+                "location_name": "Geuzenveld", "alias_name": "OBA Geuzenveld",
+                "address": "Albardakade 3 1067 DD Amsterdam",
+                "image": "https://www.oba.nl/dam/nieuws/0520_vestiging-geuzenveld1.jpg.rendition.792.1267.jpeg",
+                "id": 2, "visitor_data": "data available"
+            }]).as("location")
+        cy.get(".viewLocations[data-id=0]").click();
+        cy.wait("@location");
+
+        cy.get(".choseDateChart1").should("exist");
+        cy.get(".chart1").should("exist");
+        cy.get(".chartAndButtonsDiv1").should("exist");
+
+        cy.wait(2000)
+
+        cy.route("GET", "**",
+            [{id: 1, name: "Week"},
+                {id: 2, name: "Maand"},
+                {id: 3, name: "Kwartaal"},
+                {id: 4, name: "Jaar"}]).as("dateOptions")
+
+        cy.wait(1000)
+
+        cy.get(".locationCard:first").click();
+
+        cy.get(".close").should("exist");
+        cy.get(".chart1").should("exist");
+
+        cy.route("GET", "**",
+            [{year: 2015},
+                {year: 2016},
+                {year: 2017},
+                {year: 2018},
+                {year: 2019},
+                {year: 2020}]).as("years")
+
+        cy.wait(1000)
+
+        cy.get(".dateDropdown").should("exist");
+        //Click dropdown option: month
+        cy.get(".dateDropdown-item[data-id=1]").click({force: true});
+
+        cy.route("GET", "**",
+            [{name: "Januari"},
+                {name: "Februari"},
+                {name: "Maart"},
+                {name: "April"},
+                {name: "Mei"},
+                {name: "Juni"},
+                {name: "Juli"},
+                {name: "Augustus"},
+                {name: "September"},
+                {name: "Oktober"},
+                {name: "November"},
+                {name: "December"},
+            ]).as("allMonthsOfAYear")
+
+        cy.wait(1000)
+
+        cy.get(".yearDropdown1").should("exist");
+        //Click dropdown year option: 2019
+        cy.get(".yearDropdown-item[data-id=4]").click({force: true});
+
+        cy.wait(1000)
+
+//Gets visitor data of a month (only 2 weeks)
+        cy.route("GET", "**",
+            [{
+                date: "43647",
+                day: 1,
+                location: "OBA Geuzenveld",
+                month: "juli",
+                visitors: 162,
+                week: 27,
+                weekday: "maandag",
+                year: 2019
+            },
+                {
+                    date: "43648",
+                    day: 2,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 141,
+                    week: 27,
+                    weekday: "dinsdag",
+                    year: 2019
+                },
+                {
+                    date: "43649",
+                    day: 3,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 232,
+                    week: 27,
+                    weekday: "woensdag",
+                    year: 2019
+                },
+                {
+                    date: "43650",
+                    day: 4,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 123,
+                    week: 27,
+                    weekday: "donderdag",
+                    year: 2019
+                },
+                {
+                    date: "43651",
+                    day: 5,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 163,
+                    week: 27,
+                    weekday: "vrijdag",
+                    year: 2019
+                },
+                {
+                    date: "43652",
+                    day: 6,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 99,
+                    week: 27,
+                    weekday: "zaterdag",
+                    year: 2019
+                },
+                {
+                    date: "43653",
+                    day: 7,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 0,
+                    week: 27,
+                    weekday: "zondag",
+                    year: 2019
+                },
+                {
+                    date: "43654",
+                    day: 8,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 168,
+                    week: 28,
+                    weekday: "maandag",
+                    year: 2019
+                },
+                {
+                    date: "43655",
+                    day: 9,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 121,
+                    week: 28,
+                    weekday: "dinsdag",
+                    year: 2019
+                },
+                {
+                    date: "43656",
+                    day: 10,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 172,
+                    week: 28,
+                    weekday: "woensdag",
+                    year: 2019
+                },
+                {
+                    date: "43657",
+                    day: 11,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 23,
+                    week: 28,
+                    weekday: "donderdag",
+                    year: 2019
+                },
+                {
+                    date: "43658",
+                    day: 12,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 163,
+                    week: 27,
+                    weekday: "vrijdag",
+                    year: 2019
+                },
+                {
+                    date: "43659",
+                    day: 13,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 63,
+                    week: 27,
+                    weekday: "zaterdag",
+                    year: 2019
+                },
+                {
+                    date: "43660",
+                    day: 14,
+                    location: "OBA Geuzenveld",
+                    month: "juli",
+                    visitors: 3,
+                    week: 27,
+                    weekday: "zondag",
+                    year: 2019
+                },
+            ]).as("visitorDataMonth")
+
+        cy.wait(1000)
+
+        cy.get(".weekOrMonthDropdown1").should("exist");
+        cy.wait(1000)
+
+        cy.get(".weekOrMonthDropdown-item[data-id=6]").contains("Juli");
+        //Click dropdown month option: July (it only shows half a month)
+        cy.get(".weekOrMonthDropdown-item[data-id=6]").click({force: true});
+
+    });
 });
