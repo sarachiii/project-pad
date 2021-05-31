@@ -9,7 +9,7 @@ describe("dashboard", () => {
     });
 
     //Test: Valid dashboard page
-    it("Test books", function () {
+    it("Valid dashboard", function () {
 
         //Find the title for the graph
         cy.get("h5").should("exist");
@@ -26,11 +26,10 @@ describe("dashboard", () => {
         cy.get("h5").should("exist");
 
         cy.get("h5").contains("Wat anderen leuk vonden");
-
     });
 
     //Check request from database
-    it("Check graph", function () {
+    it("Check books on dashboard", function () {
 
         //Start a fake server
         cy.server();
@@ -47,10 +46,10 @@ describe("dashboard", () => {
                 {idBook:7,Image:"https://cover.biblion.nl/coverlist.dll?doctype=morebutton&bibliotheek=oba&style=0&ppn=42175222X&isbn=9789025877316&lid=&aut=&ti=&size=120"},
                 {idBook:8,Image:"https://media.s-bol.com/RPYMwrGNY1YK/550x794.jpg"},
                 {idBook:9,Image:"https://cover.biblion.nl/coverlist.dll?doctype=morebutton&bibliotheek=oba&style=0&ppn=406513961&isbn=9789025855277&lid=&aut=&ti=&size=120"},
-            ]).as("graphResponse");
+            ]).as("books");
 
         //check if the fake request is valid
-        cy.wait("@graphResponse").then(request => {
+        cy.wait("@books").then(request => {
             console.log(request.url);
             expect(request.url).eq("http://localhost:3000/featured")
 
@@ -67,13 +66,7 @@ describe("dashboard", () => {
             expect(request.response.body[1].Image).eq("https://cover.biblion.nl/coverlist.dll?doctype=morebutton&bibliotheek=oba&style=0&ppn=391871129&isbn=9789025867997&lid=&aut=&ti=&size=120")
 
             expect(request.response.body).to.have.lengthOf(9);
-
-            cy.wait(2000);
         });
     })
-
-
-
-
 })
 
