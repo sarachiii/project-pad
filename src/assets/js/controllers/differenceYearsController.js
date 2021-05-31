@@ -45,33 +45,27 @@ class DifferenceYearsController {
             let data = await this.differenceYearsRepository.getdifferenceyears();
             let years = [];
             let visitors = [];
-            //Puts locations in array
+
             for (let i = 0; i < data.length; i++) {
-                years[i] = data[i].year
+                //years[i] = data[i].year
                 visitors[i] = data[i].amount
             }
 
+            for (let i = 0; i < data.length - 1; i++) {
+                years[i] = data[i + 1].year
+            }
 
-            // const dataPercentage = {
-
-            //visitors 1 - visitors 0 / visitors 0 * 100
-
-            let year2015 = Math.round((visitors[0] - visitors[0]) / visitors[0] * 100);
             let year2016 = Math.round((visitors[1] - visitors[0]) / visitors[0] * 100);
             let year2017 = Math.round((visitors[2] - visitors[1]) / visitors[1] * 100);
             let year2018 = Math.round((visitors[3] - visitors[2]) / visitors[2] * 100);
             let year2019 = Math.round((visitors[4] - visitors[3]) / visitors[3] * 100);
             let year2020 = Math.round((visitors[5] - visitors[4]) / visitors[4] * 100);
 
-            let percentage = [year2015, year2016, year2017, year2018, year2019, year2020];
-
-            // const dataPercentage = {
-
+            let percentage = [year2016, year2017, year2018, year2019, year2020];
 
             new Chart($('#chartYear'), {
                 type: 'bar',
                 data: {
-                    //labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
                     labels: years,
                     datasets: [{
                         label: "Toename/afname t.o.v vorig jaar ",
@@ -79,7 +73,6 @@ class DifferenceYearsController {
                         borderColor: 'rgb(255, 99, 132)',
                         borderWidth: 2,
                         data: percentage,
-                        //data: [visitors[0], visitors[1], visitors[2], visitors[3], visitors[4], visitors[5]],
                     }]
                 },
                 options: {
