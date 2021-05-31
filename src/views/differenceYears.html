@@ -1,5 +1,13 @@
 <!-- Submenu for statistics -->
-<div id="submenu"></div>
+<div class="submenuDiv text-right h-0">
+    <div class="btn-group-vertical m-1" role="group" aria-label="Button group">
+        <button type="button" class="btn btn-secondary fa fa-building fa-lg" id="locationsub" data-controller="obaLocation"></button>
+        <button type="button" class="btn btn-secondary fa fa-line-chart fa-lg mt-1" id="yearsub" data-controller="visitoryear"></button>
+        <button type="button" class="btn btn-secondary fa fa-percent fa-lg mt-1" id="differencesub" data-controller="differenceyears"></button>
+        <button type="button" class="btn btn-secondary fa fa-bar-chart fa-lg mt-1" id="weekdaysub" data-controller="weekdayVisitors"></button>
+        <!--        <button type="button" class="btn btn-secondary fa fa-map-marker fa-lg mt-1" id="districtsub" data-controller="busyDistricts"></button>-->
+    </div>
+</div>
 <div class="error mb-3 text-danger"></div>
 <h1>Verschillen OBA bezoekers per jaar</h1>
 <p>(Vergelijkbaar in percentages)</p>

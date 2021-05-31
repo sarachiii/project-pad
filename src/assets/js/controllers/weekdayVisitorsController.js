@@ -5,15 +5,17 @@ class WeekdayVisitorsController {
         $.get("views/weekdayVisitors.html")
             .done((data) => this.setup(data))
             .fail(() => this.error());
-
-        $.get("views/submenu.html")
-            .done((data) => this.setupSubmenu(data))
-            .fail(() => this.error());
     }
 
-    setupSubmenu(data){
-        this.submenuView = $(data);
-        $("#submenu").append(this.submenuView);
+    //Called when the weekdayVisitors.html has been loaded
+    setup(data) {
+        //Load content into memory
+        this.weekdayVisitorsView = $(data);
+
+        //Empty the content-div and add the resulting view to the page
+        $(".content").empty().append(this.weekdayVisitorsView);
+
+        $('title', window.parent.document).text('Bezoekers per weekdag')
 
         //Change view with submenu
         $("#locationsub").on('click', () => {
@@ -28,17 +30,6 @@ class WeekdayVisitorsController {
         $("#weekdaysub").on('click', () => {
             new WeekdayVisitorsController();
         });
-    }
-
-    //Called when the weekdayVisitors.html has been loaded
-    setup(data) {
-        //Load content into memory
-        this.weekdayVisitorsView = $(data);
-
-        //Empty the content-div and add the resulting view to the page
-        $(".content").empty().append(this.weekdayVisitorsView);
-
-        $('title', window.parent.document).text('Bezoekers per weekdag')
 
         this.getOptions()
     }

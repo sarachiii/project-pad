@@ -5,15 +5,17 @@ class BusyDistrictController {
         $.get("views/busyDistrict.html")
             .done((data) => this.setup(data))
             .fail(() => this.error());
-
-        $.get("views/submenu.html")
-            .done((data) => this.setupSubmenu(data))
-            .fail(() => this.error());
     }
 
-    setupSubmenu(data){
-        this.submenuView = $(data);
-        $("#submenu").append(this.submenuView);
+    //Called when the busyDistrict.html has been loaded
+    setup(data) {
+        //Load the dashboard-content into memory
+        this.busyDistricts = $(data);
+
+        //Empty the content-div and add the resulting view to the page
+        $(".content").empty().append(this.busyDistricts);
+
+        this.buildChart();
 
         //Change view with submenu
         $("#locationsub").on('click', () => {
@@ -28,17 +30,6 @@ class BusyDistrictController {
         $("#weekdaysub").on('click', () => {
             new WeekdayVisitorsController();
         });
-    }
-
-    //Called when the busyDistrict.html has been loaded
-    setup(data) {
-        //Load the dashboard-content into memory
-        this.busyDistricts = $(data);
-
-        //Empty the content-div and add the resulting view to the page
-        $(".content").empty().append(this.busyDistricts);
-
-        this.buildChart()
     }
 
     //Called when the dashboard.html failed to load

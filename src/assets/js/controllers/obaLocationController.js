@@ -10,15 +10,17 @@ class ObaLocationController {
         $.get("views/obaLocation.html")
             .done((data) => this.setup(data))
             .fail(() => this.error());
-
-        $.get("views/submenu.html")
-            .done((data) => this.setupSubmenu(data))
-            .fail(() => this.error());
     }
 
-    setupSubmenu(data){
-        this.submenuView = $(data);
-        $("#submenu").append(this.submenuView);
+    //Called when the obaLocation.html has been loaded
+    setup(data) {
+        //Load content into memory
+        this.obaLocationView = $(data);
+
+        //Empty the content-div and add the resulting view to the page
+        $(".content").empty().append(this.obaLocationView);
+
+        $('title', window.parent.document).text('Filter en vergelijk locaties');
 
         //Change view with submenu
         $("#locationsub").on('click', () => {
@@ -33,17 +35,6 @@ class ObaLocationController {
         $("#weekdaysub").on('click', () => {
             new WeekdayVisitorsController();
         });
-    }
-
-    //Called when the obaLocation.html has been loaded
-    setup(data) {
-        //Load content into memory
-        this.obaLocationView = $(data);
-
-        //Empty the content-div and add the resulting view to the page
-        $(".content").empty().append(this.obaLocationView);
-
-        $('title', window.parent.document).text('Filter en vergelijk locaties');
 
         this.showAllDistricts();
     }
