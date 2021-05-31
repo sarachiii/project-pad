@@ -5,7 +5,7 @@ describe("submenu", () => {
         //Go to the specified URL
         const session = {"username": "test"};
         localStorage.setItem("session", JSON.stringify(session));
-        cy.visit("http://localhost:8080/#submenu")
+        cy.visit("http://localhost:8080/#obaLocation")
     });
 
     //Test: Validate submenu
@@ -20,7 +20,6 @@ describe("submenu", () => {
         cy.get("#yearsub").should("exist");
         cy.get("#differencesub").should("exist");
         cy.get("#weekdaysub").should("exist");
-        cy.get("#districtsub").should("exist");
     });
 
     //Test: Successful navigation
@@ -31,9 +30,8 @@ describe("submenu", () => {
 
         //Find the first button and click it.
         cy.get("#locationsub").click();
-        cy.get("#locationsub").should('have.class', 'active');
 
-        //After a successful click, the URL should now contain #visitorYear.
+        //After a successful click, the URL should now contain #obaLocation.
         cy.url().should("contain", "#obaLocation");
     })
 })

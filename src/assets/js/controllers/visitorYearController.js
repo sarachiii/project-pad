@@ -3,9 +3,8 @@
  *
  * @author Sarah Chrzanowska-Buth
  */
-class VisitorYearController extends SubmenuController {
+class VisitorYearController {
     constructor() {
-        super();
         this.visitorYearRepository = new VisitorYearRepository();
 
         $.get("views/visitorYear.html")
@@ -15,6 +14,7 @@ class VisitorYearController extends SubmenuController {
 
     //Called when the visitorYear.html has been loaded
     setup(data) {
+
         //Load the dashboard-content into memory
         this.visitorYear = $(data);
 
@@ -22,6 +22,20 @@ class VisitorYearController extends SubmenuController {
         $(".content").empty().append(this.visitorYear);
 
         $('title', window.parent.document).text('Bezoekers per jaar');
+
+        //Change view with submenu
+        $("#locationsub").on('click', () => {
+            new ObaLocationController();
+        });
+        $("#yearsub").on('click', () => {
+            new VisitorYearController();
+        });
+        $("#differencesub").on('click', () => {
+            new DifferenceYearsController();
+        });
+        $("#weekdaysub").on('click', () => {
+            new WeekdayVisitorsController();
+        });
 
         this.getData();
     }

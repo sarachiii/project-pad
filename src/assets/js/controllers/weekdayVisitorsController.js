@@ -17,6 +17,20 @@ class WeekdayVisitorsController {
 
         $('title', window.parent.document).text('Bezoekers per weekdag')
 
+        //Change view with submenu
+        $("#locationsub").on('click', () => {
+            new ObaLocationController();
+        });
+        $("#yearsub").on('click', () => {
+            new VisitorYearController();
+        });
+        $("#differencesub").on('click', () => {
+            new DifferenceYearsController();
+        });
+        $("#weekdaysub").on('click', () => {
+            new WeekdayVisitorsController();
+        });
+
         this.getOptions()
     }
 

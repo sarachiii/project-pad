@@ -15,7 +15,21 @@ class BusyDistrictController {
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.busyDistricts);
 
-        this.buildChart()
+        this.buildChart();
+
+        //Change view with submenu
+        $("#locationsub").on('click', () => {
+            new ObaLocationController();
+        });
+        $("#yearsub").on('click', () => {
+            new VisitorYearController();
+        });
+        $("#differencesub").on('click', () => {
+            new DifferenceYearsController();
+        });
+        $("#weekdaysub").on('click', () => {
+            new WeekdayVisitorsController();
+        });
     }
 
     //Called when the dashboard.html failed to load

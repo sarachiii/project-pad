@@ -57,7 +57,7 @@ describe("weekday visitors", () => {
         cy.get("#locationOptions").select("test")
 
         //check if canvas is initiated
-        cy.get("#myChart").should("exist")
+        cy.get("#weekdayCanvas").should("exist")
     })
 
 
