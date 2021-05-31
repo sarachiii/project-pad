@@ -61,8 +61,7 @@ class DifferenceYearsController {
                     labels: years,
                     datasets: [{
                         label: "Toename/afname t.o.v vorig jaar ",
-                        backgroundColor: 'rgb(255, 99, 132, 0.4)',
-                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: '#FF0000',
                         borderWidth: 2,
                         data: percentage,
                         //data: [visitors[0], visitors[1], visitors[2], visitors[3], visitors[4], visitors[5]],
