@@ -60,10 +60,10 @@ class App {
                 this.isLoggedIn(() => new WelcomeController(), () => new LoginController());
                 break;
 
-            case CONTROLLER_SUBMENU:
-                this.setCurrentController(name);
-                this.isLoggedIn(() => new SubmenuController(), () => new LoginController());
-                break;
+            // case CONTROLLER_SUBMENU:
+            //     this.setCurrentController(name);
+            //     this.isLoggedIn(() => new SubmenuController(), () => new LoginController());
+            //     break;
 
             case CONTROLLER_WELCOME:
                 this.setCurrentController(name);
