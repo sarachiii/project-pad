@@ -47,7 +47,6 @@ class DifferenceYearsController {
             let visitors = [];
 
             for (let i = 0; i < data.length; i++) {
-                //years[i] = data[i].year
                 visitors[i] = data[i].amount
             }
 
