@@ -3,18 +3,41 @@
  *
  * @author Sarah Chrzanowska-Buth
  */
-class VisitorYearController extends SubmenuController {
+class VisitorYearController {
     constructor() {
-        super();
         this.visitorYearRepository = new VisitorYearRepository();
 
         $.get("views/visitorYear.html")
             .done((data) => this.setup(data))
             .fail(() => this.error());
+
+        $.get("views/submenu.html")
+            .done((data) => this.setupSubmenu(data))
+            .fail(() => this.error());
+    }
+
+    setupSubmenu(data){
+        this.submenuView = $(data);
+        $("#submenu").append(this.submenuView);
+
+        //Change view with submenu
+        $("#locationsub").on('click', () => {
+            new ObaLocationController();
+        });
+        $("#yearsub").on('click', () => {
+            new VisitorYearController();
+        });
+        $("#differencesub").on('click', () => {
+            new DifferenceYearsController();
+        });
+        $("#weekdaysub").on('click', () => {
+            new WeekdayVisitorsController();
+        });
     }
 
     //Called when the visitorYear.html has been loaded
     setup(data) {
+
         //Load the dashboard-content into memory
         this.visitorYear = $(data);
 
