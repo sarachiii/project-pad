@@ -18,11 +18,12 @@ class DashboardController {
         this.dashboardView = $(data);
 
         //Change colour of navbar item
-        $(".nav-item").removeClass("active");
-        $(".dashboardItem").addClass("active");
+        $(".obaLocationItem").find("a").css("color", "black");
+        $(".booksItem").find("a").css("color", "black");
+        $(".uploadItem").find("a").css("color", "black");
+        $(".dashboardItem").find("a").css("color", "red");
 
         //Empty the content-div and add the resulting view to the page
-        $(".submenu").empty();
         $(".content").empty().append(this.dashboardView);
 
         this.loadBook();

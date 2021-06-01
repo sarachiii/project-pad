@@ -22,6 +22,12 @@ class ObaLocationController {
 
         $('title', window.parent.document).text('Filter en vergelijk locaties');
 
+        //Change colour of navbar item
+        $(".dashboardItem").find("a").css("color", "black");
+        $(".booksItem").find("a").css("color", "black");
+        $(".uploadItem").find("a").css("color", "black");
+        $(".obaLocationItem").find("a").css("color", "red");
+
         //Change view with submenu
         $("#locationsub").on('click', () => {
             new ObaLocationController();

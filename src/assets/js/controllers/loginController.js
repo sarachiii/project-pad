@@ -21,12 +21,14 @@ class LoginController {
         this.loginView.find(".login-form").on("submit", (e) => this.handleLogin(e));
 
         //Change colour of navbar item
-        $(".nav-item").removeClass("active");
-        $(".logoutItem").addClass("hide-navigation-item");
+        $(".dashboardItem").find("a").css("color", "black");
+        $(".booksItem").find("a").css("color", "black");
+        $(".uploadItem").find("a").css("color", "black");
+        $(".obaLocationItem").find("a").css("color", "black");
+        $(".logout").addClass("hide-navigation-item");
 
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.loginView);
-        $(".submenu").empty();
     }
 
     /**

@@ -20,10 +20,12 @@ class UploadXMLController {
         $(".content").empty().append(this.welcomeView);
 
         //Change colour of navbar item
-        $(".nav-item").removeClass("active");
-        $(".uploadItem").addClass("active");
+        $(".dashboardItem").find("a").css("color", "black");
+        $(".booksItem").find("a").css("color", "black");
+        $(".obaLocationItem").find("a").css("color", "black");
+        $(".uploadItem").find("a").css("color", "red");
 
-        $('title', window.parent.document).text('Upload bezoekers data')
+        $('title', window.parent.document).text('Upload bezoekers data');
 
         //File upload
         this.welcomeView.find("#upload").on("click", function() {

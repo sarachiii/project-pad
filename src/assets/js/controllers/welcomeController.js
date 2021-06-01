@@ -21,11 +21,15 @@ class WelcomeController {
         this.welcomeView.find(".name").html(sessionManager.get("username"));
 
         //Change colour of navbar item
-        $(".nav-item").removeClass("active");
-        $(".logoutItem").removeClass("hide-navigation-item");
+        $(".dashboardItem").find("a").css("color", "black");
+        $(".booksItem").find("a").css("color", "black");
+        $(".uploadItem").find("a").css("color", "black");
+        $(".obaLocationItem").find("a").css("color", "black");
+
+        //Hide logout button
+        $(".logout").removeClass("hide-navigation-item");
 
         //Empty the content-div and add the resulting view to the page
-        $(".submenu").empty();
         $(".content").empty().append(this.welcomeView);
 
     }

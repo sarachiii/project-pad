@@ -168,9 +168,10 @@ option:hover {
 
 /* Navbar */
 .navbar .navbar-collapse .navbar-nav .nav-link{
-    color: black; !important;
-    font-weight: bold; !important;
+    color: black;
+    font-weight: bold;
 }
+
 .navbar .navbar-collapse .nav-items .nav-item{
     width: 200px;!important;
 }
@@ -187,7 +188,17 @@ option:hover {
 
 /* Navbar links on mouse-over */
 .navbar .navbar-collapse .navbar-nav a:hover {
-    color: #FF0000; !important;
+    color: #FF0000;
+}
+
+/* Logout button */
+.logout{
+    color: black;
+}
+
+/* Navbar links on mouse-over */
+.navbar .navbar-collapse .logout:hover {
+    color: #FF0000;
 }
 
 /* Submenu */
@@ -203,22 +214,12 @@ option:hover {
 }
 
 /* Submenu on hover */
-.submenuDiv .btn-secondary:hover,
-.submenuDiv .btn-secondary:active,
-.submenuDiv .btn-secondary:visited,
-.submenuDiv .btn-secondary:focus {
+.submenuDiv .btn:hover,
+.submenuDiv .btn:active,
+.submenuDiv .btn:visited,
+.submenuDiv .btn:focus {
     background-color: #c274ae !important;
     border-color: #c274ae !important;
-}
-
-/* Logout button */
-.logout{
-    color: black; !important;
-}
-
-/* Navbar links on mouse-over */
-.navbar .navbar-collapse .logout:hover {
-    color: #FF0000; !important;
 }
 
 /* Chart in years */

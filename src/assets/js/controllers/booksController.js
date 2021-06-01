@@ -19,12 +19,13 @@ class BooksController {
         this.booksView = $(data);
 
         //Empty the content-div and add the resulting view to the page
-        $(".submenu").empty();
         $(".content").empty().append(this.booksView);
 
         //Change colour of navbar item
-        $(".nav-item").removeClass("active");
-        $(".booksItem").addClass("active");
+        $(".dashboardItem").find("a").css("color", "black");
+        $(".obaLocationItem").find("a").css("color", "black");
+        $(".uploadItem").find("a").css("color", "black");
+        $(".booksItem").find("a").css("color", "red");
 
         //Prevent the page from refreshing after pressing enter
         $("#searchForm").submit(function() {
