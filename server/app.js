@@ -313,10 +313,7 @@ app.get("/location/dataOfMonth", (req, res) => {
         connectionPool, {
             query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'visitors' " +
                 "FROM `visitordata` WHERE `visitordata`.`location` = ? " +
-                "AND `visitordata`.`year` = ? AND `visitordata`.`month` = ? " +
-                "ORDER BY FIELD(`month`, 'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli'," +
-                "'augustus', 'september', 'oktober', 'november', 'december')",
-
+                "AND `visitordata`.`year` = ? AND `visitordata`.`month` = ?",
             values: [location, year, month],
         },
         (data) => {
