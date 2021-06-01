@@ -76,6 +76,7 @@ class VisitorYearController {
             for (let i = 0; i < uniqueYearsData.length; i++) {
                 uniqueYears[i] = uniqueYearsData[i].year
             }
+
             $(".chartContainer").find(".chartInYears").removeAttr('id');
             $(".chartContainer").find(".chartInYears").remove();
 
