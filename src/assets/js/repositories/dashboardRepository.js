@@ -1,10 +1,3 @@
-/**
- * -- THIS IS AN EXAMPLE REPOSITORY WITH EXAMPLE DATA FROM DB --
- * Repository responsible for all room related data from server - CRUD
- * Make sure all functions are using the async keyword when interacting with `networkManager`!
- *
- * @author Pim Meijer
- */
 class DashboardRepository {
 
     constructor() {

@@ -15,7 +15,7 @@ describe("visitorYear", () => {
         cy.get("h1").should("exist");
 
         //Check if title is correct
-        cy.get("h1").contains("OBA bezoekers per jaar");
+        cy.get("h1").contains("Bezoekers per jaar");
 
         //Find the canvas for the graph
         cy.get(".chartInYears").should("exist");

@@ -1,8 +1,5 @@
 /**
  * Responsible for handling the actions happening on welcome view
- * For now it uses the roomExampleRepository to get some example data from server
- *
- * @author Lennard Fonteijn & Pim Meijer
  */
 class WelcomeController {
     constructor() {
@@ -20,7 +17,7 @@ class WelcomeController {
         //Set the name in the view from the session
         this.welcomeView.find(".name").html(sessionManager.get("username"));
 
-        //Change colour of navbar item
+        //Make navbar items visible
         $(".dashboardItem").removeClass("hide-navigation-item");
         $(".booksItem").removeClass("hide-navigation-item");
         $(".uploadItem").removeClass("hide-navigation-item");

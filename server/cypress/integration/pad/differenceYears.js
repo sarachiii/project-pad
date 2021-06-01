@@ -15,12 +15,12 @@ describe("difference years", () => {
         cy.get("h1").should("exist");
 
         //Check if title is correct
-        cy.get("h1").contains("OBA bezoekers per jaar");
+        cy.get("h1").contains("Toename/Afname bezoekers per jaar");
 
         //Check if subtitle is visible
         cy.get("p").should("exist");
 
-        cy.get("p").contains("(Vergelijkbaar in percentages)");
+        cy.get("p").contains("(Totaal van alle vestigingen bij elkaar)");
 
         //Find the canvas for the graph
         cy.get("#chartYear").should("exist");

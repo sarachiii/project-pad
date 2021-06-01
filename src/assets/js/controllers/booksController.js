@@ -1,7 +1,5 @@
 /**
- * Controller responsible for all events in view and setting data
- *
- * @author Pim Meijer
+ * Responsible for the books view
  */
 class BooksController {
 

@@ -1,7 +1,5 @@
 /**
  * Responsible for uploading files
- *
- * @author Lennard Fonteijn
  */
 class UploadXMLController {
     constructor() {

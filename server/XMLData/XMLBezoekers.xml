@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<oba-data-bezoekers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <record>
+        <datum>41275</datum>
+        <jaar>9999</jaar>
+        <maand>januari</maand>
+        <week>1</week>
+        <dag>1</dag>
+        <weekdag>dinsdag</weekdag>
+        <vestiging>xmlUploadTest</vestiging>
+        <bezoekers>30</bezoekers>
+    </record>
+    <record>
+        <datum>41276</datum>
+        <jaar>9999</jaar>
+        <maand>januari</maand>
+        <week>1</week>
+        <dag>2</dag>
+        <weekdag>woensdag</weekdag>
+        <vestiging>xmlUploadTest</vestiging>
+        <bezoekers>20</bezoekers>
+    </record>
+    <record>
+        <datum>41277</datum>
+        <jaar>9999</jaar>
+        <maand>januari</maand>
+        <week>1</week>
+        <dag>3</dag>
+        <weekdag>donderdag</weekdag>
+        <vestiging>xmlUploadTest</vestiging>
+        <bezoekers>10</bezoekers>
+    </record>
+</oba-data-bezoekers>

@@ -255,7 +255,7 @@ option:hover {
 }
 
 .bg {
-    background-image: url("https://media.discordapp.net/attachments/806066045923622946/847413406646534144/bieb.png?width=1004&height=670");
+    background-image: url("../img/bieb.png");
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;

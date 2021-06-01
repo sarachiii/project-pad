@@ -1,7 +1,5 @@
 /**
- * Responsible for handling the actions happening on sidebar view
- *
- * @author Lennard Fonteijn, Pim Meijer
+ * Responsible for handling the actions happening on navbar view
  */
 class DashboardController {
     constructor() {
