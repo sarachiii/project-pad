@@ -1,7 +1,5 @@
 /**
  * Server application - contains all server config and api endpoints
- *
- * @author Pim Meijer
  */
 const express = require("express");
 const bodyParser = require("body-parser");

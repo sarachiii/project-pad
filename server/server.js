@@ -1,10 +1,3 @@
-/**
- * Do not change this - "main" entry point of the server
- *
- * Add your server logic to app.js
- *
- * @author Pim Meijer & Lennard Fonteijn
- */
 const SERVER_ENVIRONMENT_LOCAL = "LOCAL";
 const SERVER_ENVIRONMENT_DEV = "DEV";
 const SERVER_ENVIRONMENT_LIVE = "LIVE";
