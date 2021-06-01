@@ -222,7 +222,7 @@ app.get("/location/all", (req, res) => {
     );
 })
 
-//Get all years of the visitors data
+//Get all date options
 app.get("/location/allDate", (req, res) => {
     db.handleQuery(
         connectionPool, {
@@ -238,9 +238,7 @@ app.get("/location/allDate", (req, res) => {
 
 //Get all years of the visitors data
 app.get("/location/allYears", (req, res) => {
-
     const location = req.query.location;
-
     db.handleQuery(
         connectionPool, {
             query: "SELECT DISTINCT `year` FROM `visitordata` WHERE `location` =  ? ORDER BY `year` ASC",
@@ -302,7 +300,7 @@ app.get("/location/allWeeksOfAYear", (req, res) => {
     );
 })
 
-//Get all visitors data of a chosen location, month and year
+//Get sum visitor data of a chosen location, month and year to check if the month data is not empty
 app.get("/location/dataOfMonth", (req, res) => {
 
     const location = req.query.location;
@@ -313,10 +311,7 @@ app.get("/location/dataOfMonth", (req, res) => {
         connectionPool, {
             query: "SELECT `month`, `location`, `year`, SUM(`visitors`) as 'visitors' " +
                 "FROM `visitordata` WHERE `visitordata`.`location` = ? " +
-                "AND `visitordata`.`year` = ? AND `visitordata`.`month` = ? " +
-                "ORDER BY FIELD(`month`, 'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli'," +
-                "'augustus', 'september', 'oktober', 'november', 'december')",
-
+                "AND `visitordata`.`year` = ? AND `visitordata`.`month` = ?",
             values: [location, year, month],
         },
         (data) => {
@@ -349,7 +344,7 @@ app.get("/location/chosenWeek", (req, res) => {
     );
 })
 
-//Get all visitors data of a chosen location, week and year
+//Get all visitors data of a chosen location, month and year
 app.get("/location/chosenMonth", (req, res) => {
 
     const location = req.query.location;
@@ -465,7 +460,7 @@ app.get("/location/fourthQuarter", (req, res) => {
     );
 })
 
-//Get all visitors data of a chosen location, week and year
+//Get all visitors data of a chosen location and year
 app.get("/location/chosenYear", (req, res) => {
 
     const location = req.query.location;
