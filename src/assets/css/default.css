@@ -66,16 +66,17 @@ footer {
     right: 0;
 }
 
-/*#inlogdiv {*/
-/*    border-radius: 10px;*/
-/*    box-shadow: 0px 0px 81px -4px rgba(0,0,0,0.44);*/
-/*    padding: 15px;*/
-/*    position: fixed;*/
-/*    top: 50%;*/
-/*    left: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    width: 400px;*/
-/*}*/
+#inlogdiv {
+    border-radius: 10px;
+    box-shadow: 0px 0px 81px -4px rgba(0,0,0,0.44);
+    padding: 15px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: white;
+}
 
 #chartdiv {
     border-radius: 10px;
@@ -251,4 +252,12 @@ option:hover {
     color: #969696;
     font-family: Avenir, serif;
     font-weight: bold;
+}
+
+.bg {
+    background-image: url("https://media.discordapp.net/attachments/806066045923622946/847413406646534144/bieb.png?width=1004&height=670");
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }

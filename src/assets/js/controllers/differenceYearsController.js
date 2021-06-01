@@ -12,6 +12,8 @@ class DifferenceYearsController {
         //Load the dashboard-content into memory
         this.differenceYears = $(data);
 
+        $('title', window.parent.document).text('Toename/afname per jaar');
+
         //Empty the content-div and add the resulting view to the page
         $(".content").empty().append(this.differenceYears);
 
@@ -45,6 +47,7 @@ class DifferenceYearsController {
             let data = await this.differenceYearsRepository.getdifferenceyears();
             let years = [];
             let visitors = [];
+            let colors = [];
 
             for (let i = 0; i < data.length; i++) {
                 visitors[i] = data[i].amount
@@ -62,13 +65,21 @@ class DifferenceYearsController {
 
             let percentage = [year2016, year2017, year2018, year2019, year2020];
 
+            for (let i = 0; i < percentage.length; i++) {
+                if(percentage[i] < 0){
+                    colors[i] = 'rgba(255, 0, 0)'
+                } else {
+                    colors[i] = 'rgba(75, 170, 50)'
+                }
+            }
+
             new Chart($('#chartYear'), {
                 type: 'bar',
                 data: {
                     labels: years,
                     datasets: [{
                         label: "Toename/afname t.o.v vorig jaar ",
-                        backgroundColor: '#FF0000',
+                        backgroundColor: colors,
                         borderWidth: 2,
                         data: percentage,
                     }]

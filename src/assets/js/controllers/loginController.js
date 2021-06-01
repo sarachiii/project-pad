@@ -21,10 +21,10 @@ class LoginController {
         this.loginView.find(".login-form").on("submit", (e) => this.handleLogin(e));
 
         //Change colour of navbar item
-        $(".dashboardItem").find("a").css("color", "black");
-        $(".booksItem").find("a").css("color", "black");
-        $(".uploadItem").find("a").css("color", "black");
-        $(".obaLocationItem").find("a").css("color", "black");
+        $(".dashboardItem").addClass("hide-navigation-item");
+        $(".booksItem").addClass("hide-navigation-item");
+        $(".uploadItem").addClass("hide-navigation-item");
+        $(".obaLocationItem").addClass("hide-navigation-item");
         $(".logout").addClass("hide-navigation-item");
 
         //Empty the content-div and add the resulting view to the page

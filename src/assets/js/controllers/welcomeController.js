@@ -21,6 +21,13 @@ class WelcomeController {
         this.welcomeView.find(".name").html(sessionManager.get("username"));
 
         //Change colour of navbar item
+        $(".dashboardItem").removeClass("hide-navigation-item");
+        $(".booksItem").removeClass("hide-navigation-item");
+        $(".uploadItem").removeClass("hide-navigation-item");
+        $(".obaLocationItem").removeClass("hide-navigation-item");
+        $(".logout").removeClass("hide-navigation-item");
+
+        //Change colour of navbar item
         $(".dashboardItem").find("a").css("color", "black");
         $(".booksItem").find("a").css("color", "black");
         $(".uploadItem").find("a").css("color", "black");
