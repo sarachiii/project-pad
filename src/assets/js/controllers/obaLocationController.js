@@ -186,11 +186,6 @@ class ObaLocationController {
         $("." + place).find(".buttons").find(".quarterDropdown" + placeNumber).remove();
         const yearDropdown = $(".yearDropdown" + placeNumber).first().clone().removeClass("d-none");
         $(".chartAndButtonsDiv" + placeNumber).find(".buttons").append(yearDropdown);
-        this.fillYearDropdown(location, type, place, placeNumber, yearDropdown);
-    }
-
-    //Fills the year dropdown with years
-    async fillYearDropdown(location, type, place, placeNumber, yearDropdown) {
         try {
             let allYears = await this.obaLocationRepository.getAllYears(location["alias_name"]);
 
