@@ -1,11 +1,6 @@
 /**
- * Entry point front end application - there is also an app.js for the backend (server folder)!
+ * Entry point front end application
  *
- * Available: `sessionManager` or `networkManager` or `app.loadController(..)`
- *
- * You only want one instance of this class, therefor always use `app`.
- *
- * @author Lennard Fonteijn & Pim Meijer
  */
 const CONTROLLER_SIDEBAR = "sidebar";
 const CONTROLLER_LOGIN = "login";
@@ -20,7 +15,6 @@ const CONTROLLER_VISITORYEAR = "visitoryear";
 const CONTROLLER_WEEKDAYVISITORS = "weekdayVisitors";
 const CONTROLLER_DIFFERENCEYEARS = "differenceyears";
 const CONTROLLER_BUSYDISTRICT = "busyDistricts";
-const CONTROLLER_SUBMENU = "submenu";
 
 const sessionManager = new SessionManager();
 const networkManager = new NetworkManager();
@@ -30,7 +24,6 @@ class App {
     init() {
         //Always load the sidebar
         this.loadController(CONTROLLER_SIDEBAR);
-        this.loadController(CONTROLLER_SUBMENU);
 
         //Attempt to load the controller from the URL, if it fails, fall back to the welcome controller.
         this.loadControllerFromUrl(CONTROLLER_WELCOME);
@@ -59,11 +52,6 @@ class App {
                 this.setCurrentController(name);
                 this.isLoggedIn(() => new WelcomeController(), () => new LoginController());
                 break;
-
-            // case CONTROLLER_SUBMENU:
-            //     this.setCurrentController(name);
-            //     this.isLoggedIn(() => new SubmenuController(), () => new LoginController());
-            //     break;
 
             case CONTROLLER_WELCOME:
                 this.setCurrentController(name);
